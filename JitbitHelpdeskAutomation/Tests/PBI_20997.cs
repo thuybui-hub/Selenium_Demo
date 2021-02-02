@@ -16,14 +16,8 @@ namespace JitbitHelpdeskAutomation.UITests
     public class PBI_20997: TestBase
     {
         private readonly LoginData loginData = JsonParser.Get<LoginData>();
-        private readonly SubmiterData submiterData = JsonParser.Get<SubmiterData>();
-
-        //private readonly LoginPage loginPage = new LoginPage();
-        //private readonly CommonPage commonPage = new CommonPage();
-        //private readonly HomePage homePage = new HomePage();
-        //private readonly IncidentPage incidentPage = new IncidentPage();
-        private readonly NewIncidentData newIncidentData = JsonParser.Get<NewIncidentData>();
-        //private readonly TicketDetailsPage ticketDetailsPage = new TicketDetailsPage();
+        private readonly SubmiterData submiterData = JsonParser.Get<SubmiterData>();     
+        private readonly NewIncidentData newIncidentData = JsonParser.Get<NewIncidentData>();     
         private string incidentName, incidentNumber , category = "HR - General";
 
         [Test]

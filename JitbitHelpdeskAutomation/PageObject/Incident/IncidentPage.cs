@@ -45,7 +45,7 @@ namespace JitbitHelpdeskAutomation.PageObject.Incident
             txtAssignmentGroup = new TextBox(By.Id("sys_display.incident.assignment_group"));
             cbTranferTicketTo = new ComboBox(By.Id("incident.u_transfer_ticket_to"));
             btnSubmit = new Button(By.Id("sysverb_insert"));
-            btnTranferToStarSupport = new Button(By.Id("transfer_ticket"));
+            btnTranferToStarSupport = new Button(By.Id("transfer_ticket_bottom"));
             lnkAll = new Link(By.XPath("//a[b[text()='All']]"));
             cbSearchOption = new ComboBox(By.XPath("//select[contains(@id,'select')]"));
             txtSearchValue = new TextBox(By.XPath("//input[contains(@id,'text')]"));
