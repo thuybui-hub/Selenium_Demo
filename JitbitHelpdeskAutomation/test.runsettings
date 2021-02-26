@@ -3,7 +3,7 @@
 
 	<!-- Parameters used by tests at runtime -->
 	<TestRunParameters>
-		<Parameter name="Driver" value="local-ie" />
+		<Parameter name="Driver" value="local-chrome" />
 		<!--can be local-chrome,local-ie,local-firefox,android-web,ios-web,etc-->
 		<Parameter name="Url" value="http://sfwebapp1/helpdesk/" />
     <Parameter name="SNUrl" value="https://fivestarqa.service-now.com" />

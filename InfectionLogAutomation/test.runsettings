@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+
+  <!-- Parameters used by tests at runtime -->
+  <TestRunParameters>
+    <Parameter name="Driver" value="local-ie" />
+    <!--can be local-chrome,local-ie,local-firefox,android-web,ios-web,etc-->
+    <Parameter name="Url" value="http://qa.ilog.fve.ad.5ssl.com/" />
+    <Parameter name="ConfigPath" value="Resources/DriverConfig.json" />
+  </TestRunParameters>
+
+</RunSettings>
