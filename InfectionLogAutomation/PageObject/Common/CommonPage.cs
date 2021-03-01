@@ -18,7 +18,7 @@ namespace InfectionLogAutomation.PageObject.Common
         public readonly Link lnkInfectiousOutbreakLog;
 
         // Paging
-        public readonly BaseElement spnPaging;
+        public readonly Span spnPaging;
         
         public CommonPage()
         {
@@ -26,7 +26,7 @@ namespace InfectionLogAutomation.PageObject.Common
             lnkInfectiousOutbreakLog = new Link(By.LinkText("Infectious Outbreak Log"));
 
             // Paging
-            spnPaging = new BaseElement(By.XPath("//span[@class=\"k-pager-sizes k-label\"]//span[@class=\"k-input\"]"));
+            spnPaging = new Span(By.XPath("//span[@class=\"k-pager-sizes k-label\"]//span[@class=\"k-input\"]"));
         }
 
         #region Main Action
@@ -73,7 +73,8 @@ namespace InfectionLogAutomation.PageObject.Common
             DriverUtils.WaitForPageLoad();
             spnPaging.MoveToElement();
             spnPaging.Click();
-            System.Windows.Forms.SendKeys.SendWait("All");
+            spnPaging.SendKeys("All");
+            //System.Windows.Forms.SendKeys.SendWait("All");
         }
         #endregion Main Action
 
