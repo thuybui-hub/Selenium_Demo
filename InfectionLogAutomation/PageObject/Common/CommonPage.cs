@@ -16,12 +16,17 @@ namespace InfectionLogAutomation.PageObject.Common
     {
         // Main menu
         public readonly Link lnkInfectiousOutbreakLog;
+
+        // Paging
+        public readonly BaseElement spnPaging;
         
         public CommonPage()
         {
             // Main menu
             lnkInfectiousOutbreakLog = new Link(By.LinkText("Infectious Outbreak Log"));
-            
+
+            // Paging
+            spnPaging = new BaseElement(By.XPath("//span[@class=\"k-pager-sizes k-label\"]//span[@class=\"k-input\"]"));
         }
 
         #region Main Action
@@ -50,10 +55,7 @@ namespace InfectionLogAutomation.PageObject.Common
             DriverUtils.WaitForPageLoad();
             List<string> listSubMenuItems = new List<string> { };
 
-            Link menuItem = new Link(By.LinkText(menuItemName));
-            menuItem.Click();
-
-            BaseElement subMenuItems = new BaseElement(By.XPath("//a[contains(text(), '" + menuItemName + "')]//following-sibling::ul//a"));
+            BaseElement subMenuItems = new BaseElement(By.XPath("//a[contains(text(), \"" + menuItemName + "\")]//following-sibling::ul//a"));
             List<BaseElement> test= subMenuItems.GetListElements();
 
             DriverUtils.WaitForPageLoad();
@@ -65,11 +67,20 @@ namespace InfectionLogAutomation.PageObject.Common
 
             return listSubMenuItems;
         }
+
+        public void ShowAllILogRecords()
+        {
+            DriverUtils.WaitForPageLoad();
+            spnPaging.MoveToElement();
+            spnPaging.Click();
+            System.Windows.Forms.SendKeys.SendWait("All");
+        }
         #endregion Main Action
 
         #region Check Points
         public bool IsInfectionLogPageDiplayed()
         {
+            DriverUtils.WaitForPageLoad();
             return lnkInfectiousOutbreakLog.IsDisplayed();
         }
 
@@ -86,11 +97,6 @@ namespace InfectionLogAutomation.PageObject.Common
                 result = result & navigationItem.IsDisplayed();
             }
             return result;
-        }
-
-        public bool IsHomeDefaultPage()
-        {
-            return true;
         }
         #endregion Check Points
     }

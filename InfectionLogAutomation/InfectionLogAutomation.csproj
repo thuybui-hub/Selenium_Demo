@@ -118,6 +118,7 @@
     <Compile Include="DataObject\LoginData.cs" />
     <Compile Include="PageObject\Common\CommonPage.cs" />
     <Compile Include="PageObject\Home\HomePage.cs" />
+    <Compile Include="PageObject\LogEntry\LogEntryDetailPage.cs" />
     <Compile Include="PageObject\Login\LoginPage.cs" />
     <Compile Include="test.Designer.cs">
       <AutoGen>True</AutoGen>

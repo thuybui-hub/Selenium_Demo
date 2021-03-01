@@ -11,6 +11,7 @@ using static NUnit.Framework.TestContext;
 using InfectionLogAutomation.PageObject.Login;
 using InfectionLogAutomation.PageObject.Common;
 using InfectionLogAutomation.PageObject.Home;
+using InfectionLogAutomation.PageObject.LogEntry;
 
 namespace InfectionLogAutomation.Tests
 {
@@ -21,6 +22,7 @@ namespace InfectionLogAutomation.Tests
         private LoginPage loginPage;
         private CommonPage commonPage;
         private HomePage homePage;
+        private LogEntryDetailPage logEntryDetailPage;
         #endregion
 
         #region Declare pages
@@ -56,6 +58,18 @@ namespace InfectionLogAutomation.Tests
                     homePage = new HomePage();
                 }
                 return homePage;
+            }
+        }
+
+        public LogEntryDetailPage LogEntryDetailPage
+        {
+            get
+            {
+                if (logEntryDetailPage == null)
+                {
+                    logEntryDetailPage = new LogEntryDetailPage();
+                }
+                return logEntryDetailPage;
             }
         }
         #endregion
