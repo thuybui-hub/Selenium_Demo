@@ -125,7 +125,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>test.runsettings</DependentUpon>
     </Compile>
-    <Compile Include="Tests\PBI_23862_AT_23878_23879_23880_23881.cs" />
+    <Compile Include="Tests\PBI_23862.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
