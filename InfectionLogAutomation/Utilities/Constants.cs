@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using SeleniumCSharp.Core.Utilities;
+using System.Configuration;
 
 namespace InfectionLogAutomation.Utilities
 {
@@ -13,6 +14,30 @@ namespace InfectionLogAutomation.Utilities
         public static string Driver; // can be chrome,ie,firefox
         public static string Url;
         public static string SNUrl;
+
+        public static readonly string AdminPassword = ConfigurationManager.AppSettings["adminPassword"];
+        public static readonly string AdminUserName = ConfigurationManager.AppSettings["adminUserName"];
+        public static readonly string UserPassword = ConfigurationManager.AppSettings["userPassword"];
+        public static readonly string UserName = ConfigurationManager.AppSettings["userName"];
+        public static readonly string DashboardPath = ConfigurationManager.AppSettings["dashboardPath"];
+        public static readonly string DashboardPathActive = ConfigurationManager.AppSettings["dashboardPathActive"];
+        public static readonly string NewTeamLogEntryPath = ConfigurationManager.AppSettings["newTeamLogEntryPath"];
+        public static readonly string NewResidentLogEntryPath = ConfigurationManager.AppSettings["newResidentLogEntryPath"];
+        public static readonly string NewClientLogEntryPath = ConfigurationManager.AppSettings["newClientLogEntryPath"];
+        public static readonly string NewTeamBulkInsertPath = ConfigurationManager.AppSettings["newTeamBulkInsertPath"];
+        public static readonly string NewResidentBulkInsertPath = ConfigurationManager.AppSettings["newResidentBulkInsertPath"];
+        public static readonly string ResidentCaseLogReporttPath = ConfigurationManager.AppSettings["residentCaseLogReporttPath"];
+        public static string CommonPassword = ConfigurationManager.AppSettings["commonPassword"];
+        public static string TeamAdminUser = ConfigurationManager.AppSettings["teamAdminUser"];
+        public static string ResidentAdminUser = ConfigurationManager.AppSettings["residentAdminUser"];
+        public static string ClientAdminUser = ConfigurationManager.AppSettings["clientAdminUser"];
+        public static string TeamCommunitySubmittorUser = ConfigurationManager.AppSettings["teamCommunitySubmittorUser"];
+        public static string TeamCommunityAdminUser = ConfigurationManager.AppSettings["teamCommunityAdminUser"];
+        public static string ResidentCommunityAdminUser = ConfigurationManager.AppSettings["residentCommunityAdminUser"];
+        public static string ResidentCommunitySubmittorUser = ConfigurationManager.AppSettings["residentCommunityAdminUser"];
+        public static string ClientSubmittorUser = ConfigurationManager.AppSettings["​clientSubmittorUser"];
+        public static string ResidentReadOnlyUser = ConfigurationManager.AppSettings["residentReadOnlyUser"];
+
 
         //Setting variables via test context
         public static void SetUIEnvVariables()
