@@ -466,6 +466,6 @@ namespace SeleniumCSharp.Core.ElementWrapper
         {
             var js = "arguments[0].scrollIntoView(true);";
             DriverUtils.ExecuteScript(js, GetElement());
-        }
+        }        
     }
 }
