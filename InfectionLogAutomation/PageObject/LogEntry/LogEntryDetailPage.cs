@@ -1,10 +1,12 @@
 ﻿using InfectionLogAutomation.PageObject.Common;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
 using SeleniumCSharp.Core.DriverWrapper;
 using SeleniumCSharp.Core.ElementWrapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -84,13 +86,52 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// <summary>
         /// Check to see if UI of New Team Log entry display correctly
         /// </summary>
+        /// typeofLogEntry can be: Team, Resident, Client
         /// <returns></returns>
-        public bool DoesUIDisplayCorrectly()
+        public bool DoesUIDisplayCorrectly(string typeofLogEntry)
         {
-            return txtRegion.IsDisplayed()
-                & txtCommunity.IsDisplayed()
-                & txtEmployee.IsDisplayed();
-                //& cbbInfectionType.IsDisplayed();                
+            bool result = txtRegion.IsDisplayed()
+                && txtCommunity.IsDisplayed()
+                && spnInfectionType.IsDisplayed()
+                && txtOnsetDate.IsDisplayed()
+                && txtSymptoms.IsDisplayed()
+                && cbbTestingStatus.IsDisplayed()
+                && txtTestingStatusDate.IsDisplayed()
+                && cbbDisposition.IsDisplayed()
+                && txtDispositionDate.IsDisplayed();
+
+            //btnSaveLogEntry.ScrollToView();
+            txtComments.MoveToElement();
+            //Mouse.MoveScrollWheel(-1);
+
+            bool test = txtComments.IsDisplayed();
+
+            result = result && txtComments.IsDisplayed()
+                && btnSaveLogEntry.IsDisplayed()
+                && btnCancelLogEntry.IsDisplayed();            
+
+            if (!string.IsNullOrEmpty(typeofLogEntry))
+            {
+                switch (typeofLogEntry)
+                {
+                    case "Team":
+                        result = result && txtEmployee.IsDisplayed();
+                        break;
+
+                    case "Resident":
+                        result = result && txtEmployee.IsDisplayed();
+                        break;
+
+                    case "Client":
+                        result = result && txtFirstName.IsDisplayed() && txtLastName.IsDisplayed() && txtMrn.IsDisplayed();
+                        break;
+
+                    default:
+                        throw new Exception(string.Format("Type of Log Entry is incorrect"));
+                }
+            }
+
+            return result;               
         }
 
         #endregion Check points

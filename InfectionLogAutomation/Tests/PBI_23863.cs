@@ -6,6 +6,7 @@ using InfectionLogAutomation.Utilities;
 using SeleniumCSharp.Core.DriverWrapper;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UITesting;
 
 namespace InfectionLogAutomation.Tests
 {
@@ -30,7 +31,9 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Team Members"), "New Infection Log Entry for Team Members form does not display");
 
             Log.Info("4.1. Verify that UI displays correctly");
-            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly(), "New Infection Log Entry UI displays incorrectly");
+            LogEntryDetailPage.txtSymptoms.Click();
+            Mouse.MoveScrollWheel(-1);
+            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Team"), "New Infection Log Entry UI displays incorrectly");
 
             Log.Info("3.2. Go to New Log Entry -> Resident page");
             CommonPage.SelectMenuItem(Constants.NewResidentLogEntryPath);
@@ -38,9 +41,8 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that New Infection Log Entry for Residents displays");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Residents"), "New Infection Log Entry for Residents form does not display");
 
-            Log.Info("4.2. Verify that UI displays correctly");
-            bool test1 = LogEntryDetailPage.DoesUIDisplayCorrectly();
-            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly(), "New Infection Log Entry UI displays incorrectly");
+            Log.Info("4.2. Verify that UI displays correctly");            
+            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Resident"), "New Infection Log Entry UI displays incorrectly");
 
             Log.Info("3.3.Go to New Log Entry->Ageility Client page");
             CommonPage.SelectMenuItem(Constants.NewClientLogEntryPath);
@@ -49,8 +51,8 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Ageility Clients"), "New Infection Log Entry for Ageility Clients form does not display");
 
             Log.Info("4.3. Verify that UI displays correctly");
-            bool test = LogEntryDetailPage.DoesUIDisplayCorrectly();
-            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly(), "New Infection Log Entry UI displays incorrectly");
+            bool test = LogEntryDetailPage.DoesUIDisplayCorrectly("Client");
+            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Client"), "New Infection Log Entry UI displays incorrectly");
         }
     }
 }
