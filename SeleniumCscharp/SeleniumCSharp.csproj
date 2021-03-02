@@ -155,6 +155,8 @@
     <Compile Include="Core\DriverManager\DriverType.cs" />
     <Compile Include="Core\DriverManager\RunningMode.cs" />
     <Compile Include="Core\DriverWrapper\Key.cs" />
+    <Compile Include="Core\ElementWrapper\Span.cs" />
+    <Compile Include="Core\ElementWrapper\TextArea.cs" />
     <Compile Include="Core\ElementWrapper\Tr.cs" />
     <Compile Include="Core\ElementWrapper\Td.cs" />
     <Compile Include="Core\ElementWrapper\BaseElement.cs" />
