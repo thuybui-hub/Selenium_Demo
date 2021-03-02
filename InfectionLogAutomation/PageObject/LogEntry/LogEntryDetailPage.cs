@@ -56,14 +56,14 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             spnInfectionType = new Span(By.XPath("//label[@id=\"infectionType_label\"]//following-sibling::span"));
             cbbInfectionType = new ComboBox(By.Id("infectionType"));
             txtOnsetDate = new TextBox(By.Id("onsetDate"));
-            txtSymptoms = new TextArea(By.Id("symptoms"));
+            txtSymptoms = new TextArea(By.XPath("//textarea[@id=\"symptoms\"]//preceding-sibling::iframe"));
             spnTestingStatus = new Span(By.XPath("//label[@id=\"testingStatus_label\"]//following-sibling::span"));
             cbbTestingStatus = new ComboBox(By.Id("testingStatus"));
             txtTestingStatusDate = new TextBox(By.Id("testingStatusDate"));
             spnDisposition = new Span(By.XPath("//label[@id=\"disposition_label\"]//following-sibling::span"));
             cbbDisposition = new ComboBox(By.Id("disposition"));
             txtDispositionDate = new TextBox(By.Id("dispositionDate"));
-            txtComments = new TextArea(By.Id("comments"));
+            txtComments = new TextArea(By.XPath("//textarea[@id=\"comments\"]//preceding-sibling::iframe"));
             btnSaveLogEntry = new Button(By.XPath("//button[@class=\"k-button btnSave\"]"));
             btnCancelLogEntry = new Button(By.XPath("//button[@class=\"k-button btnCancel\"]"));
         }
@@ -95,20 +95,17 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && spnInfectionType.IsDisplayed()
                 && txtOnsetDate.IsDisplayed()
                 && txtSymptoms.IsDisplayed()
-                && cbbTestingStatus.IsDisplayed()
+                && spnTestingStatus.IsDisplayed()
                 && txtTestingStatusDate.IsDisplayed()
-                && cbbDisposition.IsDisplayed()
+                && spnDisposition.IsDisplayed()
                 && txtDispositionDate.IsDisplayed();
 
-            //btnSaveLogEntry.ScrollToView();
-            txtComments.MoveToElement();
-            //Mouse.MoveScrollWheel(-1);
-
-            bool test = txtComments.IsDisplayed();
+            // Scroll down the screen to show the other elements
+            DriverUtils.ScrollBy(0, 1000);
 
             result = result && txtComments.IsDisplayed()
                 && btnSaveLogEntry.IsDisplayed()
-                && btnCancelLogEntry.IsDisplayed();            
+                && btnCancelLogEntry.IsDisplayed();                      
 
             if (!string.IsNullOrEmpty(typeofLogEntry))
             {
