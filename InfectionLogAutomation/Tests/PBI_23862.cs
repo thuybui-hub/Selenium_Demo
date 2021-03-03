@@ -28,11 +28,9 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(loginData.ValidUser, loginData.ValidPassword);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
-            Log.Info("Get table cell value");
-            DriverUtils.WaitForPageLoad();
-            int test = HomePage.tblDashboardTableHeader.GetTableColumnIndex(HomePage.tblDashboardTableHeader, "Region");
+            //HomePage.ClickOnTableColumnFilter("Onset Date");
 
             Log.Info("Verify that Infectious Outbreak page shows");
             Assert.IsTrue(CommonPage.IsInfectionLogPageDiplayed(), "Infectious Outbreak page does not display.");
@@ -49,7 +47,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(loginData.ValidUser, loginData.ValidPassword);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("Home page is shown as default");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page is not shown as default.");
@@ -66,7 +64,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(loginData.ValidUser, loginData.ValidPassword);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("3. Click on New Log Entry tab on the top menu bar");
             CommonPage.SelectMenuItem("New Log Entry");
@@ -81,21 +79,21 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Verify that unfilled 'Infectious Outbreak Log Entry' form for completion, customized is opened for Team Members");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Team Members"), "New Team Log Entry page does not exist.");
-            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly(), "Page UI is incorrect.");
+            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Team"), "Page UI is incorrect.");
 
             Log.Info("6. Select Resident option");
             CommonPage.SelectMenuItem("New Log Entry|Resident");
 
             Log.Info("Verify that unfilled 'Infectious Outbreak Log Entry' form for completion, customized is opened for Residents");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Residents"), "New Team Log Entry page does not exist.");
-            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly(), "Page UI is incorrect.");
+            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Resident"), "Page UI is incorrect.");
 
             Log.Info("7. Select Ageility Client option");
             CommonPage.SelectMenuItem("New Log Entry|Ageility Client");
 
             Log.Info("Verify that unfilled 'Infectious Outbreak Log Entry' form for completion, customized is opened for Clients");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Ageility Clients"), "New Team Log Entry page does not exist.");
-            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly(), "Page UI is incorrect.");
+            Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Client"), "Page UI is incorrect.");
         }
 
         [Test]
@@ -106,7 +104,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(loginData.ValidUser, loginData.ValidPassword);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("3. Click on Reports tab on the top menu bar");
             CommonPage.SelectMenuItem("Reports");

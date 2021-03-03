@@ -73,6 +73,18 @@ namespace InfectionLogAutomation.PageObject.Home
             DriverUtils.WaitForPageLoad();
             btnExportToExcel.Click();
         }
+
+        public Link GetTableColumnFilter(string columnName)
+        {
+            return new Link(By.XPath("//a[text()=\"" + columnName + "\"]//preceding-sibling::a"));
+        }
+
+        public void ClickOnTableColumnFilter(string columnName)
+        {
+            Link columnFilter = GetTableColumnFilter(columnName);
+            columnFilter.WaitForVisible();
+            columnFilter.Click();
+        }
         #region Check Points
 
         public bool IsHomePageDisplayed()
@@ -91,6 +103,28 @@ namespace InfectionLogAutomation.PageObject.Home
         {
             DriverUtils.WaitForPageLoad();
             return divDashboardTable.IsDisplayed();
+        }
+
+        public bool DoesEntryTypeFilterExist(string status)
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+
+            Link filterEntryType = GetTableColumnFilter("Entry Type");
+
+            result = filterEntryType.IsDisplayed();
+            filterEntryType.Click();
+
+            DriverUtils.WaitForPageLoad();
+            
+            //HtmlSpan filterSpan = browser.Find<HtmlSpan>(new { Class = "k-select", TagInstance = "79" });
+            //filterSpan.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            //filterSpan.Click();
+            //List<string> actualEntryTypeFilterList = GetItemsFromControlList(Fields.entryTypeFilter);
+            //List<string> expectedEntryTypeFilterList = new List<string> { "Team Member", "Resident", "Ageility Client" };
+            //result = result & actualEntryTypeFilterList.SequenceEqual(expectedEntryTypeFilterList);
+
+            return result;
         }
         #endregion Check Points
     }

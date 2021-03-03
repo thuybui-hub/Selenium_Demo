@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="Tests\PBI_23862.cs" />
     <Compile Include="Tests\PBI_23863.cs" />
+    <Compile Include="Tests\PBI_23924.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

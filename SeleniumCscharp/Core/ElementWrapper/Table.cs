@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using OpenQA.Selenium;
 using System.Threading;
+using System.Drawing;
+using System.IO;
+using System;
 
 namespace SeleniumCSharp.Core.ElementWrapper
 {
@@ -31,9 +34,9 @@ namespace SeleniumCSharp.Core.ElementWrapper
         /// </summary>
         /// <param name="cellControl"></param>
         /// <returns>String</returns>
-        public string GetTextInCellControl(Td cellControl)
+        public string GetTextInCellControl(IWebElement cellControl)
         {
-            string text = cellControl.GetText();
+            string text = cellControl.Text;
             return text.Trim();
         }
 
@@ -99,16 +102,203 @@ namespace SeleniumCSharp.Core.ElementWrapper
             for (int i = 0; i<trs.Count; i++)
             {
                 List<IWebElement> tds = new List<IWebElement>(trs[i].FindElements(By.TagName("td")));
-                IWebElement td = tds[columnIndex];
-
-                if ((!string.IsNullOrWhiteSpace(td.Text)) && (td.Text.Equals(content)))
+                if (tds.Count > columnIndex)
                 {
-                    rowIndex = i;
-                    break;
+                    IWebElement td = tds[columnIndex];
+
+                    if ((!string.IsNullOrWhiteSpace(td.Text)) && (td.Text.Equals(content)))
+                    {
+                        rowIndex = i;
+                        break;
+                    }
+                    else rowIndex = -1;
                 }
-                else rowIndex = -1;
             }
-            return 0;
+            return rowIndex;
+        }
+
+        /// <summary>
+        /// Get table all cell value in row
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="rowIndex"></param>
+        /// <returns></returns>
+        public List<string> GetTableAllCellValueInRow(Table table, int rowIndex = 0)
+        {
+            table.WaitForVisible();
+            List<string> list = new List<string>() { };
+            IWebElement tbl = table.GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            List<IWebElement> tds = new List<IWebElement>(trs[rowIndex].FindElements(By.TagName("td")));
+
+            for (int i = 0; i < tds.Count; i++)
+            {
+                string temp = GetTableCellValue(table, i, rowIndex);
+                if (string.IsNullOrEmpty(temp))
+                    list.Add("null");
+                else list.Add(temp.Trim());
+            }
+            return list;
+
+        }
+
+        /// <summary>
+        /// Get table all cell value in column
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public List<string> GetTableAllCellValueInColumn(Table table, string columnName)
+        {
+            table.WaitForVisible();
+            List<string> list = new List<string>() { };
+            Table tableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
+            IWebElement tbl = table.GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            int columnIndex = GetTableColumnIndex(tableHeader, columnName);
+
+            for(int i = 0; i<trs.Count; i++)
+            {
+                string temp = GetTableCellValue(table, columnIndex, i);
+                if (string.IsNullOrEmpty(temp))
+                    list.Add("null");
+                else list.Add(temp.Trim());
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Click table cell
+        /// </summary>
+        /// <param name="trs"></param>
+        /// <param name="columnIndex"></param>
+        /// <param name="rowIndex"></param>
+        public void ClickTableCell(List<IWebElement> trs, int columnIndex, int rowIndex)
+        {
+            List<IWebElement> tds = new List<IWebElement>(trs[rowIndex].FindElements(By.TagName("td")));
+            IWebElement cell = tds[columnIndex];
+            BaseElement c = new BaseElement(cell);
+            c.Click(cell.Size.Width / 2, cell.Size.Height / 2);
+        }
+
+        /// <summary>
+        /// Click table cell by using column index and row index
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columnIndex"></param>
+        /// <param name="rowIndex"></param>
+        public void ClickTableCell(Table table, int columnIndex, int rowIndex)
+        {
+            table.WaitForVisible();
+            IWebElement tbl = table.GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            ClickTableCell(trs, columnIndex, rowIndex);
+        }
+
+        /// <summary>
+        /// Click table cell by using a value of a column
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columnName"></param>
+        /// <param name="content"></param>
+        public void ClickTableCell(Table table, string columnName, string content = null)
+        {
+            table.WaitForVisible();
+            IWebElement tbl = table.GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            Table tableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
+            int columnIndex = GetTableColumnIndex(tableHeader, columnName);
+
+            if(content == null)
+            {
+                ClickTableCell(trs, columnIndex, 0);
+            }
+            else
+            {
+                int rowIndex = GetTableRowIndex(table, columnIndex, content);
+                ClickTableCell(trs, columnIndex, rowIndex);
+            }
+        }
+
+        /// <summary>
+        /// Click table cell using link text
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="rowIndex"></param>
+        /// <param name="columnIndex"></param>
+        /// <param name="text"></param>
+        public void ClickTableCellLinkText(Table table, int columnIndex, int rowIndex, string text = null)
+        {
+            table.WaitForVisible();
+            IWebElement tbl = table.GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            IWebElement row = trs[rowIndex];
+
+            if (text == null)
+            {
+                ClickTableCell(table, rowIndex, columnIndex);
+            }
+            else
+            {
+                IWebElement textLnk = row.FindElement(By.LinkText(text));
+                textLnk.Click();
+            }
+        }
+
+        /// <summary>
+        /// Convert CSV to data table
+        /// </summary>
+        /// <param name="pathFile"></param>
+        /// <returns></returns>
+        public System.Data.DataTable ConvertCSVtoDataTable(string pathFile)
+        {
+            System.Data.DataTable dt = new System.Data.DataTable();
+            using (StreamReader sr = new StreamReader(pathFile))
+            {
+                string[] headers = sr.ReadLine().Split('|');
+                foreach (string header in headers)
+                {
+                    dt.Columns.Add(header);
+                }
+                while (!sr.EndOfStream)
+                {
+                    string[] rows = sr.ReadLine().Split('|');
+                    System.Data.DataRow dr = dt.NewRow();
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        dr[i] = rows[i];
+                    }
+
+                    if (rows.Length != headers.Length)
+                    {
+                        for (int i = headers.Length; i < rows.Length; i++)
+                        {
+                            dr[headers.Length - 1] = dr[headers.Length - 1] + "|" + rows[i];
+                        }
+                    }
+
+                    dt.Rows.Add(dr);
+                }
+
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// Add format for list date string
+        /// </summary>
+        /// <param name="dateString"></param>
+        /// <param name="format"></param>
+        /// <param name="outputList"></param>
+        public void AddFormatForListDateString(List<string> dateString, string format, out List<string> outputList)
+        {
+            outputList = new List<string> { };
+
+            for (int index = 0; index < dateString.Count; index++)
+            {
+                string newString = DateTime.Parse(dateString[index]).ToString(format);
+                outputList.Add(newString);
+            }
         }
 
     }
