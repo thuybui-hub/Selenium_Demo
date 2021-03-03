@@ -15,7 +15,7 @@ namespace InfectionLogAutomation.PageObject.Common
     public class CommonPage
     {
         // Main menu
-        public readonly Link lnkInfectiousOutbreakLog;
+        public readonly Link lnkInfectiousOutbreakLog;        
 
         // Paging
         public readonly Span spnPaging;
@@ -99,6 +99,7 @@ namespace InfectionLogAutomation.PageObject.Common
             }
             return result;
         }
+        
         #endregion Check Points
     }
 }

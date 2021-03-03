@@ -294,21 +294,21 @@ namespace SeleniumCSharp.Core.DriverWrapper
         /// 
         /// </summary>
         /// <param name="timeOut"></param>
-        public static void wait(int timeOut = 3)
+        public static void wait(int timeOut = 5)
         {
             Thread.Sleep(timeOut * 1000);
         }
 
-        /// <summary>
-        /// Scroll down, up, left, right.
-        /// xPixels is the number at x-axis, it moves to the left if number is positive and it move to the right if number is negative
-        /// yPixels is the number at y-axis, it moves to the down if number is positive and it move to the up if number is in negative 
-        /// </summary>
-        public static void ScrollBy(int xPixels, int yPixels)
-        {
-            IJavaScriptExecutor js = (IJavaScriptExecutor)GetDriver();
-            string javaScript = "window.scrollBy(" + xPixels + ", " + yPixels + ")";
-            js.ExecuteScript(javaScript);
-        }
+        ///// <summary>
+        ///// Scroll down, up, left, right.
+        ///// xPixels is the number at x-axis, it moves to the left if number is positive and it move to the right if number is negative
+        ///// yPixels is the number at y-axis, it moves to the down if number is positive and it move to the up if number is in negative 
+        ///// </summary>
+        //public static void ScrollBy(int xPixels, int yPixels)
+        //{
+        //    IJavaScriptExecutor js = (IJavaScriptExecutor)GetDriver();
+        //    string javaScript = "window.scrollBy(" + xPixels + ", " + yPixels + ")";
+        //    js.ExecuteScript(javaScript);
+        //}
     }
 }
