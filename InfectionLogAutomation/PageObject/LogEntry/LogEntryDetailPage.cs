@@ -1,6 +1,8 @@
 ﻿using InfectionLogAutomation.PageObject.Common;
+using InfectionLogAutomation.Utilities;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumCSharp.Core.DriverWrapper;
 using SeleniumCSharp.Core.ElementWrapper;
 using System;
@@ -39,12 +41,17 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public readonly Button btnSaveLogEntry;
         public readonly Button btnCancelLogEntry;
 
+        public readonly Ul lstBoxRegion;
+        public readonly Ul lstBoxCommunity;
+        public readonly Ul lstBoxTestingStatus;
+        public readonly Ul lstBoxDisposition;
+
         #region Actions
         public LogEntryDetailPage()
         {
             lblTitle = new Label(By.XPath("//div[@id=\"logForm\"]//h3"));
             txtRegion = new TextBox(By.XPath("//ul[@id=\"region_taglist\"]//following-sibling::input"));
-            cbbRegion = new ComboBox(By.Id("region"));
+            cbbRegion = new ComboBox(By.XPath("//select[@Id=\"region\"]"));
             txtCommunity = new TextBox(By.XPath("//ul[@id=\"communityName_taglist\"]//following-sibling::input"));
             cbbCommunity = new ComboBox(By.Id("communityName"));
             txtEmployee = new TextBox(By.XPath("//ul[@id=\"person_taglist\"]//following-sibling::input"));
@@ -66,10 +73,78 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             txtComments = new TextArea(By.XPath("//textarea[@id=\"comments\"]//preceding-sibling::iframe"));
             btnSaveLogEntry = new Button(By.XPath("//button[@class=\"k-button btnSave\"]"));
             btnCancelLogEntry = new Button(By.XPath("//button[@class=\"k-button btnCancel\"]"));
+
+            lstBoxRegion = new Ul(By.XPath("//ul[@id=\"region_listbox\"]//li"));
+            lstBoxCommunity = new Ul(By.XPath("//ul[@id=\"communityName_listbox\"]//li"));
+            lstBoxTestingStatus = new Ul(By.XPath("//ul[@id=\"testingStatus_listbox\"]//li"));
+            lstBoxDisposition = new Ul(By.XPath("//ul[@id=\"disposition_listbox\"]//li"));
         }
 
         #endregion Actions
+        /// <summary>
+        /// Get all items in a list of a control that drop down a list
+        /// </summary>
+        /// <param name="field">HtmlCustom field</param>
+        /// <returns></returns>
+        public List<string> GetItemsFromControlList(Fields field)
+        {
+            DriverUtils.WaitForPageLoad();
 
+            Ul element;
+
+            switch (field)
+            {
+                case Fields.region:
+                    element = lstBoxRegion;
+                    txtRegion.Click();
+                    break;
+
+                case Fields.community:
+                    element = lstBoxCommunity;
+                    txtEmployee.Click();
+                    break;
+                case Fields.testStatus:
+                    element = lstBoxTestingStatus;
+                    spnTestingStatus.Click();
+                    break;
+                case Fields.disposition:
+                    element = lstBoxDisposition;
+                    spnDisposition.ScrollToView();
+                    spnDisposition.Click();
+                    break;
+                
+                default:
+                    throw new Exception(string.Format("'{0}' field is invalid."));
+            }
+            List<string> displayedList = new List<string> { };
+            List<IWebElement> listElements = element.GetElements();
+
+            foreach (IWebElement item in listElements)
+            {
+                displayedList.Add(item.Text);
+            }
+
+            switch (field)
+            {
+                case Fields.region:
+                    txtRegion.Click();
+                    break;
+                case Fields.community:
+                    txtCommunity.Click();
+                    break;
+                case Fields.testStatus:                    
+                    spnTestingStatus.Click();
+                    break;
+                case Fields.disposition:                    
+                    spnDisposition.Click();
+                    break;
+
+                default:
+                    throw new Exception(string.Format("'{0}' field is invalid."));
+            }
+
+            return displayedList;
+        }
         #region Check points
         /// <summary>
         /// Check to see if a form displays via form's title
@@ -78,7 +153,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// <returns></returns>
         public bool CheckPageExist(string pageTitle)
         {
-            DriverUtils.WaitForPageLoad();
+            DriverUtils.WaitForPageLoad(3);
             string title = lblTitle.GetText();
             return title.Contains(pageTitle);
         }
@@ -101,7 +176,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && txtDispositionDate.IsDisplayed();
 
             // Scroll down the screen to show the other elements
-            DriverUtils.ScrollBy(0, 1000);
+            //DriverUtils.ScrollBy(0, 1000);
+            txtComments.ScrollToView();
 
             result = result && txtComments.IsDisplayed()
                 && btnSaveLogEntry.IsDisplayed()

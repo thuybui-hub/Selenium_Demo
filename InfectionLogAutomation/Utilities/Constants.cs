@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using SeleniumCSharp.Core.Utilities;
 using System.Configuration;
+using System.Collections.Generic;
 
 namespace InfectionLogAutomation.Utilities
 {
@@ -38,6 +39,8 @@ namespace InfectionLogAutomation.Utilities
         public static string ClientSubmittorUser = ConfigurationManager.AppSettings["​clientSubmittorUser"];
         public static string ResidentReadOnlyUser = ConfigurationManager.AppSettings["residentReadOnlyUser"];
 
+        public static List<string> TestStatus = new List<string> { "Not Tested", "Tested - Confirmed", "Tested - Negative", "Tested - Pending", "Inconclusive" };
+        public static List<string> Disposition = new List<string> { "Resolved Negative", "Quarantined", "Hospitalized", "Expired", "Recovered", "Transferred/Discharged", "Not Quarantined" };
 
         //Setting variables via test context
         public static void SetUIEnvVariables()
