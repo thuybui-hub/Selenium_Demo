@@ -25,7 +25,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("Home screen with all log entries displays");
-            HomePage.tblDashboardTable.ClickTableCell("ID", "1501");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page is not shown as default.");
 
             Log.Info("Verify that a filter exists on the home screen which filters the grid by Entry Type: Team Member, Resident, Ageility Client");

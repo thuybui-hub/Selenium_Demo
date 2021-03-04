@@ -84,6 +84,28 @@ namespace InfectionLogAutomation.PageObject.Home
             columnFilter.WaitForVisible();
             columnFilter.Click();
         }
+
+        public void OpenALogEntry(string ID)
+        {
+            DriverUtils.WaitForPageLoad();
+            if (!string.IsNullOrEmpty(ID))
+            {
+                tblDashboardTable.ClickTableCell("ID", ID);
+            }
+        }
+
+        public void OpenALogEntry(int rowIndex)
+        {
+            DriverUtils.WaitForPageLoad();
+            tblDashboardTable.ClickTableCell(5, rowIndex);
+        }
+
+        public void DeleteALogEntry(string ID)
+        {
+            DriverUtils.WaitForPageLoad();
+            int rowIndex = tblDashboardTable.GetTableRowIndex(5, ID);
+            tblDashboardTable.ClickTableCell(13, rowIndex);
+        }
         #endregion Main Actions
 
         #region Check Points
