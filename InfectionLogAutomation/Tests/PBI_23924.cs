@@ -1,6 +1,7 @@
 ﻿using InfectionLogAutomation.Utilities;
 using NUnit.Framework;
 using SeleniumCSharp.Core.DriverWrapper;
+using System.Collections.Generic;
 
 namespace InfectionLogAutomation.Tests
 {
@@ -24,9 +25,11 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("Home screen with all log entries displays");
+            HomePage.tblDashboardTable.ClickTableCell("ID", "1501");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page is not shown as default.");
 
             Log.Info("Verify that a filter exists on the home screen which filters the grid by Entry Type: Team Member, Resident, Ageility Client");
+            Assert.IsTrue(HomePage.GetTableColumnFilter("Entry Type").IsDisplayed(), "Entry Type filter does not exist.");
 
             Log.Info("Filter Dashboard table on Home page by Team Member");
 
