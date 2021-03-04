@@ -41,6 +41,7 @@ namespace InfectionLogAutomation.Utilities
 
         public static List<string> TestStatus = new List<string> { "Not Tested", "Tested - Confirmed", "Tested - Negative", "Tested - Pending", "Inconclusive" };
         public static List<string> Disposition = new List<string> { "Resolved Negative", "Quarantined", "Hospitalized", "Expired", "Recovered", "Transferred/Discharged", "Not Quarantined" };
+        public static List<string> DashboardColumnsHeader = new List<string> { "Last Updated", "Division", "Region", "BU", "Community", "ID", "Name", "Resident LOB", "Infection Type", "Onset Date", "Test Status", "Disposition", "Entry Type", "Delete" };
 
         //Setting variables via test context
         public static void SetUIEnvVariables()

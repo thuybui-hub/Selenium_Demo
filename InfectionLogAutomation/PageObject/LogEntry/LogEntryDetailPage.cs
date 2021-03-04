@@ -15,8 +15,7 @@ using System.Threading.Tasks;
 namespace InfectionLogAutomation.PageObject.LogEntry
 {
     public class LogEntryDetailPage : CommonPage
-    {
-        public readonly Label lblTitle;
+    {        
         public readonly TextBox txtRegion;
         public readonly ComboBox cbbRegion;
         public readonly TextBox txtCommunity;
@@ -48,8 +47,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
         #region Actions
         public LogEntryDetailPage()
-        {
-            lblTitle = new Label(By.XPath("//div[@id=\"logForm\"]//h3"));
+        {            
             txtRegion = new TextBox(By.XPath("//ul[@id=\"region_taglist\"]//following-sibling::input"));
             cbbRegion = new ComboBox(By.XPath("//select[@Id=\"region\"]"));
             txtCommunity = new TextBox(By.XPath("//ul[@id=\"communityName_taglist\"]//following-sibling::input"));
@@ -146,18 +144,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             return displayedList;
         }
         #region Check points
-        /// <summary>
-        /// Check to see if a form displays via form's title
-        /// </summary>
-        /// <param name="pageTitle"></param>
-        /// <returns></returns>
-        public bool CheckPageExist(string pageTitle)
-        {
-            DriverUtils.WaitForPageLoad(3);
-            string title = lblTitle.GetText();
-            return title.Contains(pageTitle);
-        }
-
         /// <summary>
         /// Check to see if UI of New Team Log entry display correctly
         /// </summary>
