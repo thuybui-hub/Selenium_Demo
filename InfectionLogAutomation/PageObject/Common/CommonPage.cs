@@ -19,7 +19,10 @@ namespace InfectionLogAutomation.PageObject.Common
 
         // Paging
         public readonly Span spnPaging;
-        
+
+        // Page title
+        public readonly Label lblTitle;
+
         public CommonPage()
         {
             // Main menu
@@ -27,6 +30,9 @@ namespace InfectionLogAutomation.PageObject.Common
 
             // Paging
             spnPaging = new Span(By.XPath("//span[@class=\"k-pager-sizes k-label\"]//span[@class=\"k-input\"]"));
+
+            // Page title
+            lblTitle = new Label(By.XPath("//div[@id=\"logForm\"]//h3"));
         }
 
         #region Main Action
@@ -79,12 +85,18 @@ namespace InfectionLogAutomation.PageObject.Common
         #endregion Main Action
 
         #region Check Points
-        public bool IsInfectionLogPageDiplayed()
+        /// <summary>
+        /// Check to see if a form displays via form's title
+        /// </summary>
+        /// <param name="pageTitle"></param>
+        /// <returns></returns>
+        public bool CheckPageExist(string pageTitle)
         {
-            DriverUtils.WaitForPageLoad();
-            return lnkInfectiousOutbreakLog.IsDisplayed();
+            DriverUtils.WaitForPageLoad(3);
+            string title = lblTitle.GetText();
+            return title.Contains(pageTitle);
         }
-
+        
         public bool AreThere5TabsOnMainMenu()
         {
             DriverUtils.WaitForPageLoad();

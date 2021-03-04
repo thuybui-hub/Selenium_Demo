@@ -33,7 +33,7 @@ namespace InfectionLogAutomation.Tests
             //HomePage.ClickOnTableColumnFilter("Onset Date");
 
             Log.Info("Verify that Infectious Outbreak page shows");
-            Assert.IsTrue(CommonPage.IsInfectionLogPageDiplayed(), "Infectious Outbreak page does not display.");
+            Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Infectious Outbreak page does not display.");
 
             Log.Info("Verify that there are 3 tabs on the top menu bar: Home, New Log Entry, Reports; Home is default tab");
             Assert.IsTrue(CommonPage.AreThere5TabsOnMainMenu(), "Menu does not includes these 3 tabs: Home, New Log Entry, Reports");

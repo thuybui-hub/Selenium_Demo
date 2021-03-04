@@ -112,7 +112,8 @@ namespace InfectionLogAutomation.PageObject.Home
         public bool IsHomePageDisplayed()
         {
             DriverUtils.WaitForPageLoad();
-            return txtCommunity.IsDisplayed()
+            return lnkInfectiousOutbreakLog.IsDisplayed()
+                && txtCommunity.IsDisplayed()
                 && txtLastUpdatedFrom.IsDisplayed()
                 && txtLastUpdatedTo.IsDisplayed()
                 && txtFilters.IsDisplayed()

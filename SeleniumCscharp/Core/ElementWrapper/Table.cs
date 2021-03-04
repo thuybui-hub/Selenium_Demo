@@ -47,22 +47,27 @@ namespace SeleniumCSharp.Core.ElementWrapper
         /// <param name="rowIndex"></param>
         /// <returns></returns>
         public string GetTableCellValue(int columnIndex, int rowIndex)
-        {
-            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+        {            
+            IWebElement tbl = GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));      
+            
             List<IWebElement> tds = new List<IWebElement>(trs[rowIndex].FindElements(By.TagName("td")));
             IWebElement td = tds[columnIndex];
             return td.Text;
         }
 
         /// <summary>
-        /// Get table column index
+        /// Get table column index 
         /// </summary>
         /// <param name="columnName"></param>
         /// <returns></returns>
         public int GetTableColumnIndex(string columnName)
         {
-            int columnIndex = 0;
-            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+
+            int columnIndex = 0;            
+            IWebElement tbl = GetElement();
+
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
             List<IWebElement> ths = new List<IWebElement>(trs[0].FindElements(By.TagName("th")));
 
             for (int i = 0; i<ths.Count; i++)
@@ -89,7 +94,10 @@ namespace SeleniumCSharp.Core.ElementWrapper
         public int GetTableRowIndex(int columnIndex, string content)
         {
             int rowIndex = 0;
-            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+
+            IWebElement tbl = GetElement();
+
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
 
             for (int i = 0; i<trs.Count; i++)
             {
@@ -111,13 +119,16 @@ namespace SeleniumCSharp.Core.ElementWrapper
 
         /// <summary>
         /// Get table all cell value in row
-        /// </summary>
+        /// </summary>        
         /// <param name="rowIndex"></param>
         /// <returns></returns>
         public List<string> GetTableAllCellValueInRow(int rowIndex = 0)
-        {
+        {            
             List<string> list = new List<string>() { };
-            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+            IWebElement tbl = GetElement();
+
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+
             List<IWebElement> tds = new List<IWebElement>(trs[rowIndex].FindElements(By.TagName("td")));
 
             for (int i = 0; i < tds.Count; i++)
@@ -128,14 +139,34 @@ namespace SeleniumCSharp.Core.ElementWrapper
                 else list.Add(temp.Trim());
             }
             return list;
+        }
 
+        /// <summary>
+        /// Get All Columns Header
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllColumnsHeader()
+        {
+            List<string> list = new List<string>() { };
+            IWebElement tbl = GetElement();
+            List<IWebElement> tr = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            List<IWebElement> th = new List<IWebElement>(tr[0].FindElements(By.TagName("th")));            
+
+            for (int i = 0; i < th.Count; i++)
+            {                
+                if (string.IsNullOrEmpty(th[i].Text))
+                    list.Add("null");
+                else list.Add(th[i].Text.Trim());
+            }
+
+            return list;
         }
 
         /// <summary>
         /// Get table all cell value in column
-        /// </summary>
+        /// </summary>        
         /// <param name="columnName"></param>
-        /// <returns></returns>
+        /// <returns></returns>        
         public List<string> GetTableAllCellValueInColumn(string columnName)
         {
             List<string> list = new List<string>() { };
@@ -174,7 +205,9 @@ namespace SeleniumCSharp.Core.ElementWrapper
         /// <param name="rowIndex"></param>
         public void ClickTableCell(int columnIndex, int rowIndex)
         {
-            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+            IWebElement tbl = GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+
             ClickTableCell(trs, columnIndex, rowIndex);
         }
 
@@ -184,8 +217,10 @@ namespace SeleniumCSharp.Core.ElementWrapper
         /// <param name="columnName"></param>
         /// <param name="content"></param>
         public void ClickTableCell(string columnName, string content = null)
-        {
-            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+        {          
+            IWebElement tbl = GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+                  
             Table tableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
             int columnIndex = tableHeader.GetTableColumnIndex(columnName);
 
@@ -207,8 +242,10 @@ namespace SeleniumCSharp.Core.ElementWrapper
         /// <param name="columnIndex"></param>
         /// <param name="text"></param>
         public void ClickTableCellLinkText(int columnIndex, int rowIndex, string text = null)
-        {
-            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+        {           
+            IWebElement tbl = GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+        
             IWebElement row = trs[rowIndex];
 
             if (text == null)
