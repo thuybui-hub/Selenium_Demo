@@ -54,7 +54,6 @@ namespace InfectionLogAutomation.PageObject.Home
         }
 
         #region Main Actions
-        #endregion Main Actions
         public void ClearAllFilters()
         {
             DriverUtils.WaitForPageLoad();
@@ -85,8 +84,9 @@ namespace InfectionLogAutomation.PageObject.Home
             columnFilter.WaitForVisible();
             columnFilter.Click();
         }
-        #region Check Points
+        #endregion Main Actions
 
+        #region Check Points
         public bool IsHomePageDisplayed()
         {
             DriverUtils.WaitForPageLoad();
