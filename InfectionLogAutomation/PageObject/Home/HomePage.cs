@@ -31,6 +31,13 @@ namespace InfectionLogAutomation.PageObject.Home
         public readonly Table tblDashboardTable;
         public readonly BaseElement divNoRecords;
 
+        // Filter popup
+        public readonly TextBox txtFilterValue;
+        public readonly Span spnEntryTypeFilter;
+        public readonly Ul lstEntrytypeFilter;
+        public readonly Button btnFilter;
+        public readonly Button btnClear;
+
         public HomePage()
         {
             // Search Criterias
@@ -51,6 +58,13 @@ namespace InfectionLogAutomation.PageObject.Home
             tblDashboardTableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
             tblDashboardTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
             divNoRecords = new BaseElement(By.ClassName("k-grid-norecords"));
+
+            // Filter popup
+            txtFilterValue = new TextBox(By.XPath("//input[@title=\"Value\"]"));
+            spnEntryTypeFilter = new Span(By.XPath("//input[@title=\"Value\"]//following-sibling::span[@class=\"k-select\"]"));
+            lstEntrytypeFilter = new Ul(By.XPath("//div[@class=\"k-animation-container\"]//ul[@class=\"k-list k-reset\"]"));
+            btnFilter = new Button(By.XPath("//button[text()=\"Filter\"]"));
+            btnClear = new Button(By.XPath("//button[text()=\"Clear\"]"));
         }
 
         #region Main Actions
@@ -80,9 +94,31 @@ namespace InfectionLogAutomation.PageObject.Home
 
         public void ClickOnTableColumnFilter(string columnName)
         {
+            DriverUtils.WaitForPageLoad();
             Link columnFilter = GetTableColumnFilter(columnName);
             columnFilter.WaitForVisible();
             columnFilter.Click();
+        }
+
+        public void EnterFilterData(string filterValue)
+        {
+            DriverUtils.WaitForPageLoad();
+            txtFilterValue.Click();
+            txtFilterValue.SendKeys(filterValue);
+            btnFilter.Click();
+        }
+
+        public void FilterATableColumn(string columnName, string filterValue)
+        {
+            ClickOnTableColumnFilter(columnName);
+            EnterFilterData(filterValue);
+        }
+
+        public void ClearAFilteredTableColumn(string columnName)
+        {
+            ClickOnTableColumnFilter(columnName);
+            btnClear.WaitForVisible();
+            btnClear.Click();
         }
 
         public void OpenALogEntry(string ID)
@@ -128,25 +164,28 @@ namespace InfectionLogAutomation.PageObject.Home
             return divDashboardTable.IsDisplayed();
         }
 
-        public bool DoesEntryTypeFilterExist(string status)
+        public bool DoesEntryTypeFilterExistWithExpectedOptions(List<string> expectedEntryTypeFilterList)
         {
             DriverUtils.WaitForPageLoad();
             bool result = true;
-
             Link filterEntryType = GetTableColumnFilter("Entry Type");
+            List<string> actualEntryTypeFilterList = new List<string> { };
 
             result = filterEntryType.IsDisplayed();
+
             filterEntryType.Click();
-
+            spnEntryTypeFilter.Click();
             DriverUtils.WaitForPageLoad();
+            IWebElement listEntryType = lstEntrytypeFilter.GetElement();
+            List<IWebElement> listElements = new List<IWebElement>(listEntryType.FindElements(By.TagName("li")));
             
-            //HtmlSpan filterSpan = browser.Find<HtmlSpan>(new { Class = "k-select", TagInstance = "79" });
-            //filterSpan.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            //filterSpan.Click();
-            //List<string> actualEntryTypeFilterList = GetItemsFromControlList(Fields.entryTypeFilter);
-            //List<string> expectedEntryTypeFilterList = new List<string> { "Team Member", "Resident", "Ageility Client" };
-            //result = result & actualEntryTypeFilterList.SequenceEqual(expectedEntryTypeFilterList);
+            foreach (IWebElement item in listElements)
+            {
+                actualEntryTypeFilterList.Add(item.Text);
+            }
 
+            result = result && actualEntryTypeFilterList.SequenceEqual(expectedEntryTypeFilterList);
+            
             return result;
         }
         #endregion Check Points

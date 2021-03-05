@@ -28,7 +28,8 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page is not shown as default.");
 
             Log.Info("Verify that a filter exists on the home screen which filters the grid by Entry Type: Team Member, Resident, Ageility Client");
-            Assert.IsTrue(HomePage.GetTableColumnFilter("Entry Type").IsDisplayed(), "Entry Type filter does not exist.");
+            List<string> expectedEntryTypeFilterList = new List<string> { "Team Member", "Resident", "Ageility Client" };
+            Assert.IsTrue(HomePage.DoesEntryTypeFilterExistWithExpectedOptions(expectedEntryTypeFilterList), "Entry Type filter does not exist or exist with wrong expected list options.");
 
             Log.Info("Filter Dashboard table on Home page by Team Member");
 
