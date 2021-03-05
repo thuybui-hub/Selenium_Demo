@@ -4,6 +4,7 @@ using System.Threading;
 using System.Drawing;
 using System.IO;
 using System;
+using SeleniumCSharp.Core.DriverWrapper;
 
 namespace SeleniumCSharp.Core.ElementWrapper
 {
@@ -147,6 +148,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
         /// <returns></returns>
         public List<string> GetAllColumnsHeader()
         {
+            DriverUtils.WaitForPageLoad();
             List<string> list = new List<string>() { };
             IWebElement tbl = GetElement();
             List<IWebElement> tr = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));

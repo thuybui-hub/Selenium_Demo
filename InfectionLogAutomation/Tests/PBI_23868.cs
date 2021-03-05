@@ -35,11 +35,9 @@ namespace InfectionLogAutomation.Tests
             expectedListOfColumnsHeader.Sort();
             Constants.DashboardColumnsHeader.Sort();
 
-            Log.Info("Verify that dashboard/table on Home page displays correctly");
-            Assert.IsTrue(expectedListOfColumnsHeader.SequenceEqual(Constants.DashboardColumnsHeader), "");
+            Log.Info("Verify that the dashboard/table displays correct columns");
+            Assert.IsTrue(expectedListOfColumnsHeader.SequenceEqual(Constants.DashboardColumnsHeader), "The dashboard table displays incorrect columns");
             #endregion
-
-
         }
     }
 }

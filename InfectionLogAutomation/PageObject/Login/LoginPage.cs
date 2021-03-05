@@ -34,9 +34,9 @@ namespace InfectionLogAutomation.PageObject.Login
                 if (user != null && password != null)
                 {
                     DriverUtils.wait(1);
-                    System.Windows.Forms.SendKeys.SendWait(user);
+                    System.Windows.Forms.SendKeys.SendWait(user);                   
                     System.Windows.Forms.SendKeys.SendWait("{TAB}");
-                    System.Windows.Forms.SendKeys.SendWait(password);
+                    System.Windows.Forms.SendKeys.SendWait(password);                    
                     System.Windows.Forms.SendKeys.SendWait("{ENTER}");
                 }
             }
