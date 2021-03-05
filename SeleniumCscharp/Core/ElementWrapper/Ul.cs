@@ -1,5 +1,5 @@
 ﻿using OpenQA.Selenium;
-
+using System.Collections.Generic;
 
 namespace SeleniumCSharp.Core.ElementWrapper
 {
@@ -23,6 +23,19 @@ namespace SeleniumCSharp.Core.ElementWrapper
         public Ul(string locator)
             : base(locator)
         {
+        }
+
+        public List<string> GetOptions()
+        {
+            List<string> displayedList = new List<string> { };
+            List<IWebElement> listElements = new List<IWebElement>(GetElement().FindElements(By.TagName("li")));
+
+            foreach (IWebElement item in listElements)
+            {
+                displayedList.Add(item.Text);
+            }
+
+            return displayedList;
         }
     }
 }

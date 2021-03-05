@@ -72,13 +72,18 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             btnSaveLogEntry = new Button(By.XPath("//button[@class=\"k-button btnSave\"]"));
             btnCancelLogEntry = new Button(By.XPath("//button[@class=\"k-button btnCancel\"]"));
 
-            lstBoxRegion = new Ul(By.XPath("//ul[@id=\"region_listbox\"]//li"));
-            lstBoxCommunity = new Ul(By.XPath("//ul[@id=\"communityName_listbox\"]//li"));
-            lstBoxTestingStatus = new Ul(By.XPath("//ul[@id=\"testingStatus_listbox\"]//li"));
-            lstBoxDisposition = new Ul(By.XPath("//ul[@id=\"disposition_listbox\"]//li"));
+            lstBoxRegion = new Ul(By.XPath("//ul[@id=\"region_listbox\"]"));
+            lstBoxCommunity = new Ul(By.XPath("//ul[@id=\"communityName_listbox\"]"));
+            lstBoxTestingStatus = new Ul(By.XPath("//ul[@id=\"testingStatus_listbox\"]"));
+            lstBoxDisposition = new Ul(By.XPath("//ul[@id=\"disposition_listbox\"]"));
         }
 
         #endregion Actions
+        public List<string> GetListOptions(ComboBox cb)
+        {
+            return cb.GetSelectOptions();
+        }
+
         /// <summary>
         /// Get all items in a list of a control that drop down a list
         /// </summary>
@@ -87,7 +92,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public List<string> GetItemsFromControlList(Fields field)
         {
             DriverUtils.WaitForPageLoad();
-
             Ul element;
 
             switch (field)
@@ -114,13 +118,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 default:
                     throw new Exception(string.Format("'{0}' field is invalid."));
             }
-            List<string> displayedList = new List<string> { };
-            List<IWebElement> listElements = element.GetElements();
-
-            foreach (IWebElement item in listElements)
-            {
-                displayedList.Add(item.Text);
-            }
+            List<string> displayedList = element.GetOptions();            
 
             switch (field)
             {
@@ -144,12 +142,72 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             return displayedList;
         }
         #region Check points
+
+        /// <summary>
+        /// Check to see if UI with of New Team Log entry display correctly
+        /// </summary>
+        /// typeOfLogEntry can be: Team, Resident, Client
+        /// <returns></returns>
+        public bool DoesUIWithFormatDisplayCorrectly(string typeOfLogEntry = "Team")
+        {
+            bool result = true;
+            string test = txtRegion.GetAttribute("role");
+
+            result = result = txtRegion.IsDisplayed()
+                && txtRegion.GetAttribute("role").Equals("listbox")
+                && txtCommunity.IsDisplayed()
+                && txtCommunity.GetAttribute("role").Equals("listbox")
+                && spnInfectionType.IsDisplayed()
+                && spnInfectionType.GetAttribute("role").Equals("listbox")           
+                && txtOnsetDate.IsDisplayed()
+                && txtOnsetDate.GetAttribute("data-role").Equals("datepicker")
+                && txtSymptoms.IsDisplayed()
+                && spnTestingStatus.IsDisplayed()
+                && spnTestingStatus.GetAttribute("role").Equals("listbox")
+                && txtTestingStatusDate.IsDisplayed()
+                & txtTestingStatusDate.GetAttribute("data-role").Equals("datepicker")
+                && spnDisposition.IsDisplayed()
+                && spnDisposition.GetAttribute("role").Equals("listbox")
+                && txtDispositionDate.IsDisplayed()
+                && txtDispositionDate.GetAttribute("data-role").Equals("datepicker");
+
+            txtComments.ScrollToView();
+
+            result = result
+                && txtComments.IsDisplayed()                
+                && btnSaveLogEntry.IsDisplayed()
+                && btnCancelLogEntry.IsDisplayed();
+
+            if (!string.IsNullOrEmpty(typeOfLogEntry))
+            {
+                switch (typeOfLogEntry)
+                {
+                    case "Team":
+                        result = result && txtEmployee.IsDisplayed() && txtEmployee.GetAttribute("role").Contains("listbox");
+                        break;
+
+                    case "Resident":
+                        result = result && txtEmployee.IsDisplayed() && txtEmployee.GetAttribute("role").Contains("listbox");
+                        break;
+
+                    case "Client":
+                        result = result
+                            && txtFirstName.IsDisplayed()
+                            && txtFirstName.IsDisplayed()
+                            && txtMrn.IsDisplayed();
+                        break;
+                    default:
+                        throw new Exception(string.Format("Type of Log Entry is incorrect"));
+                }
+            }
+                        return result;
+        }
         /// <summary>
         /// Check to see if UI of New Team Log entry display correctly
         /// </summary>
-        /// typeofLogEntry can be: Team, Resident, Client
+        /// typeOfLogEntry can be: Team, Resident, Client
         /// <returns></returns>
-        public bool DoesUIDisplayCorrectly(string typeofLogEntry)
+        public bool DoesUIDisplayCorrectly(string typeOfLogEntry = "Team")
         {
             bool result = txtRegion.IsDisplayed()
                 && txtCommunity.IsDisplayed()
@@ -160,18 +218,16 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && txtTestingStatusDate.IsDisplayed()
                 && spnDisposition.IsDisplayed()
                 && txtDispositionDate.IsDisplayed();
-
-            // Scroll down the screen to show the other elements
-            //DriverUtils.ScrollBy(0, 1000);
+            
             txtComments.ScrollToView();
 
             result = result && txtComments.IsDisplayed()
                 && btnSaveLogEntry.IsDisplayed()
                 && btnCancelLogEntry.IsDisplayed();                      
 
-            if (!string.IsNullOrEmpty(typeofLogEntry))
+            if (!string.IsNullOrEmpty(typeOfLogEntry))
             {
-                switch (typeofLogEntry)
+                switch (typeOfLogEntry)
                 {
                     case "Team":
                         result = result && txtEmployee.IsDisplayed();
