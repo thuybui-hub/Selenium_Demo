@@ -201,6 +201,12 @@ namespace InfectionLogAutomation.PageObject.Home
             }
             else return true;
         }
+
+        public bool IsColumnHeaderSortable(Table table, string columnName)
+        {
+            string a = table.GetColumnHeaderAttribute(columnName, "data-role");
+            return a.Contains("columnsorter");
+        }
         #endregion Check Points
     }
 }

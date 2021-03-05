@@ -75,8 +75,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
         {
             var elementsList = Selection().Options;
 
-            return elementsList.Select(element => element.Text).ToList();
-            //return elementsList.Select(element => element.GetAttribute("value")).ToList();
+            return elementsList.Select(element => element.Text).ToList();            
         }
         
     }
