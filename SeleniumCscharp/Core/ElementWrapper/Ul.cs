@@ -25,6 +25,10 @@ namespace SeleniumCSharp.Core.ElementWrapper
         {
         }
 
+        /// <summary>
+        /// Return the inner text of all options in the element of type combobox.
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetOptions()
         {
             List<string> displayedList = new List<string> { };
