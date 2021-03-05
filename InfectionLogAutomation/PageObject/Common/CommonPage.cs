@@ -60,17 +60,8 @@ namespace InfectionLogAutomation.PageObject.Common
         {
             DriverUtils.WaitForPageLoad();
             List<string> listSubMenuItems = new List<string> { };
-
-            BaseElement subMenuItems = new BaseElement(By.XPath("//a[contains(text(), \"" + menuItemName + "\")]//following-sibling::ul//a"));
-            List<BaseElement> test= subMenuItems.GetListElements();
-
-            DriverUtils.WaitForPageLoad();
-
-            foreach (BaseElement x in test)
-            {
-                listSubMenuItems.Add(x.GetText());
-            }
-
+            Ul menuItem = new Ul(By.XPath("//a[contains(text(), \"" + menuItemName + "\")]//following-sibling::ul"));
+            listSubMenuItems = menuItem.GetOptions();
             return listSubMenuItems;
         }
 
@@ -79,8 +70,14 @@ namespace InfectionLogAutomation.PageObject.Common
             DriverUtils.WaitForPageLoad();
             spnPaging.MoveToElement();
             spnPaging.Click();
-            spnPaging.SendKeys("All");
-            //System.Windows.Forms.SendKeys.SendWait("All");
+            System.Windows.Forms.SendKeys.SendWait("All");
+        }
+
+        public void BackToPreviousPage()
+        {
+            DriverUtils.WaitForPageLoad();
+            System.Windows.Forms.SendKeys.SendWait("{BACK}");
+            DriverUtils.WaitForPageLoad();
         }
         #endregion Main Action
 

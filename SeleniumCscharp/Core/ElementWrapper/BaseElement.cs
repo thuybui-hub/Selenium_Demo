@@ -359,9 +359,9 @@ namespace SeleniumCSharp.Core.ElementWrapper
             }
             catch (Exception ex)
             {
-                if (ex is TimeoutException || ex is NoSuchElementException || ex is ElementNotVisibleException)
+                //if (ex is TimeoutException || ex is NoSuchElementException || ex is ElementNotVisibleException)
                     return false;
-                throw;
+                //throw;
             }
         }
 

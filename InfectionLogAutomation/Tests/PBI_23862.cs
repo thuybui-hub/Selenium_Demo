@@ -30,8 +30,6 @@ namespace InfectionLogAutomation.Tests
             Log.Info("2. Login with valid user");
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
-            //HomePage.ClickOnTableColumnFilter("Onset Date");
-
             Log.Info("Verify that Infectious Outbreak page shows");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Infectious Outbreak page does not display.");
 

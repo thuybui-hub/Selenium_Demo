@@ -262,7 +262,7 @@ namespace SeleniumCSharp.Core.DriverWrapper
         /// 
         /// </summary>
         /// <param name="timeoutInSeconds"></param>
-        public static void WaitForPageLoad(int timeoutInSeconds = 1000)
+        public static void WaitForPageLoad(int timeoutInSeconds = 60)
         {
             try
             {

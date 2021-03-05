@@ -140,6 +140,7 @@
     <Compile Include="Tests\PBI_23873.cs" />
     <Compile Include="Tests\PBI_23924.cs" />
     <Compile Include="Tests\PBI_23864.cs" />
+    <Compile Include="Tests\PBI_23982.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

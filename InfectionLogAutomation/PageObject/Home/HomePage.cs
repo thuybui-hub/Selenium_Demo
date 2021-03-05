@@ -57,7 +57,7 @@ namespace InfectionLogAutomation.PageObject.Home
             divDashboardTable = new BaseElement(By.Id("logGrid"));
             tblDashboardTableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
             tblDashboardTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
-            divNoRecords = new BaseElement(By.ClassName("k-grid-norecords"));
+            divNoRecords = new BaseElement(By.XPath("//div[@class=\"k-grid-norecords\"]"));
 
             // Filter popup
             txtFilterValue = new TextBox(By.XPath("//input[@title=\"Value\"]"));
@@ -164,29 +164,42 @@ namespace InfectionLogAutomation.PageObject.Home
             return divDashboardTable.IsDisplayed();
         }
 
-        public bool DoesEntryTypeFilterExistWithExpectedOptions(List<string> expectedEntryTypeFilterList)
+        public bool DoesEntryTypeFilterExistWithExpectedOptions(List<string> expectedEntryTypeFilterList = null)
         {
             DriverUtils.WaitForPageLoad();
             bool result = true;
             Link filterEntryType = GetTableColumnFilter("Entry Type");
             List<string> actualEntryTypeFilterList = new List<string> { };
 
+            // Check if Entry Type filter exists or not
             result = filterEntryType.IsDisplayed();
 
-            filterEntryType.Click();
-            spnEntryTypeFilter.Click();
-            DriverUtils.WaitForPageLoad();
-            IWebElement listEntryType = lstEntrytypeFilter.GetElement();
-            List<IWebElement> listElements = new List<IWebElement>(listEntryType.FindElements(By.TagName("li")));
-            
-            foreach (IWebElement item in listElements)
+            if (result)
             {
-                actualEntryTypeFilterList.Add(item.Text);
+                filterEntryType.Click();
+                spnEntryTypeFilter.Click();
+                DriverUtils.WaitForPageLoad();
+                actualEntryTypeFilterList = lstEntrytypeFilter.GetOptions();
+
+                // Check if list of Entry Type filter matches the expected list or not
+                result = result && actualEntryTypeFilterList.SequenceEqual(expectedEntryTypeFilterList);
+                filterEntryType.Click();
             }
 
-            result = result && actualEntryTypeFilterList.SequenceEqual(expectedEntryTypeFilterList);
-            
             return result;
+        }
+
+        public bool DoesFilterDataDisplayCorrectly(string columnName, string filterValue)
+        {
+            DriverUtils.WaitForPageLoad();
+            List<string> actualResult;
+            if (divNoRecords.IsDisplayed() == false)
+            {
+                ShowAllILogRecords();
+                actualResult = tblDashboardTable.GetTableAllCellValueInColumn(columnName);
+                return actualResult.All(x => x == filterValue);
+            }
+            else return true;
         }
         #endregion Check Points
     }

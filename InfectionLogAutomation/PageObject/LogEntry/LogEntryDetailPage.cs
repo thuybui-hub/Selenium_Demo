@@ -44,6 +44,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public readonly Ul lstBoxCommunity;
         public readonly Ul lstBoxTestingStatus;
         public readonly Ul lstBoxDisposition;
+        public readonly Ul lstInfectionType;
 
         #region Actions
         public LogEntryDetailPage()
@@ -76,6 +77,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             lstBoxCommunity = new Ul(By.XPath("//ul[@id=\"communityName_listbox\"]"));
             lstBoxTestingStatus = new Ul(By.XPath("//ul[@id=\"testingStatus_listbox\"]"));
             lstBoxDisposition = new Ul(By.XPath("//ul[@id=\"disposition_listbox\"]"));
+            lstInfectionType = new Ul(By.XPath("//ul[@id=\"infectionType_listbox\"]"));
         }
 
         #endregion Actions
@@ -247,6 +249,30 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             }
 
             return result;               
+        }
+
+        public bool DoesInfectionTypeDisplayCorrectly(string entryType)
+        {
+            bool result = false;
+            switch (entryType)
+            {
+                case "Team":
+                    result = spnInfectionType.GetAttribute("role").Equals("listbox");
+                    spnInfectionType.Click();
+                    result = result & !lstInfectionType.IsDisplayed();
+                    break;
+                case "Resident":
+                    result = spnInfectionType.GetAttribute("role").Equals("listbox");
+                    spnInfectionType.Click();
+                    result = result & lstInfectionType.IsDisplayed();
+                    break;
+                case "Client":
+                    result = spnInfectionType.GetAttribute("role").Equals("listbox");
+                    spnInfectionType.Click();
+                    result = result & !lstInfectionType.IsDisplayed();
+                    break;
+            }
+            return result;
         }
 
         #endregion Check points
