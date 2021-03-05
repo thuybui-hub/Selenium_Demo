@@ -165,6 +165,33 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
+        /// Return value of an attribute of a column header
+        /// </summary>
+        /// <param name="colName"></param>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
+        public string GetColumnHeaderAttribute(string colName, string attribute)
+        {
+            IWebElement table = GetElement();
+            List<IWebElement> tr = new List<IWebElement>(table.FindElements(By.TagName("tr")));
+            List<IWebElement> th = new List<IWebElement>(tr[0].FindElements(By.TagName("th")));
+
+            IWebElement element;
+            string headerAttribute = "";
+
+            foreach(IWebElement item in th)
+            {
+                if (item.Text.Equals(colName))
+                {
+                    element = item;
+                    headerAttribute = element.GetAttribute(attribute);
+                }
+            }            
+
+            return headerAttribute;
+        }
+
+        /// <summary>
         /// Get table all cell value in column
         /// </summary>        
         /// <param name="columnName"></param>
