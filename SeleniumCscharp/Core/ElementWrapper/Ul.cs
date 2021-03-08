@@ -29,7 +29,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
-        /// Return the inner text of all options in the element of type combobox.
+        /// Return the inner text of all options in the element of type combobox defined as UL -> LI.
         /// </summary>
         /// <returns></returns>
         public List<string> GetOptions()
@@ -39,7 +39,47 @@ namespace SeleniumCSharp.Core.ElementWrapper
 
             foreach (IWebElement item in listElements)
             {
-                displayedList.Add(item.Text);
+                if (item.Displayed)
+                {
+                    displayedList.Add(item.Text);
+                }
+            }
+
+            return displayedList;
+        }
+
+        /// <summary>
+        /// Return the inner text of all sub options in the element of type combobox defined as UL -> LI -> Span
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetSubOptions()
+        {
+            List<string> displayedList = new List<string> { };
+            List<IWebElement> lstLIElements = new List<IWebElement>(GetElement().FindElements(By.TagName("li")));
+            
+            foreach (IWebElement element in lstLIElements)
+            {
+                List<IWebElement> spanElements = new List<IWebElement>(element.FindElements(By.TagName("span")));
+
+                string[] subElement = new string[spanElements.Count];
+                List<string> tem = new List<string> { };
+
+                for (int i = 0; i < spanElements.Count; i++)
+                {                    
+                    subElement[i] = spanElements[i].Text;
+                    tem.Add(spanElements[i].Text);
+                    //displayedList.Add(spanElements[i].Text);
+                }
+                displayedList.Add(tem.ToString());
+                
+                //foreach (IWebElement spanElement in spanElements)
+                //{
+                //    string[] subElement;
+                    
+                //    subElement[spanElement.]
+                //    displayedList.Add(spanElement.Text);
+                //}
+
             }
 
             return displayedList;

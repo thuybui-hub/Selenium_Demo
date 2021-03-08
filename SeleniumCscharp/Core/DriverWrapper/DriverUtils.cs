@@ -294,7 +294,7 @@ namespace SeleniumCSharp.Core.DriverWrapper
         /// 
         /// </summary>
         /// <param name="timeOut"></param>
-        public static void wait(int timeOut = 5)
+        public static void wait(int timeOut = 10)
         {
             Thread.Sleep(timeOut * 1000);
         }
