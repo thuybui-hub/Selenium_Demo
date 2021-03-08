@@ -31,6 +31,29 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
+        /// Return number of records of table
+        /// </summary>
+        /// <returns></returns>
+        public int RowCount()
+        {
+            IWebElement tbl = GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            return trs.Count;
+        }
+
+        /// <summary>
+        /// Return number of columns of table
+        /// </summary>
+        /// <returns></returns>
+        public int ColumnCount()
+        {
+            IWebElement tbl = GetElement();
+            List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            List<IWebElement> ths = new List<IWebElement>(trs[0].FindElements(By.TagName("th")));
+            return ths.Count;
+        }
+
+        /// <summary>
         /// Get text in cell control
         /// </summary>
         /// <param name="cellControl"></param>
