@@ -42,6 +42,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
         public readonly Ul lstBoxRegion;
         public readonly Ul lstBoxCommunity;
+        public readonly Ul lstBoxEmployee;
         public readonly Ul lstBoxTestingStatus;
         public readonly Ul lstBoxDisposition;
         public readonly Ul lstInfectionType;
@@ -75,15 +76,210 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
             lstBoxRegion = new Ul(By.XPath("//ul[@id=\"region_listbox\"]"));
             lstBoxCommunity = new Ul(By.XPath("//ul[@id=\"communityName_listbox\"]"));
+            lstBoxEmployee = new Ul(By.XPath("//ul[@id = \"person_listbox\"]"));
             lstBoxTestingStatus = new Ul(By.XPath("//ul[@id=\"testingStatus_listbox\"]"));
             lstBoxDisposition = new Ul(By.XPath("//ul[@id=\"disposition_listbox\"]"));
             lstInfectionType = new Ul(By.XPath("//ul[@id=\"infectionType_listbox\"]"));
         }
 
-        #endregion Actions
-        public List<string> GetListOptions(ComboBox cb)
+        public List<string> GetListOfResidents()
         {
-            return cb.GetSelectOptions();
+            List<string> resutltList = new List<string> { };
+            txtEmployee.Click();
+            return resutltList;
+        }
+        public void FillClientInfo(string lastName, string firstName, string MRN)
+        {
+            txtLastName.SendKeys(lastName);
+            txtFirstName.SendKeys(firstName);
+            txtMrn.SendKeys(MRN);
+        }
+
+        /// <summary>
+        /// Fill information for a log entry randomly and return all inputed values
+        /// </summary>
+        /// <param name="typeOfEntry">typeOfLogEntry can be: Team, Resident, Client</param>
+        /// <param name="outRegion">Return selected region</param>
+        /// <param name="outCommunity">Return selected community</param>
+        /// <param name="outEmployeeName">Return selected employee name only</param>
+        /// <param name="outEmployeeID">Return employee ID only</param>
+        /// <param name="outTestStatus">Return selected test status</param>
+        /// <param name="outDisposition">Return selected disposition</param>
+        public void FillLogEntryInfoRandomly(string typeOfEntry, out string outRegion, out string outCommunity, out string outName, out string outID, out string outTestStatus, out string outDisposition)
+        {
+            DriverUtils.WaitForPageLoad();
+
+            Random rd = new Random();
+            List<string> list;
+            string date = DateTime.Now.ToString("MM/dd/yyyy");
+            string employee;
+            outName = "";
+            outID = "";
+
+            DriverUtils.WaitForPageLoad();
+           
+            // Fill Region
+            txtRegion.Click();
+            list = GetItemsFromControlList(Fields.region);
+            outRegion = list[rd.Next(0, list.Count - 1)];
+            lstBoxRegion.SelectOptionByText(outRegion);
+
+            // Fill Community
+            DriverUtils.WaitForPageLoad();
+            txtCommunity.Click();            
+            list = GetItemsFromControlList(Fields.community);
+            outCommunity = list[rd.Next(0, list.Count - 1)];
+            lstBoxCommunity.SelectOptionByText(outCommunity);
+
+            // Fill Employee
+            if (typeOfEntry.Equals("Team") || typeOfEntry.Equals("Resident"))
+            {
+                DriverUtils.WaitForPageLoad();
+                txtEmployee.Click();
+                list = GetItemsFromControlList(Fields.employee);
+                employee = list[rd.Next(0, list.Count - 1)];
+                outName = employee.Substring(0, employee.IndexOf("(") - 1);
+                outID = employee.Substring(employee.IndexOf("(") + 1, employee.IndexOf(")") - employee.IndexOf("(") - 1);
+                lstBoxEmployee.SelectOptionByText(employee);
+            }
+            // If typeOfEntry = Client
+            else
+            {
+
+            }
+
+            // Fill Onset Date
+            txtOnsetDate.SendKeys(date);
+
+            // Fill Symptoms
+            txtSymptoms.SendKeys("Symptom " + Utils.GetRandomValue("random value"));
+
+            // Fill Test Status
+            spnTestingStatus.Click();
+            list = GetItemsFromControlList(Fields.testStatus);
+            outTestStatus = list[rd.Next(0, list.Count - 1)];
+            lstBoxTestingStatus.SelectOptionByText(outTestStatus);
+
+            // Fill Test Status date
+            txtTestingStatusDate.SendKeys(date);
+
+            // Fill Disposition
+            spnDisposition.Click();
+            list = GetItemsFromControlList(Fields.disposition);
+            outDisposition = list[rd.Next(0, list.Count - 1)];
+            lstBoxDisposition.SelectOptionByText(outDisposition);
+
+            // Fill Disposition Date
+            txtDispositionDate.SendKeys(date);
+
+            // Fill Comments
+            txtComments.ScrollToView();
+            txtComments.SendKeys("Comments " + Utils.GetRandomValue("random value"));
+        }
+
+        public List<string> FillLogEntryInfoRandomly(string typeOfEntry = "Team")
+        {
+            DriverUtils.WaitForPageLoad();
+
+            Random rd = new Random();
+            List<string> list;
+            List < string > lstResult = new List<string> { };
+            string date = DateTime.Now.ToString("MM/dd/yyyy");
+            string tmp, name, ID, symptom, comments;            
+
+            DriverUtils.WaitForPageLoad();
+
+            // Fill Region
+            txtRegion.Click();
+            list = GetItemsFromControlList(Fields.region);
+            tmp = list[rd.Next(0, list.Count - 1)];
+            lstBoxRegion.SelectOptionByText(tmp);
+            lstResult.Add(tmp);
+
+            // Fill Community
+            DriverUtils.WaitForPageLoad();
+            txtCommunity.Click();
+            list = GetItemsFromControlList(Fields.community);
+            tmp = list[rd.Next(0, list.Count - 1)];
+            lstResult.Add(tmp);
+
+            // Fill Employee/Resident/Firs tName; Last Name; MRN
+            switch (typeOfEntry)
+            {
+                case "Team":
+                    DriverUtils.WaitForPageLoad();
+                    txtEmployee.Click();
+                    list = GetItemsFromControlList(Fields.employee);
+                    tmp = list[rd.Next(0, list.Count - 1)];
+                    name = tmp.Substring(0, tmp.IndexOf("(") - 1);
+                    ID = tmp.Substring(tmp.IndexOf("(") + 1, tmp.IndexOf(")") - tmp.IndexOf("(") - 1);
+                    lstBoxEmployee.SelectOptionByText(tmp);
+                    lstResult.Add(name);
+                    lstResult.Add(ID);
+                    break;
+
+                case "Client":
+                    string lastName = "LN" + Utils.GetRandomValue("last name");
+                    string firstName = "FN" + Utils.GetRandomValue("first name");
+                    string MRN = Utils.GetRandomValue("123456789");
+                    FillClientInfo(lastName, firstName, MRN);
+                    lstResult.Add(lastName);
+                    lstResult.Add(firstName);
+                    lstResult.Add(MRN);
+                    break;
+            }            
+           
+
+            // Fill Onset Date
+            txtOnsetDate.SendKeys(date);
+            lstResult.Add(date);
+
+            // Fill Symptoms
+            symptom = "Symptom " + Utils.GetRandomValue("random value");
+            txtSymptoms.SendKeys(symptom);
+            lstResult.Add(symptom);
+
+            // Fill Test Status
+            spnTestingStatus.Click();
+            list = GetItemsFromControlList(Fields.testStatus);
+            tmp = list[rd.Next(0, list.Count - 1)];
+            lstBoxTestingStatus.SelectOptionByText(tmp);
+            lstResult.Add(tmp);
+
+            // Fill Test Status date
+            txtTestingStatusDate.SendKeys(date);
+            lstResult.Add(date);
+
+            // Fill Disposition
+            spnDisposition.Click();
+            list = GetItemsFromControlList(Fields.disposition);
+            tmp = list[rd.Next(0, list.Count - 1)];
+            lstBoxDisposition.SelectOptionByText(tmp);
+            lstResult.Add(tmp);            
+
+            // Fill Disposition Date
+            txtDispositionDate.SendKeys(date);
+            lstResult.Add(date);
+
+            // Fill Comments
+            txtComments.ScrollToView();
+            comments = "Comments " + Utils.GetRandomValue("random value");
+            txtComments.SendKeys(comments);
+            lstResult.Add(comments);
+
+            return lstResult;
+        }
+
+        public void SaveLogEntry()
+        {
+            btnSaveLogEntry.ScrollToView();
+            btnSaveLogEntry.Click();
+        }
+
+        public void CancelLogEntry()
+        {
+            btnCancelLogEntry.ScrollToView();
+            btnCancelLogEntry.Click();
         }
 
         /// <summary>
@@ -116,11 +312,11 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     spnDisposition.ScrollToView();
                     spnDisposition.Click();
                     break;
-                
+
                 default:
                     throw new Exception(string.Format("'{0}' field is invalid."));
             }
-            List<string> displayedList = element.GetOptions();            
+            List<string> displayedList = element.GetOptions();
 
             switch (field)
             {
@@ -130,10 +326,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 case Fields.community:
                     txtCommunity.Click();
                     break;
-                case Fields.testStatus:                    
+                case Fields.testStatus:
                     spnTestingStatus.Click();
                     break;
-                case Fields.disposition:                    
+                case Fields.disposition:
                     spnDisposition.Click();
                     break;
 
@@ -143,6 +339,9 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
             return displayedList;
         }
+        #endregion Actions        
+
+
         #region Check points
 
         /// <summary>

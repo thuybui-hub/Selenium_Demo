@@ -157,6 +157,7 @@
     <Compile Include="Core\DriverWrapper\Key.cs" />
     <Compile Include="Core\ElementWrapper\Span.cs" />
     <Compile Include="Core\ElementWrapper\TextArea.cs" />
+    <Compile Include="Core\ElementWrapper\LI.cs" />
     <Compile Include="Core\ElementWrapper\Ul.cs" />
     <Compile Include="Core\ElementWrapper\Tr.cs" />
     <Compile Include="Core\ElementWrapper\Td.cs" />
