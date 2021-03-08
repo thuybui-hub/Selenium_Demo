@@ -62,15 +62,14 @@ namespace SeleniumCSharp.Core.ElementWrapper
                 List<IWebElement> spanElements = new List<IWebElement>(element.FindElements(By.TagName("span")));
 
                 string[] subElement = new string[spanElements.Count];
-                List<string> tem = new List<string> { };
+                string tem = "";
 
                 for (int i = 0; i < spanElements.Count; i++)
                 {                    
-                    subElement[i] = spanElements[i].Text;
-                    tem.Add(spanElements[i].Text);
+                    tem = tem + " " + spanElements[i].Text;
                     //displayedList.Add(spanElements[i].Text);
                 }
-                displayedList.Add(tem.ToString());
+                displayedList.Add(tem);
                 
                 //foreach (IWebElement spanElement in spanElements)
                 //{
