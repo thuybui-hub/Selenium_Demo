@@ -15,10 +15,12 @@ namespace InfectionLogAutomation.PageObject.Home
         // Search Criterias
         public readonly TextBox txtCommunity;
         public readonly ComboBox cbbCommunity;
+        public readonly Ul lstCommunity;
         public readonly TextBox txtLastUpdatedFrom;
         public readonly TextBox txtLastUpdatedTo;
         public readonly TextBox txtFilters;
         public readonly ComboBox cbbFilters;
+        public readonly Ul lstFilters;
         public readonly Button btnSearch;
         public readonly Button btnReset;
 
@@ -43,10 +45,12 @@ namespace InfectionLogAutomation.PageObject.Home
             // Search Criterias
             txtCommunity = new TextBox(By.XPath("//ul[@id=\"communityName_taglist\"]//following-sibling::input"));
             cbbCommunity = new ComboBox(By.XPath("//select[@id=\"communityName\"]"));
+            lstCommunity = new Ul(By.XPath("//ul[@id=\"communityName_taglist\"]"));
             txtLastUpdatedFrom = new TextBox(By.Id("datepickerFrom"));
             txtLastUpdatedTo = new TextBox(By.Id("datepickerTo"));
             txtFilters = new TextBox(By.XPath("//ul[@id=\"allFilters_taglist\"]//following-sibling::input"));
             cbbFilters = new ComboBox(By.XPath("//select[@id=\"allFilters\"]"));
+            lstFilters = new Ul(By.XPath("//ul[@id=\"allFilters_taglist\"]"));
             btnSearch = new Button(By.Id("search"));
             btnReset = new Button(By.XPath("//button[@class=\"k-button btnClear\"]"));
 
@@ -141,6 +145,83 @@ namespace InfectionLogAutomation.PageObject.Home
             DriverUtils.WaitForPageLoad();
             int rowIndex = tblDashboardTable.GetTableRowIndex(5, ID);
             tblDashboardTable.ClickTableCell(13, rowIndex);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
+        }
+
+        public void PerformASearchCriteria(string community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, string filters = null)
+        {
+            DriverUtils.WaitForPageLoad();
+
+            if (!string.IsNullOrEmpty(community))
+            {
+                txtCommunity.Click();
+                txtCommunity.SendKeys(community);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            if (!string.IsNullOrEmpty(lastUpdatedFrom))
+            {
+                txtLastUpdatedFrom.Click();
+                txtLastUpdatedFrom.SendKeys(lastUpdatedFrom);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            if (!string.IsNullOrEmpty(lastUpdatedTo))
+            {
+                txtLastUpdatedTo.Click();
+                txtLastUpdatedTo.SendKeys(lastUpdatedTo);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            if (!string.IsNullOrEmpty(filters))
+            {
+                txtFilters.Click();
+                txtFilters.SendKeys(filters);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            btnSearch.Click();
+        }
+
+        public void PerformASearchCriteria(List<string> community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, List<string> filters = null)
+        {
+            DriverUtils.WaitForPageLoad();
+
+            if(community != null)
+            {
+                txtCommunity.Click();
+                foreach (var c in community)
+                {
+                    txtCommunity.SendKeys(c);
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                }
+            }
+            
+            if (!string.IsNullOrEmpty(lastUpdatedFrom))
+            {
+                txtLastUpdatedFrom.Click();
+                txtLastUpdatedFrom.SendKeys(lastUpdatedFrom);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            if (!string.IsNullOrEmpty(lastUpdatedTo))
+            {
+                txtLastUpdatedTo.Click();
+                txtLastUpdatedTo.SendKeys(lastUpdatedTo);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            if(filters != null)
+            {
+                txtFilters.Click();
+                foreach (var f in filters)
+                {
+                    txtFilters.SendKeys(f);
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                }
+            }
+            
+            btnSearch.Click();
         }
         #endregion Main Actions
 
@@ -200,6 +281,90 @@ namespace InfectionLogAutomation.PageObject.Home
                 return actualResult.All(x => x == filterValue);
             }
             else return true;
+        }
+
+        public bool DoesSearchResultDisplaysCorrectly(string searchValue)
+        {
+            bool result = true;
+
+            if (divNoRecords.IsDisplayed() == false)
+            {
+                ShowAllILogRecords();
+                for (int i = 0; i < tblDashboardTable.RowCount(); i++)
+                {
+                    result = tblDashboardTable.GetTableAllCellValueInRow(i).Contains(searchValue);
+                }
+            }
+            else result = true;
+
+            return result;
+        }
+
+        public bool IsFilterDataPreservedAfterMovingToAnotherForm(string columnName, string filterValue)
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            ClickOnTableColumnFilter(columnName);
+            spnEntryTypeFilter.Click();
+            result = lstEntrytypeFilter.GetSelectedOption().Equals(filterValue);
+            ClickOnTableColumnFilter(columnName);
+            return result;
+        }
+
+        public bool IsAllFilterDataCleared()
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            Link columnFilter;
+
+            List<string> columnName = new List<string> { "Last Updated", "Division", "Region", "BU", "Community", "ID", "Name", "Resident LOB", "Infection Type", "Onset Date", "Test Status", "Disposition", "Entry Type" };
+            foreach (string column in columnName)
+            {
+                columnFilter = GetTableColumnFilter(column);
+                columnFilter.WaitForVisible();
+                result = !columnFilter.GetAttribute("class").Contains("k-state-active");
+            }
+
+            return result;
+        }
+
+        public bool IsSearchDataonDashboardTableCleared()
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            txtSearch.Click();
+            result = txtSearch.GetText().Equals("") || txtSearch.GetText().Equals(null);
+            return result;
+        }
+
+        public bool AreSearchCriteriasResetted()
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+
+            List<string> defaultCommunity = null;
+            string defaultLastUpdatedFrom = DateTime.Now.AddDays(-7).ToString("MM/dd/yyyy");
+            string defaultLastUpdatedTo = DateTime.Now.ToString("MM/dd/yyyy");
+            List<string> defaultFilters = new List<string> { "Active" };
+
+            txtCommunity.Click();
+            List<string> actualCommunity = lstCommunity.GetSelectedOptions();
+
+            txtLastUpdatedFrom.Click();
+            string actualLastUpdatedForm = txtLastUpdatedFrom.GetText();
+
+            txtLastUpdatedTo.Click();
+            string actualLastUpdatedTo = txtLastUpdatedTo.GetText();
+
+            txtFilters.Click();
+            List<string> actualFilters = lstFilters.GetSelectedOptions();
+
+            result = actualCommunity.SequenceEqual(defaultCommunity)
+                  && actualLastUpdatedForm.Equals(defaultLastUpdatedFrom)
+                  && actualLastUpdatedTo.Equals(defaultLastUpdatedTo)
+                  && actualFilters.SequenceEqual(defaultFilters);
+
+            return result;
         }
 
         public bool IsColumnHeaderSortable(Table table, string columnName)

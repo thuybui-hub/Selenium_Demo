@@ -105,6 +105,26 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
+        /// Return list of selected value in a list
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetSelectedOptions()
+        {
+            List<string> selectedOption = new List<string> { };
+            List<IWebElement> listElements = new List<IWebElement>(GetElement().FindElements(By.TagName("li")));
+
+            foreach (IWebElement item in listElements)
+            {
+                if (item.GetAttribute("aria-selected").Equals("true"))
+                {
+                    selectedOption.Add(item.Text);
+                    break;
+                }
+            }
+            return selectedOption;
+        }
+
+        /// <summary>
         /// Select an item in the element of type UL/LI by its inner text.
         /// </summary>
         /// <param name="text"> Text of option to be selected</param>

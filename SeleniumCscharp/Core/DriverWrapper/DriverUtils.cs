@@ -135,6 +135,16 @@ namespace SeleniumCSharp.Core.DriverWrapper
         }
 
         /// <summary>
+        ///     Back to prevous page
+        /// </summary>
+        public static void BackToPreviousPage()
+        {
+            WaitForPageLoad();
+            GetDriver().Navigate().Back();
+            WaitForPageLoad();
+        }
+
+        /// <summary>
         ///     Return current URL.
         /// </summary>
         public static string CurrentUrl()

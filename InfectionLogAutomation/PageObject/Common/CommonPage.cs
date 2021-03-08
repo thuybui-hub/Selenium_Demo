@@ -72,13 +72,6 @@ namespace InfectionLogAutomation.PageObject.Common
             spnPaging.Click();
             System.Windows.Forms.SendKeys.SendWait("All");
         }
-
-        public void BackToPreviousPage()
-        {
-            DriverUtils.WaitForPageLoad();
-            System.Windows.Forms.SendKeys.SendWait("{BACK}");
-            DriverUtils.WaitForPageLoad();
-        }
         #endregion Main Action
 
         #region Check Points
