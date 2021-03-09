@@ -81,6 +81,7 @@ namespace InfectionLogAutomation.PageObject.Common
         {
             IAlert alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
             return alertWin.Text;
+        }
 
         public void ClearAllValueInCombobox(string field)
         {
