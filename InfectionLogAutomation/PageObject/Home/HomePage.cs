@@ -156,12 +156,17 @@ namespace InfectionLogAutomation.PageObject.Home
             if (!string.IsNullOrEmpty(community))
             {
                 txtCommunity.Click();
+                ClearAllValueInCombobox("Community");
                 txtCommunity.SendKeys(community);
+                DriverUtils.wait(1);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
 
             if (!string.IsNullOrEmpty(lastUpdatedFrom))
             {
+                txtLastUpdatedFrom.Click();
+                txtLastUpdatedFrom.GetElement().Clear();
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
                 txtLastUpdatedFrom.Click();
                 txtLastUpdatedFrom.SendKeys(lastUpdatedFrom);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
@@ -170,6 +175,9 @@ namespace InfectionLogAutomation.PageObject.Home
             if (!string.IsNullOrEmpty(lastUpdatedTo))
             {
                 txtLastUpdatedTo.Click();
+                txtLastUpdatedTo.GetElement().Clear();
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                txtLastUpdatedTo.Click();
                 txtLastUpdatedTo.SendKeys(lastUpdatedTo);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
@@ -177,7 +185,9 @@ namespace InfectionLogAutomation.PageObject.Home
             if (!string.IsNullOrEmpty(filters))
             {
                 txtFilters.Click();
+                ClearAllValueInCombobox("Filters");
                 txtFilters.SendKeys(filters);
+                DriverUtils.wait(1);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
 
@@ -191,15 +201,20 @@ namespace InfectionLogAutomation.PageObject.Home
             if(community != null)
             {
                 txtCommunity.Click();
+                ClearAllValueInCombobox("Community");
                 foreach (var c in community)
                 {
                     txtCommunity.SendKeys(c);
+                    DriverUtils.wait(1);
                     System.Windows.Forms.SendKeys.SendWait("{Enter}");
                 }
             }
             
             if (!string.IsNullOrEmpty(lastUpdatedFrom))
             {
+                txtLastUpdatedFrom.Click();
+                txtLastUpdatedFrom.GetElement().Clear();
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
                 txtLastUpdatedFrom.Click();
                 txtLastUpdatedFrom.SendKeys(lastUpdatedFrom);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
@@ -208,6 +223,9 @@ namespace InfectionLogAutomation.PageObject.Home
             if (!string.IsNullOrEmpty(lastUpdatedTo))
             {
                 txtLastUpdatedTo.Click();
+                txtLastUpdatedTo.GetElement().Clear();
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                txtLastUpdatedTo.Click();
                 txtLastUpdatedTo.SendKeys(lastUpdatedTo);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
@@ -215,9 +233,11 @@ namespace InfectionLogAutomation.PageObject.Home
             if(filters != null)
             {
                 txtFilters.Click();
+                ClearAllValueInCombobox("Filters");
                 foreach (var f in filters)
                 {
                     txtFilters.SendKeys(f);
+                    DriverUtils.wait(1);
                     System.Windows.Forms.SendKeys.SendWait("{Enter}");
                 }
             }
@@ -293,7 +313,7 @@ namespace InfectionLogAutomation.PageObject.Home
                 ShowAllILogRecords();
                 for (int i = 0; i < tblDashboardTable.RowCount(); i++)
                 {
-                    result = tblDashboardTable.GetTableAllCellValueInRow(i).Contains(searchValue);
+                    result = result && tblDashboardTable.GetTableAllCellValueInRow(i).Contains(searchValue);
                 }
             }
             else result = true;
@@ -323,7 +343,7 @@ namespace InfectionLogAutomation.PageObject.Home
             {
                 columnFilter = GetTableColumnFilter(column);
                 columnFilter.WaitForVisible();
-                result = !columnFilter.GetAttribute("class").Contains("k-state-active");
+                result = result && !columnFilter.GetAttribute("class").Contains("k-state-active");
             }
 
             return result;

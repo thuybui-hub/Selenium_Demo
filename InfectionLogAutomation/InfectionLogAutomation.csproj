@@ -124,6 +124,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DataObject\LoginData.cs" />
+    <Compile Include="PageObject\BulkInsert\BulkInsertPage.cs" />
     <Compile Include="PageObject\Common\CommonPage.cs" />
     <Compile Include="PageObject\Home\HomePage.cs" />
     <Compile Include="PageObject\LogEntry\LogEntryDetailPage.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Tests\PBI_23864.cs" />
     <Compile Include="Tests\PBI_23982.cs" />
     <Compile Include="Tests\PBI_24066.cs" />
+    <Compile Include="Tests\PBI_24090.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

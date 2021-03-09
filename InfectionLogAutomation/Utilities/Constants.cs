@@ -27,6 +27,8 @@ namespace InfectionLogAutomation.Utilities
         public static readonly string NewClientLogEntryPath = ConfigurationManager.AppSettings["newClientLogEntryPath"];
         public static readonly string NewTeamBulkInsertPath = ConfigurationManager.AppSettings["newTeamBulkInsertPath"];
         public static readonly string NewResidentBulkInsertPath = ConfigurationManager.AppSettings["newResidentBulkInsertPath"];
+        public static readonly string BulkEditTeamPath = ConfigurationManager.AppSettings["bulkEditTeamPath"];
+        public static readonly string BulkEditResidentPath = ConfigurationManager.AppSettings["bulkEditResidentPath"];
         public static readonly string ResidentCaseLogReporttPath = ConfigurationManager.AppSettings["residentCaseLogReporttPath"];
         public static string CommonPassword = ConfigurationManager.AppSettings["commonPassword"];
         public static string TeamAdminUser = ConfigurationManager.AppSettings["teamAdminUser"];

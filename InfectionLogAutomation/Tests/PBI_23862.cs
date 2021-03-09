@@ -80,14 +80,14 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Team"), "Page UI is incorrect.");
 
             Log.Info("6. Select Resident option");
-            CommonPage.SelectMenuItem("New Log Entry|Resident");
+            CommonPage.SelectMenuItem(Constants.NewResidentLogEntryPath);
 
             Log.Info("Verify that unfilled 'Infectious Outbreak Log Entry' form for completion, customized is opened for Residents");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Residents"), "New Team Log Entry page does not exist.");
             Assert.IsTrue(LogEntryDetailPage.DoesUIDisplayCorrectly("Resident"), "Page UI is incorrect.");
 
             Log.Info("7. Select Ageility Client option");
-            CommonPage.SelectMenuItem("New Log Entry|Ageility Client");
+            CommonPage.SelectMenuItem(Constants.NewClientLogEntryPath);
 
             Log.Info("Verify that unfilled 'Infectious Outbreak Log Entry' form for completion, customized is opened for Clients");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist("New Infection Log Entry for Ageility Clients"), "New Team Log Entry page does not exist.");

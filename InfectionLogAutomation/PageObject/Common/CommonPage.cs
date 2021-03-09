@@ -76,10 +76,20 @@ namespace InfectionLogAutomation.PageObject.Common
             System.Windows.Forms.SendKeys.SendWait("All");
         }
 
+
         public string GetAlertWinText()
         {
             IAlert alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
             return alertWin.Text;
+
+        public void ClearAllValueInCombobox(string field)
+        {
+            Span spnClearIcon = new Span(By.XPath("//label[text()=\""+ field +"\"]//following-sibling::div//span[@class=\"k-icon k-clear-value k-i-close\"]"));
+            if (spnClearIcon.IsDisplayed())
+            {
+                spnClearIcon.Click();
+            }
+
         }
         #endregion Main Action
 
