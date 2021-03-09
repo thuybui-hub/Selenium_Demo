@@ -41,7 +41,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
             {
                 if (item.Displayed)
                 {
-                    displayedList.Add(item.Text);
+                    displayedList.Add(item.Text.Trim());
                 }
             }
 
@@ -60,25 +60,13 @@ namespace SeleniumCSharp.Core.ElementWrapper
             foreach (IWebElement element in lstLIElements)
             {
                 List<IWebElement> spanElements = new List<IWebElement>(element.FindElements(By.TagName("span")));
-
-                string[] subElement = new string[spanElements.Count];
-                string tem = "";
+                string rowValue = "";
 
                 for (int i = 0; i < spanElements.Count; i++)
-                {                    
-                    tem = tem + " " + spanElements[i].Text;
-                    //displayedList.Add(spanElements[i].Text);
+                {
+                    rowValue = rowValue + " " + spanElements[i].Text;                    
                 }
-                displayedList.Add(tem);
-                
-                //foreach (IWebElement spanElement in spanElements)
-                //{
-                //    string[] subElement;
-                    
-                //    subElement[spanElement.]
-                //    displayedList.Add(spanElement.Text);
-                //}
-
+                displayedList.Add(rowValue);
             }
 
             return displayedList;
@@ -125,7 +113,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
-        /// Select an item in the element of type UL/LI by its inner text.
+        /// Select an item in the element of type UL/LI by its inner text. Condition: The item has to be visible on the screen.
         /// </summary>
         /// <param name="text"> Text of option to be selected</param>
         public void SelectOptionByText(string text)
@@ -135,7 +123,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
             foreach (IWebElement item in listElements)
             {
                 if (item.Text.Equals(text))
-                {
+                {                    
                     item.Click();
                     break;                  
                 }                

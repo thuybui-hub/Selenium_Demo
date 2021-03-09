@@ -166,6 +166,29 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
+        /// Click o column header
+        /// </summary>
+        /// <param name="columnName"></param>
+        public void ClickOnHeaderColumn(string columnName)
+        {
+            DriverUtils.WaitForPageLoad();
+            IWebElement tbl = GetElement();
+
+            List<IWebElement> tr = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
+            List<IWebElement> th = new List<IWebElement>(tr[0].FindElements(By.TagName("th")));
+
+            foreach (IWebElement item in th)
+            {
+                if (item.Text.Equals(columnName))
+                {
+                    item.Click();
+                    break;
+                }                
+            }
+
+        }
+
+        /// <summary>
         /// Get All Columns Header
         /// </summary>
         /// <returns></returns>

@@ -43,152 +43,158 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page does not display");
             Assert.IsTrue(HomePage.tblDashboardTableHeader.IsDisplayed(), "Home page does not contain dashboard/table of infections");
 
-            // test section
-            HomePage.SelectMenuItem(Constants.NewResidentLogEntryPath);
-            LogEntryDetailPage.txtRegion.Click();
-            List<string> t = LogEntryDetailPage.lstBoxRegion.GetOptions();
-            LogEntryDetailPage.lstBoxRegion.SelectOptionByText("Region A01");
+            //// test section
+            //HomePage.SelectMenuItem(Constants.NewResidentLogEntryPath);
+            //LogEntryDetailPage.txtRegion.Click();
+            //List<string> t = LogEntryDetailPage.lstBoxRegion.GetOptions();
+            //LogEntryDetailPage.lstBoxRegion.SelectOptionByText("Region A01");
 
-            LogEntryDetailPage.txtCommunity.Click();
-            LogEntryDetailPage.lstBoxCommunity.SelectOptionByText("Rio Las Palmas");
+            //LogEntryDetailPage.txtCommunity.Click();
+            //LogEntryDetailPage.lstBoxCommunity.SelectOptionByText("Rio Las Palmas");
 
-            DriverUtils.WaitForPageLoad();
-                      
-            LogEntryDetailPage.txtEmployee.Click();
-            List<string> test = LogEntryDetailPage.lstBoxEmployee.GetSubOptions();
+            //DriverUtils.WaitForPageLoad();
 
-            //end test section
+            //LogEntryDetailPage.txtEmployee.Click();
+            //List<string> test = LogEntryDetailPage.lstBoxEmployee.GetSubOptions();
 
-            #region Pre-condition: Create a log entry
-            // Go to New Log Entry
-            HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
-            // Fill Log Entry info randomly
-            LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out outRegion, out outCommunity, out outEmployeeName, out outEmployeeID, out outTestStatus, out outDisposition);
-            // Save new team log entry
-            LogEntryDetailPage.SaveLogEntry();
-            #endregion
+            ////end test section
 
-            Log.Info("Verify that Division column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, divisionHeader), "Division is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, divisionHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, divisionHeader), "Division is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, divisionHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, divisionHeader), "Division is not sorted by descending order");
+            //#region Pre-condition: Create a log entry
+            //// Go to New Log Entry
+            //HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
+            //// Fill Log Entry info randomly
+            //entryInfo = LogEntryDetailPage.FillLogEntryInfoRandomly("Team");
+            //// Save new team log entry
+            //LogEntryDetailPage.SaveLogEntry();
+            //#endregion
 
-            Log.Info("Verify that Region column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, regionHeader), "Region is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, regionHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, regionHeader), "Region is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, regionHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, regionHeader), "Region is not sorted by descending order");
+            //Log.Info("Verify that Division column sort correctly");            
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, divisionHeader), "Division is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(divisionHeader);           
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, divisionHeader), "Division is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(divisionHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, divisionHeader), "Division is not sorted by descending order");
 
-            Log.Info("Verify that BU column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, businessUnitHeader), "BU is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, businessUnitHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, businessUnitHeader), "BU is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, businessUnitHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, businessUnitHeader), "BU is not sorted by descending order");
+            //Log.Info("Verify that Region column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, regionHeader), "Region is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(regionHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, regionHeader), "Region is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(regionHeader);
+            ////Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, regionHeader), "Region is not sorted by descending order");
 
-            Log.Info("Verify that Community column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, communityHeader), "Community is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, communityHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, communityHeader), "Community is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, communityHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, communityHeader), "Community is not sorted by descending order");
+            //Log.Info("Verify that BU column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, businessUnitHeader), "BU is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(businessUnitHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, businessUnitHeader), "BU is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(businessUnitHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, businessUnitHeader), "BU is not sorted by descending order");
 
-            Log.Info("Verify that ID column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, IDHeader), "ID is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, IDHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, IDHeader), "ID is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, IDHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, IDHeader), "ID is not sorted by descending order");
+            //Log.Info("Verify that Community column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, communityHeader), "Community is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(communityHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, communityHeader), "Community is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(communityHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, communityHeader), "Community is not sorted by descending order");
 
-            Log.Info("Verify that Name column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, nameHeader), "Name is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, nameHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, nameHeader), "Name is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, nameHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, nameHeader), "Name is not sorted by descending order");
+            //Log.Info("Verify that ID column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, IDHeader), "ID is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(IDHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, IDHeader), "ID is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(IDHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, IDHeader), "ID is not sorted by descending order");
 
-            Log.Info("Verify that Resident LOB column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, residentLOBHeader), "Resident LOB is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, residentLOBHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, residentLOBHeader), "Resident LOB is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, residentLOBHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, residentLOBHeader), "Resident LOB is not sorted by descending order");
+            //Log.Info("Verify that Name column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, nameHeader), "Name is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(nameHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, nameHeader), "Name is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(nameHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, nameHeader), "Name is not sorted by descending order");
 
-            Log.Info("Verify that Infection Type column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, infectionTypeHeader), "Infection Type is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, infectionTypeHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, infectionTypeHeader), "Infection Type is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, infectionTypeHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, infectionTypeHeader), "Infection Type is not sorted by descending order");
+            //Log.Info("Verify that Resident LOB column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, residentLOBHeader), "Resident LOB is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(residentLOBHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, residentLOBHeader), "Resident LOB is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(residentLOBHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, residentLOBHeader), "Resident LOB is not sorted by descending order");
 
-            Log.Info("Verify that Test Status column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, testStatusHeader), "Test Status is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, testStatusHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, testStatusHeader), "Test Status is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, testStatusHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, testStatusHeader), "Test Status is not sorted by descending order");
+            //Log.Info("Verify that Infection Type column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, infectionTypeHeader), "Infection Type is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(infectionTypeHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, infectionTypeHeader), "Infection Type is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(infectionTypeHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, infectionTypeHeader), "Infection Type is not sorted by descending order");
 
-            Log.Info("Verify that Disposition column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, dispositionHeader), "Disposition is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, dispositionHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, dispositionHeader), "Disposition is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, dispositionHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, dispositionHeader), "Disposition is not sorted by descending order");
+            //Log.Info("Verify that Test Status column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, testStatusHeader), "Test Status is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(testStatusHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, testStatusHeader), "Test Status is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(testStatusHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, testStatusHeader), "Test Status is not sorted by descending order");
 
-            Log.Info("Verify that Entry Type column sort correctly");
-            Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, entryTypeHeader), "Entry Type is not sortable");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, entryTypeHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByAscendingOrder(DashboardPage.dashboardTblHeader, entryTypeHeader), "Entry Type is not sorted by ascending order");
-            //TableExtension.ClickOnHeaderColumn(DashboardPage.dashboardTblHeader, entryTypeHeader);
-            //Assert.IsTrue(DashboardPage.IsColumnHeaderSortedByDescendingOrder(DashboardPage.dashboardTblHeader, entryTypeHeader), "Entry Type is not sorted by descending order");
+            //Log.Info("Verify that Disposition column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, dispositionHeader), "Disposition is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(dispositionHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, dispositionHeader), "Disposition is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(dispositionHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, dispositionHeader), "Disposition is not sorted by descending order");
+
+            //Log.Info("Verify that Entry Type column sort correctly");
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, entryTypeHeader), "Entry Type is not sortable");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(entryTypeHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByAscendingOrder(HomePage.tblDashboardTableHeader, entryTypeHeader), "Entry Type is not sorted by ascending order");
+            //HomePage.tblDashboardTableHeader.ClickOnHeaderColumn(entryTypeHeader);
+            //Assert.IsTrue(HomePage.IsColumnHeaderSortedByDescendingOrder(HomePage.tblDashboardTableHeader, entryTypeHeader), "Entry Type is not sorted by descending order");
 
             Log.Info("Filter by Region column");
-            //DashboardPage.ClearAllFilter();
-            //HomePage.FilterATableColumn(regionHeader, outRegion);            
-            //Logger.Info("Verify that Region column is filtered correctly");
-            //Assert.IsTrue(DashboardPage.CheckFilterDataDisplayCorrectly(regionHeader, outRegion), "Filtered data for Region is incorrect");
+            HomePage.ClearAllFilters();
+            //HomePage.FilterATableColumn(regionHeader, entryInfo[0]);
+            HomePage.FilterATableColumn(regionHeader, "Region A02");
+            Log.Info("Verify that Region column is filtered correctly");
+            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(regionHeader, outRegion), "Filtered data for Region is incorrect");
 
-            //Logger.Info("Filter by Community column");
-            //DashboardPage.FilterATableColumn(communityHeader, outCommunity);
-            //Logger.Info("Verify that Community column is filtered correctly");
-            //Assert.IsTrue(DashboardPage.CheckFilterDataDisplayCorrectly(communityHeader, outCommunity), "Filtered data for Community is incorrect");
+            Log.Info("Filter by Community column");
+            //HomePage.FilterATableColumn(communityHeader, entryInfo[1]);
+            HomePage.FilterATableColumn(communityHeader, "The Forum at Desert Harbor");
+            Log.Info("Verify that Community column is filtered correctly");
+            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(communityHeader, outCommunity), "Filtered data for Community is incorrect");
 
-            //Logger.Info("Filter by Test Status column");
-            //DashboardPage.FilterATableColumn(testStatusHeader, outTestStatus);
-            //Logger.Info("Verify that Test Status column is filtered correctly");
-            //Assert.IsTrue(DashboardPage.CheckFilterDataDisplayCorrectly(testStatusHeader, outTestStatus), "Filtered data for Test Status is incorrect");
+            Log.Info("Filter by Test Status column");
+            //HomePage.FilterATableColumn(testStatusHeader, entryInfo[6]);
+            HomePage.FilterATableColumn(testStatusHeader, "Not Tested");
+            Log.Info("Verify that Test Status column is filtered correctly");
+            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(testStatusHeader, outTestStatus), "Filtered data for Test Status is incorrect");
 
-            //Logger.Info("Filter by Disposition column");
-            //DashboardPage.FilterATableColumn(dispositionHeader, outDisposition);
-            //Logger.Info("Verify that Disposition column is filtered correctly");
-            //Assert.IsTrue(DashboardPage.CheckFilterDataDisplayCorrectly(dispositionHeader, outDisposition), "Filtered data for Disposition is incorrect");
+            Log.Info("Filter by Disposition column");
+            //HomePage.FilterATableColumn(dispositionHeader, entryInfo[8]);
+            HomePage.FilterATableColumn(dispositionHeader, "Quarantined");
+            Log.Info("Verify that Disposition column is filtered correctly");
+            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(dispositionHeader, outDisposition), "Filtered data for Disposition is incorrect");
 
-            //Logger.Info("Filter by Entry Type");
-            //DashboardPage.FilterATableColumn("Entry Type", "Team Member");
-            //Logger.Info("Verify that Entry Type column is filtered correctly");
-            //Assert.IsTrue(DashboardPage.CheckFilterDataDisplayCorrectly("Entry Type", "Team Member"), "Filtered data for Entry Type is incorrect");
+            Log.Info("Filter by Entry Type");
+            HomePage.FilterATableColumn("Entry Type", "Team Member");
+            Log.Info("Verify that Entry Type column is filtered correctly");
+            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly("Entry Type", "Team Member"), "Filtered data for Entry Type is incorrect");
 
-            //Logger.Info("Filter by Name column");
-            //DashboardPage.FilterATableColumn(nameHeader, outEmployeeName);
-            //Logger.Info("Verify that Name column is filtered correctly");
-            //Assert.IsTrue(DashboardPage.CheckFilterDataDisplayCorrectly(nameHeader, outEmployeeName), "Filtered data for Name is incorrect");
+            Log.Info("Filter by Name column");
+            //HomePage.FilterATableColumn(nameHeader, entryInfo[2]);
+            HomePage.FilterATableColumn(nameHeader, "Hodoval, Kimberly");
+            Log.Info("Verify that Name column is filtered correctly");
+            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(nameHeader, outEmployeeName), "Filtered data for Name is incorrect");
 
-            //Logger.Info("Filter by ID column");
-            //DashboardPage.FilterATableColumn(IDHeader, outEmployeeID);
-            //Logger.Info("Verify that ID column is filtered correctly");
-            //Assert.IsTrue(DashboardPage.CheckFilterDataDisplayCorrectly(IDHeader, outEmployeeID), "Filtered data for ID is incorrect");
+            Log.Info("Filter by ID column");
+            //HomePage.FilterATableColumn(IDHeader, entryInfo[3]);
+            HomePage.FilterATableColumn(IDHeader, "302881");
+            Log.Info("Verify that ID column is filtered correctly");
+            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(IDHeader, outEmployeeID), "Filtered data for ID is incorrect");
 
-            //Logger.Info("Get entry's info");
-            //entryInfo = DashboardPage.GetTableAllCellValueInRow(DashboardPage.dashboardTbl, 0);
+            //Log.Info("Get entry's info");
+            //entryInfo = HomePage.GetTableAllCellValueInRow(HomePage.dashboardTbl, 0);
 
-            //Logger.Info("Click on ID");
-            //DashboardPage.ClickTableCell(DashboardPage.dashboardTbl, 0, 5);
+            //Log.Info("Click on ID");
+            //HomePage.ClickTableCell(HomePage.dashboardTbl, 0, 5);
 
-            //Logger.Info("Verify that existing Log entries are opened");
-            //Assert.IsTrue(EditTeamLogEntryPage.CheckPageExist(pageTitle), "Existing Log entry is not opened");
+            Log.Info("Verify that existing Log entries are opened");
+            Assert.IsTrue(LogEntryDetailPage.CheckPageExist(pageTitle), "Existing Log entry is not opened");
             //Assert.IsTrue(EditTeamLogEntryPage.DoesDataOnEditPageDisplayCorrectly(entryInfo, "Team"), "Existing log entry's data is correct");
 
 

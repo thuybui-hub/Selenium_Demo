@@ -7,6 +7,9 @@ using SeleniumCSharp.Core.DriverWrapper;
 using SeleniumCSharp.Core.ElementWrapper;
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
+using OpenQA.Selenium.IE;
+
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -95,125 +98,146 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             txtMrn.SendKeys(MRN);
         }
 
+        ///// <summary>
+        ///// Fill information for a log entry randomly and return all inputed values
+        ///// </summary>
+        ///// <param name="typeOfEntry">typeOfLogEntry can be: Team, Resident, Client</param>
+        ///// <param name="outRegion">Return selected region</param>
+        ///// <param name="outCommunity">Return selected community</param>
+        ///// <param name="outEmployeeName">Return selected employee name only</param>
+        ///// <param name="outEmployeeID">Return employee ID only</param>
+        ///// <param name="outTestStatus">Return selected test status</param>
+        ///// <param name="outDisposition">Return selected disposition</param>
+        //public void FillLogEntryInfoRandomly(string typeOfEntry, out string outRegion, out string outCommunity, out string outName, out string outID, out string outTestStatus, out string outDisposition)
+        //{
+        //    DriverUtils.WaitForPageLoad();
+
+        //    Random rd = new Random();
+        //    List<string> list;
+        //    string date = DateTime.Now.ToString("MM/dd/yyyy");
+        //    string employee;
+        //    outName = "";
+        //    outID = "";
+
+        //    DriverUtils.WaitForPageLoad();
+           
+        //    // Fill Region
+        //    txtRegion.Click();
+        //    list = GetItemsFromControlList(Fields.region);
+        //    outRegion = list[rd.Next(0, list.Count - 1)];
+        //    lstBoxRegion.SelectOptionByText(outRegion);
+
+        //    // Fill Community
+        //    DriverUtils.WaitForPageLoad();
+        //    txtCommunity.Click();            
+        //    list = GetItemsFromControlList(Fields.community);
+        //    outCommunity = list[rd.Next(0, list.Count - 1)];
+        //    lstBoxCommunity.SelectOptionByText(outCommunity);
+
+        //    // Fill Employee
+        //    if (typeOfEntry.Equals("Team") || typeOfEntry.Equals("Resident"))
+        //    {
+        //        DriverUtils.WaitForPageLoad();
+        //        txtEmployee.Click();
+        //        list = GetItemsFromControlList(Fields.employee);
+        //        employee = list[rd.Next(0, list.Count - 1)];
+        //        outName = employee.Substring(0, employee.IndexOf("(") - 1);
+        //        outID = employee.Substring(employee.IndexOf("(") + 1, employee.IndexOf(")") - employee.IndexOf("(") - 1);
+        //        lstBoxEmployee.SelectOptionByText(employee);
+        //    }
+        //    // If typeOfEntry = Client
+        //    else
+        //    {
+
+        //    }
+
+        //    // Fill Onset Date
+        //    txtOnsetDate.SendKeys(date);
+
+        //    // Fill Symptoms
+        //    txtSymptoms.SendKeys("Symptom " + Utils.GetRandomValue("random value"));
+
+        //    // Fill Test Status
+        //    spnTestingStatus.Click();
+        //    list = GetItemsFromControlList(Fields.testStatus);
+        //    outTestStatus = list[rd.Next(0, list.Count - 1)];
+        //    lstBoxTestingStatus.SelectOptionByText(outTestStatus);
+
+        //    // Fill Test Status date
+        //    txtTestingStatusDate.SendKeys(date);
+
+        //    // Fill Disposition
+        //    spnDisposition.Click();
+        //    list = GetItemsFromControlList(Fields.disposition);
+        //    outDisposition = list[rd.Next(0, list.Count - 1)];
+        //    lstBoxDisposition.SelectOptionByText(outDisposition);
+
+        //    // Fill Disposition Date
+        //    txtDispositionDate.SendKeys(date);
+
+        //    // Fill Comments
+        //    txtComments.ScrollToView();
+        //    txtComments.SendKeys("Comments " + Utils.GetRandomValue("random value"));
+        //}
+
         /// <summary>
-        /// Fill information for a log entry randomly and return all inputed values
+        /// Return log entry's information
         /// </summary>
         /// <param name="typeOfEntry">typeOfLogEntry can be: Team, Resident, Client</param>
-        /// <param name="outRegion">Return selected region</param>
-        /// <param name="outCommunity">Return selected community</param>
-        /// <param name="outEmployeeName">Return selected employee name only</param>
-        /// <param name="outEmployeeID">Return employee ID only</param>
-        /// <param name="outTestStatus">Return selected test status</param>
-        /// <param name="outDisposition">Return selected disposition</param>
-        public void FillLogEntryInfoRandomly(string typeOfEntry, out string outRegion, out string outCommunity, out string outName, out string outID, out string outTestStatus, out string outDisposition)
-        {
-            DriverUtils.WaitForPageLoad();
-
-            Random rd = new Random();
-            List<string> list;
-            string date = DateTime.Now.ToString("MM/dd/yyyy");
-            string employee;
-            outName = "";
-            outID = "";
-
-            DriverUtils.WaitForPageLoad();
-           
-            // Fill Region
-            txtRegion.Click();
-            list = GetItemsFromControlList(Fields.region);
-            outRegion = list[rd.Next(0, list.Count - 1)];
-            lstBoxRegion.SelectOptionByText(outRegion);
-
-            // Fill Community
-            DriverUtils.WaitForPageLoad();
-            txtCommunity.Click();            
-            list = GetItemsFromControlList(Fields.community);
-            outCommunity = list[rd.Next(0, list.Count - 1)];
-            lstBoxCommunity.SelectOptionByText(outCommunity);
-
-            // Fill Employee
-            if (typeOfEntry.Equals("Team") || typeOfEntry.Equals("Resident"))
-            {
-                DriverUtils.WaitForPageLoad();
-                txtEmployee.Click();
-                list = GetItemsFromControlList(Fields.employee);
-                employee = list[rd.Next(0, list.Count - 1)];
-                outName = employee.Substring(0, employee.IndexOf("(") - 1);
-                outID = employee.Substring(employee.IndexOf("(") + 1, employee.IndexOf(")") - employee.IndexOf("(") - 1);
-                lstBoxEmployee.SelectOptionByText(employee);
-            }
-            // If typeOfEntry = Client
-            else
-            {
-
-            }
-
-            // Fill Onset Date
-            txtOnsetDate.SendKeys(date);
-
-            // Fill Symptoms
-            txtSymptoms.SendKeys("Symptom " + Utils.GetRandomValue("random value"));
-
-            // Fill Test Status
-            spnTestingStatus.Click();
-            list = GetItemsFromControlList(Fields.testStatus);
-            outTestStatus = list[rd.Next(0, list.Count - 1)];
-            lstBoxTestingStatus.SelectOptionByText(outTestStatus);
-
-            // Fill Test Status date
-            txtTestingStatusDate.SendKeys(date);
-
-            // Fill Disposition
-            spnDisposition.Click();
-            list = GetItemsFromControlList(Fields.disposition);
-            outDisposition = list[rd.Next(0, list.Count - 1)];
-            lstBoxDisposition.SelectOptionByText(outDisposition);
-
-            // Fill Disposition Date
-            txtDispositionDate.SendKeys(date);
-
-            // Fill Comments
-            txtComments.ScrollToView();
-            txtComments.SendKeys("Comments " + Utils.GetRandomValue("random value"));
-        }
-
+        /// <returns></returns>
         public List<string> FillLogEntryInfoRandomly(string typeOfEntry = "Team")
         {
             DriverUtils.WaitForPageLoad();
-
             Random rd = new Random();
             List<string> list;
             List < string > lstResult = new List<string> { };
             string date = DateTime.Now.ToString("MM/dd/yyyy");
-            string tmp, name, ID, symptom, comments;            
+            string selectedValue, name, ID, symptom, comments;
 
-            DriverUtils.WaitForPageLoad();
-
-            // Fill Region
-            txtRegion.Click();
+            // Fill Region            
             list = GetItemsFromControlList(Fields.region);
-            tmp = list[rd.Next(0, list.Count - 1)];
-            lstBoxRegion.SelectOptionByText(tmp);
-            lstResult.Add(tmp);
+            selectedValue = list[rd.Next(0, list.Count - 1)].Trim();                       
+            txtRegion.SendKeys(selectedValue);
+            DriverUtils.wait(1);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");           
+            lstResult.Add(selectedValue);            
 
             // Fill Community
-            DriverUtils.WaitForPageLoad();
-            txtCommunity.Click();
+            DriverUtils.WaitForPageLoad();            
             list = GetItemsFromControlList(Fields.community);
-            tmp = list[rd.Next(0, list.Count - 1)];
-            lstResult.Add(tmp);
+            selectedValue = list[rd.Next(0, list.Count - 1)].Trim();            
+            txtCommunity.SendKeys(selectedValue);
+            DriverUtils.wait(1);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            lstResult.Add(selectedValue);
 
             // Fill Employee/Resident/Firs tName; Last Name; MRN
-            switch (typeOfEntry)
+             switch (typeOfEntry)
             {
                 case "Team":
+                    DriverUtils.WaitForPageLoad();                    
+                    list = GetItemsFromControlList(Fields.employee);
+                    selectedValue = list[rd.Next(0, list.Count - 1)];
+                    name = selectedValue.Substring(0, selectedValue.IndexOf("(") - 1);
+                    ID = selectedValue.Substring(selectedValue.IndexOf("(") + 1, selectedValue.IndexOf(")") - selectedValue.IndexOf("(") - 1);                    
+                    txtEmployee.SendKeys(selectedValue);
+                    DriverUtils.wait(2);
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                    lstResult.Add(name);
+                    lstResult.Add(ID);
+                    break;
+
+                case "Resident":
                     DriverUtils.WaitForPageLoad();
                     txtEmployee.Click();
-                    list = GetItemsFromControlList(Fields.employee);
-                    tmp = list[rd.Next(0, list.Count - 1)];
-                    name = tmp.Substring(0, tmp.IndexOf("(") - 1);
-                    ID = tmp.Substring(tmp.IndexOf("(") + 1, tmp.IndexOf(")") - tmp.IndexOf("(") - 1);
-                    lstBoxEmployee.SelectOptionByText(tmp);
+                    list = lstBoxEmployee.GetSubOptions();
+                    int index = rd.Next(0, list.Count - 1);
+                    selectedValue = list[rd.Next(0, list.Count - 1)];
+                    int secondSpaceIndex = selectedValue.IndexOf(" ", selectedValue.IndexOf(" ", 0) + 1);
+                    int thirdSpaceIndex = selectedValue.IndexOf(" ", secondSpaceIndex + 1);
+                    name = selectedValue.Substring(0, secondSpaceIndex);
+                    ID = selectedValue.Substring(secondSpaceIndex + 1, thirdSpaceIndex - secondSpaceIndex - 1);
+                    lstBoxEmployee.SelectOptionByIndex(index);
                     lstResult.Add(name);
                     lstResult.Add(ID);
                     break;
@@ -227,35 +251,36 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     lstResult.Add(firstName);
                     lstResult.Add(MRN);
                     break;
-            }            
-           
+            }
 
-            // Fill Onset Date
+
+            // Fill Onset Date            
             txtOnsetDate.SendKeys(date);
             lstResult.Add(date);
 
             // Fill Symptoms
             symptom = "Symptom " + Utils.GetRandomValue("random value");
-            txtSymptoms.SendKeys(symptom);
+            txtSymptoms.Click();
+            System.Windows.Forms.SendKeys.SendWait(symptom);            
             lstResult.Add(symptom);
 
-            // Fill Test Status
-            spnTestingStatus.Click();
+            // Fill Test Status            
             list = GetItemsFromControlList(Fields.testStatus);
-            tmp = list[rd.Next(0, list.Count - 1)];
-            lstBoxTestingStatus.SelectOptionByText(tmp);
-            lstResult.Add(tmp);
+            selectedValue = list[rd.Next(0, list.Count - 1)];
+            spnTestingStatus.Click();
+            lstBoxTestingStatus.SelectOptionByText(selectedValue);
+            lstResult.Add(selectedValue);
 
             // Fill Test Status date
             txtTestingStatusDate.SendKeys(date);
             lstResult.Add(date);
 
-            // Fill Disposition
-            spnDisposition.Click();
+            // Fill Disposition            
             list = GetItemsFromControlList(Fields.disposition);
-            tmp = list[rd.Next(0, list.Count - 1)];
-            lstBoxDisposition.SelectOptionByText(tmp);
-            lstResult.Add(tmp);            
+            selectedValue = list[rd.Next(0, list.Count - 1)];
+            spnDisposition.Click();
+            lstBoxDisposition.SelectOptionByText(selectedValue);
+            lstResult.Add(selectedValue);            
 
             // Fill Disposition Date
             txtDispositionDate.SendKeys(date);
@@ -264,7 +289,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             // Fill Comments
             txtComments.ScrollToView();
             comments = "Comments " + Utils.GetRandomValue("random value");
-            txtComments.SendKeys(comments);
+            txtComments.Click();
+            System.Windows.Forms.SendKeys.SendWait(comments);
             lstResult.Add(comments);
 
             return lstResult;
@@ -274,13 +300,18 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         {
             btnSaveLogEntry.ScrollToView();
             btnSaveLogEntry.Click();
+
+            if (IsAlertPresent())
+            {
+                alertWin.Accept();
+            }            
         }
 
         public void CancelLogEntry()
         {
             btnCancelLogEntry.ScrollToView();
             btnCancelLogEntry.Click();
-        }
+        }        
 
         /// <summary>
         /// Get all items in a list of a control that drop down a list
@@ -301,6 +332,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
                 case Fields.community:
                     element = lstBoxCommunity;
+                    txtCommunity.Click();
+                    break;
+                case Fields.employee:
+                    element = lstBoxEmployee;
                     txtEmployee.Click();
                     break;
                 case Fields.testStatus:
@@ -321,10 +356,13 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             switch (field)
             {
                 case Fields.region:
-                    txtRegion.Click();
+                    System.Windows.Forms.SendKeys.SendWait("{tab}");
                     break;
                 case Fields.community:
-                    txtCommunity.Click();
+                    System.Windows.Forms.SendKeys.SendWait("{tab}");
+                    break;
+                case Fields.employee:
+                    System.Windows.Forms.SendKeys.SendWait("{tab}");
                     break;
                 case Fields.testStatus:
                     spnTestingStatus.Click();
@@ -351,10 +389,9 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// <returns></returns>
         public bool DoesUIWithFormatDisplayCorrectly(string typeOfLogEntry = "Team")
         {
-            bool result = true;
-            string test = txtRegion.GetAttribute("role");
+            bool result = true;            
 
-            result = result = txtRegion.IsDisplayed()
+            result = result && txtRegion.IsDisplayed()
                 && txtRegion.GetAttribute("role").Equals("listbox")
                 && txtCommunity.IsDisplayed()
                 && txtCommunity.GetAttribute("role").Equals("listbox")
@@ -373,7 +410,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && txtDispositionDate.GetAttribute("data-role").Equals("datepicker");
 
             txtComments.ScrollToView();
-
             result = result
                 && txtComments.IsDisplayed()                
                 && btnSaveLogEntry.IsDisplayed()

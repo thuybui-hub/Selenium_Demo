@@ -23,6 +23,9 @@ namespace InfectionLogAutomation.PageObject.Common
         // Page title
         public readonly Label lblTitle;
 
+        // Alert window
+        public IAlert alertWin;
+
         public CommonPage()
         {
             // Main menu
@@ -72,9 +75,34 @@ namespace InfectionLogAutomation.PageObject.Common
             spnPaging.Click();
             System.Windows.Forms.SendKeys.SendWait("All");
         }
+
+        public string GetAlertWinText()
+        {
+            IAlert alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
+            return alertWin.Text;
+        }
         #endregion Main Action
 
         #region Check Points
+        /// <summary>
+        /// Check to see if the alert windown pop-up shows
+        /// </summary>
+        /// <returns></returns>
+        public bool IsAlertPresent()
+        {
+            bool isPresent = false;
+            try
+            {
+                alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
+                isPresent = true;
+            }
+            catch (NoAlertPresentException ex)
+            {
+            }
+
+            return isPresent;
+        }
+
         /// <summary>
         /// Check to see if a form displays via form's title
         /// </summary>
