@@ -72,6 +72,15 @@ namespace InfectionLogAutomation.PageObject.Common
             spnPaging.Click();
             System.Windows.Forms.SendKeys.SendWait("All");
         }
+
+        public void ClearAllValueInCombobox(string field)
+        {
+            Span spnClearIcon = new Span(By.XPath("//label[text()=\""+ field +"\"]//following-sibling::div//span[@class=\"k-icon k-clear-value k-i-close\"]"));
+            if (spnClearIcon.IsDisplayed())
+            {
+                spnClearIcon.Click();
+            }
+        }
         #endregion Main Action
 
         #region Check Points

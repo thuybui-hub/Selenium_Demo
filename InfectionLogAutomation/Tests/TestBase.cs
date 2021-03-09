@@ -12,6 +12,7 @@ using InfectionLogAutomation.PageObject.Login;
 using InfectionLogAutomation.PageObject.Common;
 using InfectionLogAutomation.PageObject.Home;
 using InfectionLogAutomation.PageObject.LogEntry;
+using InfectionLogAutomation.PageObject.BulkInsert;
 
 namespace InfectionLogAutomation.Tests
 {
@@ -23,6 +24,7 @@ namespace InfectionLogAutomation.Tests
         private CommonPage commonPage;
         private HomePage homePage;
         private LogEntryDetailPage logEntryDetailPage;
+        private BulkInsertPage bulkInsertPage;
         #endregion
 
         #region Declare pages
@@ -70,6 +72,18 @@ namespace InfectionLogAutomation.Tests
                     logEntryDetailPage = new LogEntryDetailPage();
                 }
                 return logEntryDetailPage;
+            }
+        }
+
+        public BulkInsertPage BulkInsertPage
+        {
+            get
+            {
+                if (bulkInsertPage == null)
+                {
+                    bulkInsertPage = new BulkInsertPage();
+                }
+                return bulkInsertPage;
             }
         }
         #endregion
