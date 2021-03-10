@@ -123,7 +123,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="DataObject\ClientLogEntryInfo.cs" />
     <Compile Include="DataObject\LoginData.cs" />
+    <Compile Include="DataObject\ResidentLogEntryInfo.cs" />
+    <Compile Include="DataObject\TeamLogEntryInfo.cs" />
     <Compile Include="PageObject\BulkInsert\BulkInsertPage.cs" />
     <Compile Include="PageObject\Common\CommonPage.cs" />
     <Compile Include="PageObject\Home\HomePage.cs" />
@@ -142,6 +145,7 @@
     <Compile Include="Tests\PBI_23924.cs" />
     <Compile Include="Tests\PBI_23864.cs" />
     <Compile Include="Tests\PBI_23982.cs" />
+    <Compile Include="Tests\PBI_23984.cs" />
     <Compile Include="Tests\PBI_24066.cs" />
     <Compile Include="Tests\PBI_24090.cs" />
     <Compile Include="Tests\SetUp.cs" />
@@ -160,6 +164,7 @@
     <None Include="Resources\DriverConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\TestData\LogEntryData.json" />
     <None Include="Resources\TestData\LoginData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
