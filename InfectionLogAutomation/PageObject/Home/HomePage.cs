@@ -248,32 +248,6 @@ namespace InfectionLogAutomation.PageObject.Home
         #endregion Main Actions
 
         #region Check Points
-
-        /// <summary>
-        /// Check to see if the data is filtered correctly
-        /// </summary>
-        /// <param name="columnName"></param>
-        /// <param name="filterValue"></param>
-        /// <returns></returns>
-        public bool IsDataFilteredCorrectly(string columnName, string filterValue)
-        {
-            DriverUtils.WaitForPageLoad();
-            List<string> actualResult;
-            if (!divNoRecords.IsDisplayed())
-            {
-                //if (!paging_disabledNextLnk.IsVisible())
-                //{
-                //    ScrollToEndPage();
-                //    SelectPagingValue("All");
-                //}
-                ////ShowAllILogRecords();
-
-                //actualResult = GetTableAllCellValueInColumn(dashboardTbl, columnName);
-                //return actualResult.All(x => x == filterValue);
-            }
-            else return true;
-        }
-
         /// <summary>
         /// Check to see if the home page displays correctly
         /// </summary>

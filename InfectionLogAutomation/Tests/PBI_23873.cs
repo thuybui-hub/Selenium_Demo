@@ -59,14 +59,14 @@ namespace InfectionLogAutomation.Tests
 
             ////end test section
 
-            //#region Pre-condition: Create a log entry
-            //// Go to New Log Entry
-            //HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
-            //// Fill Log Entry info randomly
-            //entryInfo = LogEntryDetailPage.FillLogEntryInfoRandomly("Team");
-            //// Save new team log entry
-            //LogEntryDetailPage.SaveLogEntry();
-            //#endregion
+            #region Pre-condition: Create a log entry
+            // Go to New Log Entry
+            HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
+            // Fill Log Entry info randomly
+            entryInfo = LogEntryDetailPage.FillLogEntryInfoRandomly("Team");
+            // Save new team log entry
+            LogEntryDetailPage.SaveLogEntry();
+            #endregion
 
             //Log.Info("Verify that Division column sort correctly");            
             //Assert.IsTrue(HomePage.IsColumnHeaderSortable(HomePage.tblDashboardTableHeader, divisionHeader), "Division is not sortable");
@@ -149,43 +149,43 @@ namespace InfectionLogAutomation.Tests
             HomePage.ClearAllFilters();
             HomePage.FilterATableColumn(regionHeader, entryInfo[0]);
             //HomePage.FilterATableColumn(regionHeader, "Region A02");
-            Log.Info("Verify that Region column is filtered correctly");
-            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(regionHeader, outRegion), "Filtered data for Region is incorrect");
+            Log.Info("Verify that Region column is filtered correctly");            
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(regionHeader, entryInfo[0]), "Filtered data for Region is incorrect");
 
             Log.Info("Filter by Community column");
             HomePage.FilterATableColumn(communityHeader, entryInfo[1]);
             //HomePage.FilterATableColumn(communityHeader, "The Forum at Desert Harbor");
             Log.Info("Verify that Community column is filtered correctly");
-            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(communityHeader, outCommunity), "Filtered data for Community is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(communityHeader, entryInfo[1]), "Filtered data for Community is incorrect");
 
             Log.Info("Filter by Test Status column");
             HomePage.FilterATableColumn(testStatusHeader, entryInfo[6]);
             //HomePage.FilterATableColumn(testStatusHeader, "Not Tested");
             Log.Info("Verify that Test Status column is filtered correctly");
-            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(testStatusHeader, outTestStatus), "Filtered data for Test Status is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(testStatusHeader, entryInfo[6]), "Filtered data for Test Status is incorrect");
 
             Log.Info("Filter by Disposition column");
             HomePage.FilterATableColumn(dispositionHeader, entryInfo[8]);
             //HomePage.FilterATableColumn(dispositionHeader, "Quarantined");
             Log.Info("Verify that Disposition column is filtered correctly");
-            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(dispositionHeader, outDisposition), "Filtered data for Disposition is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(dispositionHeader, entryInfo[8]), "Filtered data for Disposition is incorrect");
 
             Log.Info("Filter by Entry Type");
             HomePage.FilterATableColumn("Entry Type", "Team Member");
             Log.Info("Verify that Entry Type column is filtered correctly");
-            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly("Entry Type", "Team Member"), "Filtered data for Entry Type is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly("Entry Type", "Team Member"), "Filtered data for Entry Type is incorrect");
 
             Log.Info("Filter by Name column");
             HomePage.FilterATableColumn(nameHeader, entryInfo[2]);
             //HomePage.FilterATableColumn(nameHeader, "Hodoval, Kimberly");
             Log.Info("Verify that Name column is filtered correctly");
-            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(nameHeader, outEmployeeName), "Filtered data for Name is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(nameHeader, entryInfo[2]), "Filtered data for Name is incorrect");
 
             Log.Info("Filter by ID column");
             HomePage.FilterATableColumn(IDHeader, entryInfo[3]);
             //HomePage.FilterATableColumn(IDHeader, "302881");
             Log.Info("Verify that ID column is filtered correctly");
-            //Assert.IsTrue(HomePage.CheckFilterDataDisplayCorrectly(IDHeader, outEmployeeID), "Filtered data for ID is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(IDHeader, entryInfo[3]), "Filtered data for ID is incorrect");
 
             //Log.Info("Get entry's info");
             //entryInfo = HomePage.GetTableAllCellValueInRow(HomePage.dashboardTbl, 0);
