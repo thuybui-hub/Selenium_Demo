@@ -63,7 +63,7 @@ namespace InfectionLogAutomation.Tests
             // Go to New Log Entry
             HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
             // Fill Log Entry info randomly
-            entryInfo = LogEntryDetailPage.FillLogEntryInfoRandomly("Team");
+            LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out entryInfo);
             // Save new team log entry
             LogEntryDetailPage.SaveLogEntry();
             #endregion
