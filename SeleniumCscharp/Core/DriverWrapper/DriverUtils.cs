@@ -278,7 +278,7 @@ namespace SeleniumCSharp.Core.DriverWrapper
             {
                 var wait = new WebDriverWait(GetDriver(), TimeSpan.FromSeconds(timeoutInSeconds));
                 // If an alert dialog is present then this call to javascript will fail out, to avoid some noises when debugging tests we will check for the alert before attempting the wait
-                if (null != ExpectedConditions.AlertIsPresent().Invoke(GetDriver())) return;
+                if (null != ExpectedConditions.AlertIsPresent().Invoke(GetDriver())) return;               
 
                 wait.Until(webDriver => (bool)((IJavaScriptExecutor)GetDriver()).ExecuteScript("if (typeof jQuery != 'undefined') { return jQuery.active == 0; } else {  return true; }"));
                 wait.Until(webDriver => ((IJavaScriptExecutor)GetDriver()).ExecuteScript("return document.readyState").Equals("complete"));

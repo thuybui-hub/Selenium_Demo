@@ -75,6 +75,7 @@ namespace InfectionLogAutomation.PageObject.Home
         public void ClearAllFilters()
         {
             DriverUtils.WaitForPageLoad();
+            btnClearFilters = new Button(By.Id("clearFilterButton"));
             btnClearFilters.Click();
         }
 

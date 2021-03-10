@@ -19,36 +19,40 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 {
     public class LogEntryDetailPage : CommonPage
     {        
-        public readonly TextBox txtRegion;
-        public readonly ComboBox cbbRegion;
-        public readonly TextBox txtCommunity;
-        public readonly ComboBox cbbCommunity;
-        public readonly TextBox txtEmployee;
-        public readonly ComboBox cbbEmployee;
-        public readonly TextBox txtLastName;
-        public readonly TextBox txtFirstName;
-        public readonly TextBox txtMrn;
-        public readonly Button btnAdvancedSearch;
-        public readonly Span spnInfectionType;
-        public readonly ComboBox cbbInfectionType;
-        public readonly TextBox txtOnsetDate;
-        public readonly TextArea txtSymptoms;
-        public readonly Span spnTestingStatus;
-        public readonly ComboBox cbbTestingStatus;
-        public readonly TextBox txtTestingStatusDate;
-        public readonly Span spnDisposition;
-        public readonly ComboBox cbbDisposition;
-        public readonly TextBox txtDispositionDate;
-        public readonly TextArea txtComments;
-        public readonly Button btnSaveLogEntry;
-        public readonly Button btnCancelLogEntry;
+        public TextBox txtRegion;
+        public ComboBox cbbRegion;
+        public TextBox txtCommunity;
+        public ComboBox cbbCommunity;
+        public TextBox txtEmployee;
+        public ComboBox cbbEmployee;
+        public TextBox txtLastName;
+        public TextBox txtFirstName;
+        public TextBox txtMrn;
+        public Button btnAdvancedSearch;
+        public Span spnInfectionType;
+        public ComboBox cbbInfectionType;
+        public TextBox txtOnsetDate;
+        public TextArea txtSymptoms;
+        public Span spnTestingStatus;
+        public ComboBox cbbTestingStatus;
+        public TextBox txtTestingStatusDate;
+        public Span spnDisposition;
+        public ComboBox cbbDisposition;
+        public TextBox txtDispositionDate;
+        public TextArea txtComments;
+        public Button btnSaveLogEntry;
+        public Button btnCancelLogEntry;
 
-        public readonly Ul lstBoxRegion;
-        public readonly Ul lstBoxCommunity;
-        public readonly Ul lstBoxEmployee;
-        public readonly Ul lstBoxTestingStatus;
-        public readonly Ul lstBoxDisposition;
-        public readonly Ul lstInfectionType;
+        public Ul lstBoxRegion;
+        public Ul lstBoxCommunity;
+        public Ul lstBoxEmployee;
+        public Ul lstBoxTestingStatus;
+        public Ul lstBoxDisposition;
+        public Ul lstInfectionType;
+
+        // Edit page
+        public Span spnInfectionTypeValue, spnOnsetDateValue;
+
 
         #region Actions
         public LogEntryDetailPage()
@@ -83,6 +87,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             lstBoxTestingStatus = new Ul(By.XPath("//ul[@id=\"testingStatus_listbox\"]"));
             lstBoxDisposition = new Ul(By.XPath("//ul[@id=\"disposition_listbox\"]"));
             lstInfectionType = new Ul(By.XPath("//ul[@id=\"infectionType_listbox\"]"));
+
+            // Edit page
+            spnInfectionTypeValue = new Span(By.XPath("//label[text()=\"Infection Type: \"]/span"));
+            spnOnsetDateValue = new Span(By.XPath("//label[text()=\"Onset Date: \"]/span"));
         }
 
         public List<string> GetListOfResidents()
@@ -318,12 +326,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public void SaveLogEntry()
         {
             btnSaveLogEntry.ScrollToView();
-            btnSaveLogEntry.Click();
-
-            if (IsAlertPresent())
-            {
-                alertWin.Accept();
-            }
+            btnSaveLogEntry.Click();            
             DriverUtils.WaitForPageLoad();
         }
 
@@ -545,6 +548,30 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     throw new Exception(string.Format("Field is incorrect."));
             }
             return result;
+        }
+
+        public bool DoesDataOnEditPageDisplayCorrectly(List<string> entryInfo, string page = "Team")
+        {
+            DriverUtils.WaitForPageLoad();
+            string title = "Infection Log Entry for Team Member " + entryInfo[6] + " (" + entryInfo[5] + ")";
+
+            switch (page)
+            {
+                case "Resident":                    
+                    title = "Infection Log Entry for Resident " + entryInfo[6] + " (" + entryInfo[5] + ")";
+                    break;
+                case "Client":                    
+                    title = "Infection Log Entry for Ageility Client " + entryInfo[6] + " (" + entryInfo[5] + ")";
+                    break;
+            }
+            string test1 = spnTestingStatus.GetText();
+            string test2 = spnDisposition.GetText();
+
+            return lblTitle.GetText().Equals(title)
+                && spnInfectionTypeValue.GetText().Equals(entryInfo[9].ToString())
+                && spnOnsetDateValue.GetText().Equals("COVID-19")
+                && spnTestingStatus.GetText().Equals(entryInfo[10].ToString())
+                && spnDisposition.GetText().Equals(entryInfo[11].ToString());
         }
 
         #endregion Check points

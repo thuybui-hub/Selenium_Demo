@@ -99,20 +99,20 @@ namespace InfectionLogAutomation.PageObject.Common
         /// Check to see if the alert windown pop-up shows
         /// </summary>
         /// <returns></returns>
-        public bool IsAlertPresent()
-        {
-            bool isPresent = false;
-            try
-            {
-                alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
-                isPresent = true;
-            }
-            catch (NoAlertPresentException ex)
-            {
-            }
+        //public bool IsAlertPresent()
+        //{
+        //    bool isPresent = false;
+        //    try
+        //    {
+        //        alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
+        //        isPresent = true;
+        //    }
+        //    catch (NoAlertPresentException ex)
+        //    {
+        //    }
 
-            return isPresent;
-        }
+        //    return isPresent;
+        //}
 
         /// <summary>
         /// Check to see if a form displays via form's title
