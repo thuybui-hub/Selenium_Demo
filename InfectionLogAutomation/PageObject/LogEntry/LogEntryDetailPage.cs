@@ -185,12 +185,12 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// </summary>
         /// <param name="typeOfEntry">typeOfLogEntry can be: Team, Resident, Client</param>
         /// <returns></returns>
-        public List<string> FillLogEntryInfoRandomly(string typeOfEntry = "Team")
+        public void FillLogEntryInfoRandomly(string typeOfEntry, out List<string> lstResult)
         {
             DriverUtils.WaitForPageLoad();
             Random rd = new Random();
             List<string> list;
-            List < string > lstResult = new List<string> { };
+            lstResult = new List<string> { };
             string date = DateTime.Now.ToString("MM/dd/yyyy");
             string selectedValue, name, ID, symptom, comments;
 
@@ -293,7 +293,26 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             System.Windows.Forms.SendKeys.SendWait(comments);
             lstResult.Add(comments);
 
-            return lstResult;
+            //return lstResult;
+        }
+
+        public void SelectATestStatusOrDisposition(string field, string value)
+        {
+            DriverUtils.WaitForPageLoad();
+
+            switch (field)
+            {
+                case "Test Status":
+                    spnTestingStatus.Click();
+                    lstBoxTestingStatus.SelectOptionByText(value);
+                    break;
+                case "Disposition":
+                    spnDisposition.Click();
+                    lstBoxDisposition.SelectOptionByText(value);
+                    break;
+                default:
+                    throw new Exception(string.Format("'{0}' field is invalid."));
+            }
         }
 
         public void SaveLogEntry()
@@ -304,7 +323,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             if (IsAlertPresent())
             {
                 alertWin.Accept();
-            }            
+            }
+            DriverUtils.WaitForPageLoad();
         }
 
         public void CancelLogEntry()
@@ -506,6 +526,23 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     spnInfectionType.Click();
                     result = result & !lstInfectionType.IsDisplayed();
                     break;
+            }
+            return result;
+        }
+
+        public bool IsTestStatusOrDispositionUnableToBeEditted(string field)
+        {
+            bool result = true;
+            switch (field)
+            {
+                case "Test Status":
+                    result = spnTestingStatus.GetAttribute("aria-disabled").Equals("false");
+                    break;
+                case "Disposition":
+                    result = spnTestingStatus.GetAttribute("aria-disabled").Equals("false");
+                    break;
+                default:
+                    throw new Exception(string.Format("Field is incorrect."));
             }
             return result;
         }

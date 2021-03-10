@@ -244,6 +244,29 @@ namespace InfectionLogAutomation.PageObject.Home
             
             btnSearch.Click();
         }
+
+        public void ShowBothActiveAndInactiveRecords()
+        {
+            DriverUtils.WaitForPageLoad();
+            DriverUtils.wait(3);
+            txtFilters.GetElement().Click();
+            //txtFilters.Click();
+            ClearAllValueInCombobox("Filters");
+            List<string> filters = new List<string> { "Active", "Inactive" };
+            foreach (var f in filters)
+            {
+                txtFilters.SendKeys(f);
+                DriverUtils.wait(1);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+            btnSearch.Click();
+        }
+
+        public void ResetSearchCriteria()
+        {
+            DriverUtils.WaitForPageLoad();
+            btnReset.Click();
+        }
         #endregion Main Actions
 
         #region Check Points
