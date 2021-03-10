@@ -13,32 +13,32 @@ namespace InfectionLogAutomation.PageObject.Home
     public class HomePage : CommonPage
     {
         // Search Criterias
-        public readonly TextBox txtCommunity;
-        public readonly ComboBox cbbCommunity;
-        public readonly Ul lstCommunity;
-        public readonly TextBox txtLastUpdatedFrom;
-        public readonly TextBox txtLastUpdatedTo;
-        public readonly TextBox txtFilters;
-        public readonly ComboBox cbbFilters;
-        public readonly Ul lstFilters;
-        public readonly Button btnSearch;
-        public readonly Button btnReset;
+        public TextBox txtCommunity;
+        public ComboBox cbbCommunity;
+        public Ul lstCommunity;
+        public TextBox txtLastUpdatedFrom;
+        public TextBox txtLastUpdatedTo;
+        public TextBox txtFilters;
+        public ComboBox cbbFilters;
+        public Ul lstFilters;
+        public Button btnSearch;
+        public Button btnReset;
 
         // ILog Table
-        public readonly Button btnClearFilters;
-        public readonly Button btnExportToExcel;
-        public readonly TextBox txtSearch;
-        public readonly BaseElement divDashboardTable;
-        public readonly Table tblDashboardTableHeader;
-        public readonly Table tblDashboardTable;
-        public readonly BaseElement divNoRecords;
+        public Button btnClearFilters;
+        public Button btnExportToExcel;
+        public TextBox txtSearch;
+        public BaseElement divDashboardTable;
+        public Table tblDashboardTableHeader;
+        public Table tblDashboardTable;
+        public BaseElement divNoRecords;
 
         // Filter popup
-        public readonly TextBox txtFilterValue;
-        public readonly Span spnEntryTypeFilter;
-        public readonly Ul lstEntrytypeFilter;
-        public readonly Button btnFilter;
-        public readonly Button btnClear;
+        public TextBox txtFilterValue;
+        public Span spnEntryTypeFilter;
+        public Ul lstEntrytypeFilter;
+        public Button btnFilter;
+        public Button btnClear;
 
         public HomePage()
         {
@@ -64,10 +64,10 @@ namespace InfectionLogAutomation.PageObject.Home
             divNoRecords = new BaseElement(By.XPath("//div[@class=\"k-grid-norecords\"]"));
 
             // Filter popup
-            txtFilterValue = new TextBox(By.XPath("//input[@title=\"Value\"]"));
+            txtFilterValue = new TextBox(By.XPath("//form[@aria-hidden=\"false\"]//input[@title=\"Value\"]"));
             spnEntryTypeFilter = new Span(By.XPath("//input[@title=\"Value\"]//following-sibling::span[@class=\"k-select\"]"));
             lstEntrytypeFilter = new Ul(By.XPath("//div[@class=\"k-animation-container\"]//ul[@class=\"k-list k-reset\"]"));
-            btnFilter = new Button(By.XPath("//button[text()=\"Filter\"]"));
+            btnFilter = new Button(By.XPath("//form[@aria-hidden=\"false\"]//button[text()=\"Filter\"]"));
             btnClear = new Button(By.XPath("//button[text()=\"Clear\"]"));
         }
 
@@ -106,8 +106,9 @@ namespace InfectionLogAutomation.PageObject.Home
 
         public void EnterFilterData(string filterValue)
         {
-            DriverUtils.WaitForPageLoad();
-            txtFilterValue.Click();
+            DriverUtils.WaitForPageLoad();            
+            txtFilterValue = new TextBox(By.XPath("//form[@aria-hidden=\"false\"]//input[@title=\"Value\"]"));
+            btnFilter = new Button(By.XPath("//form[@aria-hidden=\"false\"]//button[text()=\"Filter\"]"));
             txtFilterValue.SendKeys(filterValue);
             btnFilter.Click();
         }
@@ -115,7 +116,7 @@ namespace InfectionLogAutomation.PageObject.Home
         public void FilterATableColumn(string columnName, string filterValue)
         {
             DriverUtils.WaitForPageLoad();
-            ClickOnTableColumnFilter(columnName);
+            ClickOnTableColumnFilter(columnName);            
             EnterFilterData(filterValue);
         }
 
@@ -270,6 +271,36 @@ namespace InfectionLogAutomation.PageObject.Home
         #endregion Main Actions
 
         #region Check Points
+
+        /// <summary>
+        /// Check to see if the data is filtered correctly
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="filterValue"></param>
+        /// <returns></returns>
+        public bool IsDataFilteredCorrectly(string columnName, string filterValue)
+        {
+            DriverUtils.WaitForPageLoad();
+            List<string> actualResult;
+            if (!divNoRecords.IsDisplayed())
+            {
+                //if (!paging_disabledNextLnk.IsVisible())
+                //{
+                //    ScrollToEndPage();
+                //    SelectPagingValue("All");
+                //}
+                ////ShowAllILogRecords();
+
+                //actualResult = GetTableAllCellValueInColumn(dashboardTbl, columnName);
+                //return actualResult.All(x => x == filterValue);
+            }
+            else return true;
+        }
+
+        /// <summary>
+        /// Check to see if the home page displays correctly
+        /// </summary>
+        /// <returns></returns>
         public bool IsHomePageDisplayed()
         {
             DriverUtils.WaitForPageLoad();

@@ -160,6 +160,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
 
             return elements;
         }
+        
 
         /// <summary>
         ///     Click on the element.

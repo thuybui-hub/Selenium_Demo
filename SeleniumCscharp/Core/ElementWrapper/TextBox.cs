@@ -18,7 +18,6 @@ namespace SeleniumCSharp.Core.ElementWrapper
         {
         }
 
-
         /// <summary>
         ///     Find a web element of type TextBox using By Xpath locator.
         /// </summary>
