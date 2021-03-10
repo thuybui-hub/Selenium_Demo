@@ -249,17 +249,8 @@ namespace InfectionLogAutomation.PageObject.Home
         public void ShowBothActiveAndInactiveRecords()
         {
             DriverUtils.WaitForPageLoad();
-            DriverUtils.wait(3);
-            txtFilters.GetElement().Click();
-            //txtFilters.Click();
+            txtFilters.Click();
             ClearAllValueInCombobox("Filters");
-            List<string> filters = new List<string> { "Active", "Inactive" };
-            foreach (var f in filters)
-            {
-                txtFilters.SendKeys(f);
-                DriverUtils.wait(1);
-                System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            }
             btnSearch.Click();
         }
 

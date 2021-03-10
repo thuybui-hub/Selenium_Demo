@@ -66,7 +66,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
                 {
                     rowValue = rowValue + " " + spanElements[i].Text;                    
                 }
-                displayedList.Add(rowValue);
+                displayedList.Add(rowValue.Trim());
             }
 
             return displayedList;

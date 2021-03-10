@@ -145,6 +145,7 @@
     <Compile Include="Tests\PBI_23924.cs" />
     <Compile Include="Tests\PBI_23864.cs" />
     <Compile Include="Tests\PBI_23982.cs" />
+    <Compile Include="Tests\PBI_23983.cs" />
     <Compile Include="Tests\PBI_23984.cs" />
     <Compile Include="Tests\PBI_24066.cs" />
     <Compile Include="Tests\PBI_24090.cs" />

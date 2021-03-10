@@ -50,6 +50,12 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public readonly Ul lstBoxDisposition;
         public readonly Ul lstInfectionType;
 
+        // Duplicate pop-up
+        public readonly BaseElement divDialogContent;
+        public readonly Button btnSaveNewEntry;
+        public readonly Button btnEditExisting;
+        public readonly Button btnCancelEditting;
+
         #region Actions
         public LogEntryDetailPage()
         {            
@@ -83,6 +89,12 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             lstBoxTestingStatus = new Ul(By.XPath("//ul[@id=\"testingStatus_listbox\"]"));
             lstBoxDisposition = new Ul(By.XPath("//ul[@id=\"disposition_listbox\"]"));
             lstInfectionType = new Ul(By.XPath("//ul[@id=\"infectionType_listbox\"]"));
+
+            // Duplicate pop-up
+            divDialogContent = new BaseElement(By.Id("dialog"));
+            btnSaveNewEntry = new Button(By.XPath("//button[@class=\"k-button k-primary\" and text()=\"Save New Entry\"]"));
+            btnEditExisting = new Button(By.XPath("//button[@class=\"k-button\" and text()=\"Edit Existing\"]"));
+            btnCancelEditting = new Button(By.XPath("//button[@class=\"k-button\" and text()=\"Cancel\"]"));
         }
 
         public List<string> GetListOfResidents()
@@ -199,7 +211,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             selectedValue = list[rd.Next(0, list.Count - 1)].Trim();                       
             txtRegion.SendKeys(selectedValue);
             DriverUtils.wait(1);
-            System.Windows.Forms.SendKeys.SendWait("{Enter}");           
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
             lstResult.Add(selectedValue);            
 
             // Fill Community
@@ -231,13 +243,14 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     DriverUtils.WaitForPageLoad();
                     txtEmployee.Click();
                     list = lstBoxEmployee.GetSubOptions();
-                    int index = rd.Next(0, list.Count - 1);
                     selectedValue = list[rd.Next(0, list.Count - 1)];
                     int secondSpaceIndex = selectedValue.IndexOf(" ", selectedValue.IndexOf(" ", 0) + 1);
                     int thirdSpaceIndex = selectedValue.IndexOf(" ", secondSpaceIndex + 1);
                     name = selectedValue.Substring(0, secondSpaceIndex);
                     ID = selectedValue.Substring(secondSpaceIndex + 1, thirdSpaceIndex - secondSpaceIndex - 1);
-                    lstBoxEmployee.SelectOptionByIndex(index);
+                    txtEmployee.SendKeys(name);
+                    DriverUtils.wait(2);
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
                     lstResult.Add(name);
                     lstResult.Add(ID);
                     break;
@@ -317,14 +330,23 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
         public void SaveLogEntry()
         {
+            DriverUtils.WaitForPageLoad();
             btnSaveLogEntry.ScrollToView();
             btnSaveLogEntry.Click();
+
+            DriverUtils.WaitForPageLoad();
+
+            if (btnSaveNewEntry.IsDisplayed())
+            {
+                btnSaveNewEntry.Click();
+            }
+
+            DriverUtils.WaitForPageLoad();
 
             if (IsAlertPresent())
             {
                 alertWin.Accept();
             }
-            DriverUtils.WaitForPageLoad();
         }
 
         public void CancelLogEntry()
@@ -536,10 +558,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             switch (field)
             {
                 case "Test Status":
-                    result = spnTestingStatus.GetAttribute("aria-disabled").Equals("false");
+                    result = spnTestingStatus.GetAttribute("aria-disabled").Equals("true");
                     break;
                 case "Disposition":
-                    result = spnTestingStatus.GetAttribute("aria-disabled").Equals("false");
+                    result = spnDisposition.GetAttribute("aria-disabled").Equals("true");
                     break;
                 default:
                     throw new Exception(string.Format("Field is incorrect."));
