@@ -26,5 +26,25 @@ namespace SeleniumCSharp.Core.ElementWrapper
             : base(locator)
         {
         }
+
+        /// <summary>
+        /// Return the inner text of all item with the same span symbol 
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetItems()
+        {
+            List<string> displayedList = new List<string> { };
+            List<IWebElement> listElements = GetElements();
+
+            foreach (IWebElement item in listElements)
+            {
+                if (item.Displayed)
+                {
+                    displayedList.Add(item.Text.Trim());
+                }
+            }
+
+            return displayedList;
+        }
     }
 }

@@ -123,6 +123,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="DataObject\LogEntryData.cs" />
     <Compile Include="DataObject\ClientLogEntryInfo.cs" />
     <Compile Include="DataObject\LoginData.cs" />
     <Compile Include="DataObject\ResidentLogEntryInfo.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Tests\PBI_23922.cs" />
     <Compile Include="Tests\PBI_23924.cs" />
     <Compile Include="Tests\PBI_23864.cs" />
+    <Compile Include="Tests\PBI_23953.cs" />
     <Compile Include="Tests\PBI_23982.cs" />
     <Compile Include="Tests\PBI_23983.cs" />
     <Compile Include="Tests\PBI_23984.cs" />

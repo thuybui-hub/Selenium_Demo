@@ -15,13 +15,13 @@ namespace InfectionLogAutomation.PageObject.Common
     public class CommonPage
     {
         // Main menu
-        public readonly Link lnkInfectiousOutbreakLog;        
+        public Link lnkInfectiousOutbreakLog;        
 
         // Paging
-        public readonly Span spnPaging;
+        public Span spnPaging;
 
         // Page title
-        public readonly Label lblTitle;
+        public Label lblTitle, lblRegionAndCommunity;
 
         // Alert window
         public IAlert alertWin;
@@ -42,6 +42,8 @@ namespace InfectionLogAutomation.PageObject.Common
 
             // Table
             divNoRecords = new BaseElement(By.XPath("//div[@class=\"k-grid-norecords\"]"));
+
+            lblRegionAndCommunity = new Label(By.XPath("//div[@id=\"logForm\"]//p"));
         }
 
         #region Main Action
