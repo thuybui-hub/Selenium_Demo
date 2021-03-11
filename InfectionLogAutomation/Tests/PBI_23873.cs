@@ -40,7 +40,7 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Verify that Home page containing dashboard/table of infections displays");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page does not display");
-            Assert.IsTrue(HomePage.tblDashboardTableHeader.IsDisplayed(), "Home page does not contain dashboard/table of infections");            
+            Assert.IsTrue(HomePage.tblDashboardTableHeader.IsDisplayed(), "Home page does not contain dashboard/table of infections");
 
             #region Pre-condition: Create a log entry
             // Go to New Log Entry
@@ -173,6 +173,10 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that existing Log entries are opened");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist(pageTitle), "Existing Log entry is not opened");
             Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(entryInfo, "Team"), "Existing log entry's data is correct");
+
+            Log.Info("Delete log entry created");
+            LogEntryDetailPage.SelectMenuItem(Constants.DashboardPath);
+            HomePage.DeleteALogEntry(entryInfo[5]);
             #endregion
         }
     }
