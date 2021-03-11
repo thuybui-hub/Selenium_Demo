@@ -31,7 +31,6 @@ namespace InfectionLogAutomation.PageObject.Home
         public BaseElement divDashboardTable;
         public Table tblDashboardTableHeader;
         public Table tblDashboardTable;
-        public BaseElement divNoRecords;
 
         // Filter popup
         public TextBox txtFilterValue;
@@ -61,7 +60,6 @@ namespace InfectionLogAutomation.PageObject.Home
             divDashboardTable = new BaseElement(By.Id("logGrid"));
             tblDashboardTableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
             tblDashboardTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
-            divNoRecords = new BaseElement(By.XPath("//div[@class=\"k-grid-norecords\"]"));
 
             // Filter popup
             txtFilterValue = new TextBox(By.XPath("//form[@aria-hidden=\"false\"]//input[@title=\"Value\"]"));

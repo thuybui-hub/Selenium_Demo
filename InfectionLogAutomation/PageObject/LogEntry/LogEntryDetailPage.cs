@@ -60,6 +60,16 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public readonly Button btnEditExisting;
         public readonly Button btnCancelEditting;
 
+        // Tabs in New Resident Log Entry form
+        public readonly BaseElement divLogEntry;
+        public readonly BaseElement divAttachments;
+        public readonly Button btnSelectFiles;
+        public readonly BaseElement divDocumentTable;
+        public readonly Table tblDocumentTableHeader;
+        public readonly Table tblDocumentTable;
+        public readonly Button btnUploadSelectedFile;
+        public readonly Button btnClearSelectedFile;
+
         #region Actions
         public LogEntryDetailPage()
         {            
@@ -104,6 +114,13 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             btnEditExisting = new Button(By.XPath("//button[@class=\"k-button\" and text()=\"Edit Existing\"]"));
             btnCancelEditting = new Button(By.XPath("//button[@class=\"k-button\" and text()=\"Cancel\"]"));
 
+            // Tabs in New Resident Log Entry form
+            divLogEntry = new BaseElement(By.Id("entryTab"));
+            divAttachments = new BaseElement(By.Id("attachmentTab"));
+            tblDocumentTableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
+            tblDocumentTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
+            btnUploadSelectedFile = new Button(By.XPath("//button[@class=\"k-button k-upload-selected k-primary\" and text()=\"Upload\"]"));
+            btnClearSelectedFile = new Button(By.XPath("//button[@class=\"k-button k-clear-selected\" and text()=\"Clear\"]"));
         }
 
         public List<string> GetListOfResidents()
@@ -423,6 +440,99 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
             return displayedList;
         }
+
+        public void SelectResidentFormTab(string tabName)
+        {
+            DriverUtils.WaitForPageLoad();
+            Span tab = new Span(By.XPath("//span[@class=\"k-link\" and contains(text(),\"" + tabName +"\")]"));
+            tab.Click();
+            DriverUtils.WaitForPageLoad();
+
+            if (btnSaveNewEntry.IsDisplayed())
+            {
+                btnSaveNewEntry.Click();
+            }
+            DriverUtils.WaitForPageLoad();
+        }
+
+        #region Attachments
+        /// <summary>
+        /// Upload an attachment for a resident log entry
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void SelectAnAttachment(string filePath)
+        {
+            DriverUtils.WaitForPageLoad();
+            btnSelectFiles.Click();
+            System.Windows.Forms.SendKeys.SendWait(filePath);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            DriverUtils.WaitForPageLoad();
+        }
+
+        /// <summary>
+        /// Clear the selected attachment in Selete files txt
+        /// </summary>
+        public void ClearSelectedAttachment()
+        {
+            DriverUtils.WaitForPageLoad();
+            btnClearSelectedFile.Click();
+        }
+
+        /// <summary>
+        /// Upload an attachment
+        /// </summary>
+        public void UploadAttachment()
+        {
+            DriverUtils.WaitForPageLoad();
+            btnUploadSelectedFile.Click();
+            System.Windows.Forms.SendKeys.SendWait("{Tab}");
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            DriverUtils.WaitForPageLoad();
+        }
+
+        /// <summary>
+        /// Click on Delete button of an attachment
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void ClickOnDeleteAttachedButton(string fileName)
+        {
+            DriverUtils.WaitForPageLoad();
+            int rowIndex = tblDocumentTable.GetTableRowIndex(0, fileName);
+            tblDocumentTable.ClickTableCell(3, rowIndex);
+            DriverUtils.WaitForPageLoad();
+        }
+
+        /// <summary>
+        /// Confirm if continue on deleting attachment or not
+        /// </summary>
+        /// <param name="buttonName"></param>
+        public void ConfirmAttachedDeletion(string buttonName)
+        {
+            DriverUtils.WaitForPageLoad();
+            switch (buttonName)
+            {
+                case "OK":
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                    break;
+                case "Cancel":
+                    System.Windows.Forms.SendKeys.SendWait("{Tab}");
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                    break;
+            }
+            DriverUtils.WaitForPageLoad();
+        }
+
+        /// <summary>
+        /// Delete an attachment
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="buttonName"></param>
+        public void DeleteAnAttachment(string fileName, string buttonName)
+        {
+            ClickOnDeleteAttachedButton(fileName);
+            ConfirmAttachedDeletion(buttonName);
+        }
+        #endregion Attachment
         #endregion Actions        
 
 
@@ -597,6 +707,70 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && spnDisposition.GetText().Equals(entryInfo[11].ToString());
         }
 
+
+        #region Attachments/// <summary>
+        /// Check if readonly user is able to add attachments or not
+        /// </summary>
+        /// <param> status = 'able'/'unable'</param>
+        public bool IsAbleToAddAttachment(string status = "able")
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            result = btnSelectFiles.IsDisplayed() && btnSelectFiles.IsEnabled();
+            return result;
+        }
+        public bool IsUploadedDocumentDisplayed(string fileName, string uploadedBy, string uploadedDate)
+        {
+
+            bool result = true;
+            DriverUtils.WaitForPageLoad();
+
+            if (tblDocumentTable.IsDisplayed())
+            {
+                List<string> lstFiles = tblDocumentTable.GetTableAllCellValueInColumn("File Name");
+
+                result = lstFiles.Contains(fileName);
+
+                if (result)
+                {
+                    int rowIndex = tblDocumentTable.GetTableRowIndex(0, fileName);
+                    string actualUploadedBy = tblDocumentTable.GetTableCellValue(1, rowIndex);
+                    string actualUploadedDate = DateTime.Parse(tblDocumentTable.GetTableCellValue(2, rowIndex)).ToString("MM/dd/yyyy");
+                    result = result && actualUploadedBy.Equals(uploadedBy)
+                          && (actualUploadedDate.Equals(uploadedDate) || actualUploadedDate.Equals(DateTime.Parse(uploadedDate).AddDays(-1).ToString("MM/dd/yyyy")));
+                }
+            }
+            else result = false;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Check to see if the attachment is deleted successfully
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public bool IsAttachedDeleted(string fileName)
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            if (divNoRecords.IsDisplayed())
+            {
+                result = true;
+            }
+            else
+            {
+                List<string> attachedList = tblDocumentTable.GetTableAllCellValueInColumn("File Name");
+                if (attachedList.Contains(fileName))
+                {
+                    result = false;
+                }
+                else result = true;
+            }
+
+            return result;
+        }
+        #endregion Attachments
         #endregion Check points
     }
 }

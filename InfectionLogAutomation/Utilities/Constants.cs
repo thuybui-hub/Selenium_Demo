@@ -40,6 +40,7 @@ namespace InfectionLogAutomation.Utilities
         public static string ResidentCommunitySubmittorUser = ConfigurationManager.AppSettings["residentCommunityAdminUser"];
         public static string ClientSubmittorUser = ConfigurationManager.AppSettings["​clientSubmittorUser"];
         public static string ResidentReadOnlyUser = ConfigurationManager.AppSettings["residentReadOnlyUser"];
+        public static readonly string DataPath = ConfigurationManager.AppSettings["dataPath"];
 
         public static List<string> TestStatus = new List<string> { "Not Tested", "Tested - Confirmed", "Tested - Negative", "Tested - Pending", "Inconclusive" };
         public static List<string> Disposition = new List<string> { "Resolved Negative", "Quarantined", "Hospitalized", "Expired", "Recovered", "Transferred/Discharged", "Not Quarantined" };

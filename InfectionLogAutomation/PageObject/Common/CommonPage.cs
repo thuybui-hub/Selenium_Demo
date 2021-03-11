@@ -26,6 +26,9 @@ namespace InfectionLogAutomation.PageObject.Common
         // Alert window
         public IAlert alertWin;
 
+        // Table
+        public BaseElement divNoRecords;
+
         public CommonPage()
         {
             // Main menu
@@ -36,6 +39,9 @@ namespace InfectionLogAutomation.PageObject.Common
 
             // Page title
             lblTitle = new Label(By.XPath("//div[@id=\"logForm\"]//h3"));
+
+            // Table
+            divNoRecords = new BaseElement(By.XPath("//div[@class=\"k-grid-norecords\"]"));
         }
 
         #region Main Action
