@@ -70,6 +70,31 @@ namespace InfectionLogAutomation.PageObject.Home
         }
 
         #region Main Actions
+
+        /// <summary>
+        /// Return selected Last Updated From; Last Updated To
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        public void GetSelectedDateFromDatePicker(out DateTime from, out DateTime to)
+        {
+            from = DateTime.Now;
+            to = DateTime.Now;
+            Link lnk;
+            Span pickerFrom = new Span(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));
+            Span pickerTo = new Span(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));
+
+            pickerFrom.Click();
+            lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
+            string frm = lnk.GetAttribute("title");
+            from = DateTime.Parse(frm);            
+
+            pickerTo.Click();
+            lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
+            string t = lnk.GetAttribute("title");
+            to = DateTime.Parse(t);
+        }
+
         public void ClearAllFilters()
         {
             DriverUtils.WaitForPageLoad();
@@ -146,6 +171,7 @@ namespace InfectionLogAutomation.PageObject.Home
             DriverUtils.WaitForPageLoad();
             int rowIndex = tblDashboardTable.GetTableRowIndex(5, ID);
             tblDashboardTable.ClickTableCell(13, rowIndex);
+            DriverUtils.wait(1);
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
         }
 
@@ -440,6 +466,22 @@ namespace InfectionLogAutomation.PageObject.Home
         {
             DriverUtils.WaitForPageLoad();
             return table.GetColumnHeaderAttribute(columnName, "aria-sort").Contains("descending");
+        }
+
+        public bool AreDefaultSearchValueCorrect()
+        {
+            bool result = true;
+            DateTime from, to;
+
+            GetSelectedDateFromDatePicker(out from, out to);
+            double difference = to.Subtract(from).TotalDays;
+
+            LI selectedFilter = new LI(By.XPath("//ul[@id=\"allFilters_taglist\"]/li"));
+
+            result = selectedFilter.GetText().Equals("Active")
+                && difference == 7;
+
+            return result;
         }
         #endregion Check Points
     }

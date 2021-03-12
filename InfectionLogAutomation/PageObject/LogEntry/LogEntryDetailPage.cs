@@ -205,7 +205,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 case "Client":
                     string lastName = "LN" + Utils.GetRandomValue("last name");
                     string firstName = "FN" + Utils.GetRandomValue("first name");
-                    string MRN = Utils.GetRandomValue("123456789");
+                    string MRN = rd.Next(100, 123456789).ToString();
                     FillClientInfo(lastName, firstName, MRN);
                     lstResult.Add(lastName + ", " + firstName);                    
                     lstResult.Add(MRN);
