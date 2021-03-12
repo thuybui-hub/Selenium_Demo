@@ -125,6 +125,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             // Tabs in New Resident Log Entry form
             divLogEntry = new BaseElement(By.Id("entryTab"));
             divAttachments = new BaseElement(By.Id("attachmentTab"));
+            btnSelectFiles = new Button(By.XPath("//div[@class=\"k-button k-upload-button\"]"));
+            divDocumentTable = new BaseElement(By.Id("documentsGrid"));
             tblDocumentTableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
             tblDocumentTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
             btnUploadSelectedFile = new Button(By.XPath("//button[@class=\"k-button k-upload-selected k-primary\" and text()=\"Upload\"]"));
@@ -444,11 +446,12 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             tab.Click();
             DriverUtils.WaitForPageLoad();
 
-            if (btnSaveNewEntry.IsDisplayed())
+            if (btnEditExisting.IsDisplayed())
             {
-                btnSaveNewEntry.Click();
+                btnEditExisting.Click();
+                DriverUtils.WaitForPageLoad();
+                tab.Click();
             }
-            DriverUtils.WaitForPageLoad();
         }
 
         #region Attachments
@@ -462,7 +465,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             btnSelectFiles.Click();
             System.Windows.Forms.SendKeys.SendWait(filePath);
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            DriverUtils.WaitForPageLoad();
         }
 
         /// <summary>
@@ -481,9 +483,9 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         {
             DriverUtils.WaitForPageLoad();
             btnUploadSelectedFile.Click();
+            DriverUtils.wait(2);
             System.Windows.Forms.SendKeys.SendWait("{Tab}");
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            DriverUtils.WaitForPageLoad();
         }
 
         /// <summary>
@@ -495,7 +497,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             DriverUtils.WaitForPageLoad();
             int rowIndex = tblDocumentTable.GetTableRowIndex(0, fileName);
             tblDocumentTable.ClickTableCell(3, rowIndex);
-            DriverUtils.WaitForPageLoad();
         }
 
         /// <summary>
@@ -515,7 +516,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     System.Windows.Forms.SendKeys.SendWait("{Enter}");
                     break;
             }
-            DriverUtils.WaitForPageLoad();
         }
 
         /// <summary>
@@ -708,14 +708,35 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// Check if readonly user is able to add attachments or not
         /// </summary>
         /// <param> status = 'able'/'unable'</param>
-        public bool IsAbleToAddAttachment(string status = "able")
+        public bool IsAbleToAddAttachment()
         {
             DriverUtils.WaitForPageLoad();
             bool result = true;
             result = btnSelectFiles.IsDisplayed() && btnSelectFiles.IsEnabled();
             return result;
         }
-        public bool IsUploadedDocumentDisplayed(string fileName, string uploadedBy, string uploadedDate)
+
+        /// <summary>
+        /// Check if readonly user is able to delete attachments or not
+        /// </summary>
+        /// <param> status = 'able'/'unable'</param>
+        public bool IsUnableToDeleteAttachment()
+        {
+            bool result = true;
+            BaseElement btnDeleteAttachment = new BaseElement(By.XPath("//a[@class=\"k-command-cell\"]"));
+            List<BaseElement> lstDeleteBtn = btnDeleteAttachment.GetListElements();
+            
+            foreach (BaseElement btn in lstDeleteBtn)
+            {
+                if (btn.IsDisplayed())
+                {
+                    result = result && btn.GetAttribute("style").Equals("display:none");
+                }
+            }
+            return result;
+        }
+
+        public bool IsDocumentUploadedSuccessfully(string fileName, string uploadedBy, string uploadedDate)
         {
 
             bool result = true;
@@ -723,7 +744,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
             if (tblDocumentTable.IsDisplayed())
             {
-                List<string> lstFiles = tblDocumentTable.GetTableAllCellValueInColumn("File Name");
+                List<string> lstFiles = tblDocumentTable.GetTableAllCellValueInColumn(0);
 
                 result = lstFiles.Contains(fileName);
 
@@ -765,6 +786,32 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Check if readonly user is able to update log entry information or not
+        /// </summary>
+        /// <param> </param>
+        public bool IsReadOnlyUserAbleToUpdateLogEntryInfo()
+        {
+            BaseElement field = new BaseElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+            List<BaseElement> lstField = field.GetListElements();
+            return spnInfectionTypeValue.IsDisplayed()
+                && spnOnsetDateValue.IsDisplayed()
+                && txtSymptoms.IsDisplayed()
+                && lstField[0].GetAttribute("contenteditable").Equals("false")
+                && spnTestingStatus.IsDisplayed()
+                && spnTestingStatus.GetAttribute("aria-disabled").Equals("true")
+                && txtTestingStatusDate.IsDisplayed()
+                && txtTestingStatusDate.GetAttribute("readonly").Equals(null)
+                && spnDisposition.IsDisplayed()
+                && spnDisposition.GetAttribute("aria-disabled").Equals("true")
+                && txtDispositionDate.IsDisplayed()
+                && txtDispositionDate.GetAttribute("readonly").Equals(null)
+                && txtComments.IsDisplayed()
+                && lstField[1].GetAttribute("contenteditable").Equals("false")
+                && btnSaveLogEntry.IsDisplayed()
+                && btnSaveLogEntry.GetAttribute("disabled").Equals("disabled");
         }
         #endregion Attachments
         #endregion Check points

@@ -260,6 +260,26 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
+        /// Get table all cell value in column
+        /// </summary>        
+        /// <param name="columnIndex"></param>
+        /// <returns></returns>        
+        public List<string> GetTableAllCellValueInColumn(int columnIndex)
+        {
+            List<string> list = new List<string>() { };
+            List<IWebElement> trs = new List<IWebElement>(GetElement().FindElements(By.TagName("tr")));
+
+            for (int i = 0; i < trs.Count; i++)
+            {
+                string temp = GetTableCellValue(columnIndex, i);
+                if (string.IsNullOrEmpty(temp))
+                    list.Add("null");
+                else list.Add(temp.Trim());
+            }
+            return list;
+        }
+
+        /// <summary>
         /// Click table cell
         /// </summary>
         /// <param name="trs"></param>

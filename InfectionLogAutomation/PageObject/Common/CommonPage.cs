@@ -148,6 +148,27 @@ namespace InfectionLogAutomation.PageObject.Common
             }
             return result;
         }
+
+        public bool IsReadOnlyUserAbleToAddNewRecords(string status)
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            Link navigationItem = new Link(By.LinkText(status));
+            switch (status)
+            {
+                case "New Log Entry":
+                    List<string> expectedSubMenu = null;
+                    List<string> actualSubmenu = GetSubMenuItems("New Log Entry");
+                    result = navigationItem.IsDisplayed() & (actualSubmenu == expectedSubMenu);
+                    break;
+                case "Bulk Processing":
+                    result = !navigationItem.IsDisplayed();
+                    break;
+                default:
+                    throw new Exception(string.Format("Status value is invalid."));
+            }
+            return result;
+        }
         
         #endregion Check Points
     }

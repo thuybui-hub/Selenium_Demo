@@ -19,7 +19,6 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23922_AT_24016()
         {
             #region Test data
-            TeamLogEntryInfo teamLogEntryData = new TeamLogEntryInfo();
             List<string> outLstResult = new List<string> { };
             string fileName = "LGG testing.txt";
             string uncommonFileName = "LGGTesting.iaa";
@@ -53,21 +52,21 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.UploadAttachment();
 
             Log.Info("Verify that the document is attached successfully");
-            Assert.IsTrue(LogEntryDetailPage.IsUploadedDocumentDisplayed(fileName, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
+            Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(fileName, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
 
             Log.Info("8. Try to attached new document with same name document at step #6");
             LogEntryDetailPage.SelectAnAttachment(filePath);
             LogEntryDetailPage.UploadAttachment();
 
             Log.Info("Verify that user can overwrite documents of the same name when attaching");
-            Assert.IsTrue(LogEntryDetailPage.IsUploadedDocumentDisplayed(fileName, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
+            Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(fileName, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
 
             Log.Info("6. Attach a document that is NOT common format (e.g. IAA file) ");
             LogEntryDetailPage.SelectAnAttachment(uncommonFilePath);
             LogEntryDetailPage.UploadAttachment();
 
             Log.Info("Verify that the docment is NOT attached successfully");
-            Assert.IsFalse(LogEntryDetailPage.IsUploadedDocumentDisplayed(uncommonFilePath, uploadedBy, uploadedDate), "The uncommon format document is uploaded successfully.");
+            Assert.IsFalse(LogEntryDetailPage.IsDocumentUploadedSuccessfully(uncommonFilePath, uploadedBy, uploadedDate), "The uncommon format document is uploaded successfully.");
 
             Log.Info("9. Click on Save button");
             LogEntryDetailPage.SelectResidentFormTab("Log Entry");
@@ -77,8 +76,17 @@ namespace InfectionLogAutomation.Tests
             HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
             Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(outLstResult, "Resident"), "Uploaded records is unable to be editted.");
-            Assert.IsTrue(LogEntryDetailPage.IsUploadedDocumentDisplayed(fileName, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
+            Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(fileName, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.ShowBothActiveAndInactiveRecords();
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
 
         [Test]
@@ -105,6 +113,10 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
             HomePage.SelectMenuItem(Constants.NewResidentLogEntryPath);
             LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out outLstResult);
+            LogEntryDetailPage.SelectResidentFormTab("Attachments");
+            LogEntryDetailPage.SelectAnAttachment(file1Path);
+            LogEntryDetailPage.UploadAttachment();
+            LogEntryDetailPage.SelectResidentFormTab("Log Entry");
             LogEntryDetailPage.SaveLogEntry();
             DriverUtils.CloseDrivers();
             #endregion Pre-condition
@@ -125,7 +137,7 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SelectResidentFormTab("Attachments");
 
             Log.Info("Verify that there is a field for attached document");
-            Assert.IsTrue(LogEntryDetailPage.btnSelectFiles.IsDisplayed() && LogEntryDetailPage.btnSelectFiles.IsEnabled(), "There is no field to attach a document.");
+            Assert.IsTrue(LogEntryDetailPage.IsAbleToAddAttachment(), "There is no field to attach a document.");
 
             Log.Info("5. Try to delete attached document");
             LogEntryDetailPage.DeleteAnAttachment(file1Name, "OK");
@@ -138,21 +150,21 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.UploadAttachment();
 
             Log.Info("Verify that the document is attached successfully");
-            Assert.IsFalse(LogEntryDetailPage.IsUploadedDocumentDisplayed(file2Name, uploadedBy, uploadedDate));
+            Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(file2Name, uploadedBy, uploadedDate));
 
             Log.Info("8. Try to attached new document with same name document at step #7");
             LogEntryDetailPage.SelectAnAttachment(file2Path);
             LogEntryDetailPage.UploadAttachment();
 
             Log.Info("Verify that user can overwrite documents of the same name when attaching");
-            Assert.IsFalse(LogEntryDetailPage.IsUploadedDocumentDisplayed(file2Name, uploadedBy, uploadedDate));
+            Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(file2Name, uploadedBy, uploadedDate));
 
             Log.Info("6. Attach a document that is NOT common format (e.g. IAA file) ");
             LogEntryDetailPage.SelectAnAttachment(uncommonFilePath);
             LogEntryDetailPage.UploadAttachment();
 
             Log.Info("Verify that the docment is NOT attached successfully");
-            Assert.IsFalse(LogEntryDetailPage.IsUploadedDocumentDisplayed(uncommonFilePath, uploadedBy, uploadedDate));
+            Assert.IsFalse(LogEntryDetailPage.IsDocumentUploadedSuccessfully(uncommonFilePath, uploadedBy, uploadedDate));
 
             Log.Info("9. Make some changes");
             LogEntryDetailPage.SelectResidentFormTab("Log Entry");
@@ -166,8 +178,17 @@ namespace InfectionLogAutomation.Tests
             HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
             Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(outLstResult, "Resident"), "Uploaded records is unable to be editted.");
-            Assert.IsTrue(LogEntryDetailPage.IsUploadedDocumentDisplayed(file2Name, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
+            Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(file2Name, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.ShowBothActiveAndInactiveRecords();
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
     }
 }
