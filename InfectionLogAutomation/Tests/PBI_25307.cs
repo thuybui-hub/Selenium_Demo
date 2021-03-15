@@ -31,6 +31,8 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Verify that default search values are correct");
             Assert.IsTrue(HomePage.AreDefaultSearchValueCorrect(), "The default search values display incorrectly");
+
+            bool test = HomePage.IsCommunitySearchable();
             #endregion
         }
     }
