@@ -753,7 +753,11 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     int rowIndex = tblDocumentTable.GetTableRowIndex(0, fileName);
                     string actualUploadedBy = tblDocumentTable.GetTableCellValue(1, rowIndex);
                     string actualUploadedDate = DateTime.Parse(tblDocumentTable.GetTableCellValue(2, rowIndex)).ToString("MM/dd/yyyy");
-                    result = result && actualUploadedBy.Equals(uploadedBy)
+
+                    int index = uploadedBy.IndexOf("\\", 0);
+                    string name = uploadedBy.Substring(index + 1, uploadedBy.Length - index - 1);
+
+                    result = result && actualUploadedBy.Equals(name)
                           && (actualUploadedDate.Equals(uploadedDate) || actualUploadedDate.Equals(DateTime.Parse(uploadedDate).AddDays(-1).ToString("MM/dd/yyyy")));
                 }
             }
