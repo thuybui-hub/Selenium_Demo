@@ -16,7 +16,10 @@ namespace InfectionLogAutomation.Tests
         public void PBI_25307_AT_25312()
         {
             #region Test Data
-            
+            string from = DateTime.Now.AddDays(2).ToString();
+            List<string> community = new List<string>() { "Rio Las Palmas" };
+            List<string> filters = new List<string>() { "Active", "Inactive" };
+            string to;
             #endregion
 
             #region Main Steps
@@ -24,7 +27,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);            
 
             Log.Info("Verify that Home page displays correctly");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page displays incorrectly");
@@ -32,7 +35,31 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that default search values are correct");
             Assert.IsTrue(HomePage.AreDefaultSearchValueCorrect(), "The default search values display incorrectly");
 
-            bool test = HomePage.IsCommunitySearchable();
+            Log.Info("Verify that users can search with one or more communities");
+            Assert.IsTrue(HomePage.IsCommunityMultiselect(), "Unable to select more communities");
+
+            Log.Info("Verify that Filters field is correct");
+            Assert.IsTrue(HomePage.IsFiltersFieldCorrect(), "The Filters field is incorrect");
+
+            Log.Info("Verify that Last Updated \"from - to\" date range and selected from a calendar");
+            Assert.IsTrue(HomePage.AreDateSelectedFromCalendar(), "Last Updated dates are not selected from calendar");            
+
+            Log.Info("3. Enter Last Updated dates and From  is later than To");
+            HomePage.FillSearchCriterias("", from);
+
+            Log.Info("Verify that an alert message shows to tell that Last Updated From should not be later than To");
+            Assert.IsTrue(HomePage.GetAlertWinText().Contains("Last Updated From Date should not be later than To Date"));
+            HomePage.CloseAlertPopup();
+
+            Log.Info("4. Perform search criteria");
+            to = DateTime.Now.AddDays(9).ToString();
+            HomePage.PerformASearchCriteria(community, from, to, filters);
+
+            Log.Info("5. Click on Reset button");
+            HomePage.ResetSearchCriteria();
+
+            Log.Info("Verify that Reset button restores the search criteria to default settings");
+            bool abc = HomePage.AreSearchCriteriasResetted();
             #endregion
         }
     }
