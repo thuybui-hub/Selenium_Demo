@@ -287,6 +287,8 @@ namespace InfectionLogAutomation.PageObject.Home
         #endregion Main Actions
 
         #region Check Points
+
+
         /// <summary>
         /// Check to see if the home page displays correctly
         /// </summary>
@@ -304,6 +306,11 @@ namespace InfectionLogAutomation.PageObject.Home
                 && divDashboardTable.IsDisplayed();
         }
 
+
+        /// <summary>
+        /// Check to see if dashboard table displays
+        /// </summary>
+        /// <returns></returns>
         public bool IsILogTableDisplayed()
         {
             DriverUtils.WaitForPageLoad();
@@ -481,6 +488,16 @@ namespace InfectionLogAutomation.PageObject.Home
             result = selectedFilter.GetText().Equals("Active")
                 && difference == 7;
 
+            return result;
+        }
+
+        public bool IsCommunitySearchable()
+        {
+            bool result = true;
+
+            Div parent = new Div(By.XPath(txtCommunity.GetElement() + "/parent::div"));
+            string s = parent.GetAttribute("class");
+            
             return result;
         }
         #endregion Check Points
