@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium.Support.UI;
 
 namespace InfectionLogAutomation.PageObject.Common
 {
@@ -87,6 +88,7 @@ namespace InfectionLogAutomation.PageObject.Common
 
         public string GetAlertWinText()
         {
+            DriverUtils.wait(1);
             IAlert alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
             return alertWin.Text;
         }
@@ -99,6 +101,21 @@ namespace InfectionLogAutomation.PageObject.Common
                 spnClearIcon.Click();
             }
 
+        }
+
+        public void CloseAlertPopup()
+        {
+            DriverUtils.wait(1);
+            IAlert alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
+
+            string alertMsg = alertWin.Text;
+
+            if (!string.IsNullOrEmpty(alertMsg))
+            {
+                alertWin.Accept();
+            }
+            
+            
         }
         #endregion Main Action
 

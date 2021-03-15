@@ -49,7 +49,7 @@ namespace InfectionLogAutomation.PageObject.Home
             txtLastUpdatedTo = new TextBox(By.Id("datepickerTo"));
             txtFilters = new TextBox(By.XPath("//ul[@id=\"allFilters_taglist\"]//following-sibling::input"));
             cbbFilters = new ComboBox(By.XPath("//select[@id=\"allFilters\"]"));
-            lstFilters = new Ul(By.XPath("//ul[@id=\"allFilters_taglist\"]"));
+            lstFilters = new Ul(By.XPath("//ul[@id=\"allFilters_listbox\"]"));
             btnSearch = new Button(By.Id("search"));
             btnReset = new Button(By.XPath("//button[@class=\"k-button btnClear\"]"));
 
@@ -92,7 +92,7 @@ namespace InfectionLogAutomation.PageObject.Home
             pickerTo.Click();
             lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
             string t = lnk.GetAttribute("title");
-            to = DateTime.Parse(t);
+            to = DateTime.Parse(t);           
         }
 
         public void ClearAllFilters()
@@ -177,9 +177,11 @@ namespace InfectionLogAutomation.PageObject.Home
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
         }
 
-        public void PerformASearchCriteria(string community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, string filters = null)
+        public void FillSearchCriterias(string community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, string filters = null)
         {
             DriverUtils.WaitForPageLoad();
+            txtLastUpdatedFrom = new TextBox(By.XPath("//input[@id=\"datepickerFrom\"]"));
+            txtLastUpdatedTo = new TextBox(By.XPath("//input[@id=\"datepickerTo\"]"));
 
             if (!string.IsNullOrEmpty(community))
             {
@@ -195,7 +197,6 @@ namespace InfectionLogAutomation.PageObject.Home
                 txtLastUpdatedFrom.Click();
                 txtLastUpdatedFrom.GetElement().Clear();
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
-                txtLastUpdatedFrom.Click();
                 txtLastUpdatedFrom.SendKeys(lastUpdatedFrom);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
@@ -204,8 +205,7 @@ namespace InfectionLogAutomation.PageObject.Home
             {
                 txtLastUpdatedTo.Click();
                 txtLastUpdatedTo.GetElement().Clear();
-                System.Windows.Forms.SendKeys.SendWait("{Enter}");
-                txtLastUpdatedTo.Click();
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");                
                 txtLastUpdatedTo.SendKeys(lastUpdatedTo);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
@@ -218,7 +218,12 @@ namespace InfectionLogAutomation.PageObject.Home
                 DriverUtils.wait(1);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
+        }
 
+        public void PerformASearchCriteria(string community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, string filters = null)
+        {
+            FillSearchCriterias(community, lastUpdatedFrom, lastUpdatedTo, filters);
+            DriverUtils.WaitForPageLoad();
             btnSearch.Click();
         }
 
@@ -486,20 +491,38 @@ namespace InfectionLogAutomation.PageObject.Home
             double difference = to.Subtract(from).TotalDays;
 
             LI selectedFilter = new LI(By.XPath("//ul[@id=\"allFilters_taglist\"]/li"));
-
             result = selectedFilter.GetText().Equals("Active")
                 && difference == 7;
 
             return result;
         }
 
-        public bool IsCommunitySearchable()
+        public bool IsCommunityMultiselect()
+        {
+            Div parent = new Div(By.XPath("//ul[@id=\"communityName_taglist\"]//following-sibling::input/parent::div"));            
+            return parent.GetAttribute("class").Contains("multiselect");
+        }
+
+        public bool AreDateSelectedFromCalendar()
+        {
+            return txtLastUpdatedFrom.GetAttribute("data-role").Equals("datepicker")
+                && txtLastUpdatedTo.GetAttribute("data-role").Equals("datepicker");
+        }
+
+        public bool IsFiltersFieldCorrect()
         {
             bool result = true;
+            List<string> exFilterItems = new List<string>() { "Active", "Inactive", "Tested - Pending", "Tested - Confirmed", "Expired", "Mass Testing", "Duplicates" };
+            exFilterItems.Sort();
 
-            Div parent = new Div(By.XPath(txtCommunity.GetElement() + "/parent::div"));
-            string s = parent.GetAttribute("class");
-            
+            Div filters = new Div(By.XPath("//ul[@id=\"allFilters_taglist\"]//following-sibling::input/parent::div"));
+            result = filters.GetAttribute("class").Contains("multiselect");
+
+            txtFilters.Click();
+            List<string> actualFiltersItems = lstFilters.GetOptions();
+            actualFiltersItems.Sort();
+
+            result = result && actualFiltersItems.SequenceEqual(exFilterItems);
             return result;
         }
         #endregion Check Points
