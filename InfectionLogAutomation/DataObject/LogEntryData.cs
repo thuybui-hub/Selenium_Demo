@@ -10,6 +10,7 @@ namespace InfectionLogAutomation.DataObject
         public string Community { get; set; }
         public string Name { get; set; }        
         public string MRN { get; set; }
+        [JsonProperty("InfectionType")]
         public string InfectionType { get; set; }
         public string OnsetDate { get; set; }
         [JsonProperty("Symptoms")]

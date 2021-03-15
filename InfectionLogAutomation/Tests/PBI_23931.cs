@@ -1,6 +1,8 @@
-﻿using InfectionLogAutomation.Utilities;
+﻿using InfectionLogAutomation.DataObject;
+using InfectionLogAutomation.Utilities;
 using NUnit.Framework;
 using SeleniumCSharp.Core.DriverWrapper;
+using SeleniumCSharp.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,7 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23931_AT_24018()
         {
             #region Test data
-            List<string> outLstResult = new List<string> { };
+            LogEntryData logEntryData = JsonParser.Get<LogEntryData>();
             string fileName = "LGG testing.txt";
             string filePath = Constants.DataPath + fileName;
             string uploadedBy = Constants.ResidentAdminUser;
@@ -35,12 +37,13 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Add a new resident log entry");
             HomePage.SelectMenuItem(Constants.NewResidentLogEntryPath);
-            LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out outLstResult);
+            LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out logEntryData);
+            LogEntryDetailPage.SaveLogEntry();
+            HomePage.OpenALogEntry(logEntryData.MRN);
             LogEntryDetailPage.SelectResidentFormTab("Attachments");
             LogEntryDetailPage.SelectAnAttachment(filePath);
             LogEntryDetailPage.UploadAttachment();
-            LogEntryDetailPage.SelectResidentFormTab("Log Entry");
-            LogEntryDetailPage.SaveLogEntry();
+            LogEntryDetailPage.SelectMenuItem(Constants.DashboardPath);
 
             Log.Info("Get number of Resident records");
             HomePage.ShowBothActiveAndInactiveRecords();
@@ -75,7 +78,7 @@ namespace InfectionLogAutomation.Tests
             //Assert.IsTrue(DashboardPage.deleteILogRecordBtn.ControlDefinition.Contains("display: none;"), "Delete button is still visible on Dashboard table");
 
             Log.Info("Click on ID of a Resident log entry");
-            HomePage.OpenALogEntry(outLstResult[3]);
+            HomePage.OpenALogEntry(logEntryData.MRN);
 
             Log.Info("Verify that user is unable to edit resident entry type log entries");
             Assert.IsTrue(LogEntryDetailPage.IsReadOnlyUserAbleToUpdateLogEntryInfo(), "Read Only user is able to edit resident log entry");
@@ -100,8 +103,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
             DriverUtils.GoToUrl(Constants.Url);
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.DeleteALogEntry(outLstResult[3]);
+            HomePage.DeleteALogEntry(logEntryData.MRN);
             #endregion Clean up
         }
     }

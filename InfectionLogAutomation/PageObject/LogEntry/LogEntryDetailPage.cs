@@ -561,9 +561,9 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             tab.Click();
             DriverUtils.WaitForPageLoad();
 
-            if (btnEditExisting.IsDisplayed())
+            if (btnSaveNewEntry.IsDisplayed())
             {
-                btnEditExisting.Click();
+                btnSaveNewEntry.Click();
                 DriverUtils.WaitForPageLoad();
                 tab.Click();
             }
@@ -620,7 +620,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// <param name="buttonName"></param>
         public void ConfirmAttachedDeletion(string buttonName)
         {
-            DriverUtils.WaitForPageLoad();
+            DriverUtils.wait(1);
             switch (buttonName)
             {
                 case "OK":
@@ -816,6 +816,36 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && spnOnsetDateValue.GetText().Equals(entryInfo[9].ToString())
                 && spnTestingStatus.GetText().Equals(entryInfo[10].ToString())
                 && spnDisposition.GetText().Equals(entryInfo[11].ToString());
+        }
+
+        public bool DoesDataOnEditPageDisplayCorrectly(LogEntryData logEntryData, string page = "Team")
+        {
+            DriverUtils.WaitForPageLoad();
+            string title = "Infection Log Entry for Team Member " + logEntryData.Name + " (" + logEntryData.MRN + ")";
+            string regionAndCommunityInfo = "at " + logEntryData.Region + ", " + logEntryData.Community;
+
+            switch (page)
+            {
+                case "Resident":
+                    title = "Infection Log Entry for Resident " + logEntryData.Name + " (" + logEntryData.MRN + ")";
+                    break;
+                case "Client":
+                    title = "Infection Log Entry for Ageility Client " + logEntryData.Name + " (" + logEntryData.MRN + ")";
+                    break;
+            }
+            Console.WriteLine(lblTitle.GetText() + ": " + title);
+            Console.WriteLine(lblRegionAndCommunity.GetText() + ": " + regionAndCommunityInfo);
+            Console.WriteLine(spnInfectionTypeValue.GetText() + ": " + logEntryData.InfectionType);
+            Console.WriteLine(spnOnsetDateValue.GetText() + ": " + logEntryData.OnsetDate);
+            Console.WriteLine(spnTestingStatus.GetText() + ": " + logEntryData.CurrentTestStatus);
+            Console.WriteLine(spnDisposition.GetText() + ": " + logEntryData.CurrentDisposition);
+
+            return lblTitle.GetText().Equals(title)
+                && lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo)
+                && spnInfectionTypeValue.GetText().Equals(logEntryData.InfectionType)
+                && (spnOnsetDateValue.GetText().Equals(logEntryData.OnsetDate) || spnOnsetDateValue.GetText().Equals(DateTime.Parse(logEntryData.OnsetDate).AddDays(-1).ToString("MM/dd/yyyy")) || spnOnsetDateValue.GetText().Equals(DateTime.Parse(logEntryData.OnsetDate).AddDays(-2).ToString("MM/dd/yyyy")))
+                && spnTestingStatus.GetText().Equals(logEntryData.CurrentTestStatus)
+                && spnDisposition.GetText().Equals(logEntryData.CurrentDisposition);
         }
 
 

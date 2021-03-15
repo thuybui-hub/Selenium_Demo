@@ -1,6 +1,7 @@
-﻿{ 
+﻿{
+  "InfectionType": "COVID-19",
   "CurrentTestStatus": "Not Tested",
   "CurrentDisposition": "Quarantined",
   "Symptoms": "Testing symptoms",
-  "Comments":  "Testing comment"
- }
+  "Comments": "Testing comment"
+}

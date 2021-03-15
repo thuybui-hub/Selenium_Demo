@@ -2,6 +2,7 @@
 using InfectionLogAutomation.Utilities;
 using NUnit.Framework;
 using SeleniumCSharp.Core.DriverWrapper;
+using SeleniumCSharp.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23922_AT_24016()
         {
             #region Test data
-            List<string> outLstResult = new List<string> { };
+            LogEntryData logEntryData = JsonParser.Get<LogEntryData>();
             string fileName = "LGG testing.txt";
             string uncommonFileName = "LGGTesting.iaa";
             string filePath = Constants.DataPath + fileName;
@@ -28,18 +29,17 @@ namespace InfectionLogAutomation.Tests
             string uploadedDate = DateTime.Now.ToString("MM/dd/yyyy");
             #endregion Test data
 
-            #region Main steps
-            Log.Info("1. Launch the site");
+            #region Pre-condition: There are existing resident log entries with attachments
             DriverUtils.GoToUrl(Constants.Url);
-
-            Log.Info("2. Login with valid user");
             LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
-
-            Log.Info("3. Go to New Log Entry -> Resident");
             HomePage.SelectMenuItem(Constants.NewResidentLogEntryPath);
+            LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out logEntryData);
+            LogEntryDetailPage.SaveLogEntry();
+            #endregion Pre-condition
 
-            Log.Info("4. Fill all required fields");
-            LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out outLstResult);
+            #region Main steps
+            Log.Info("3. Open an existing log entry at pre-condition");
+            HomePage.OpenALogEntry(logEntryData.MRN);
 
             Log.Info("5. Open Attachments tab");
             LogEntryDetailPage.SelectResidentFormTab("Attachments");
@@ -69,13 +69,13 @@ namespace InfectionLogAutomation.Tests
             Assert.IsFalse(LogEntryDetailPage.IsDocumentUploadedSuccessfully(uncommonFilePath, uploadedBy, uploadedDate), "The uncommon format document is uploaded successfully.");
 
             Log.Info("9. Click on Save button");
-            LogEntryDetailPage.SelectResidentFormTab("Log Entry");
-            LogEntryDetailPage.SaveLogEntry();
+            LogEntryDetailPage.SelectMenuItem(Constants.DashboardPath);
 
             Log.Info("Verify that the log entry is saved successfully with attachments");
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.OpenALogEntry(outLstResult[3]);
-            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(outLstResult, "Resident"), "Uploaded records is unable to be editted.");
+            logEntryData.InfectionType = "COVID-19";
+            HomePage.OpenALogEntry(logEntryData.MRN);
+            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, "Resident"), "Uploaded records is unable to be editted.");
+            LogEntryDetailPage.SelectResidentFormTab("Attachments");
             Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(fileName, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
             #endregion Main steps
 
@@ -84,8 +84,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
             DriverUtils.GoToUrl(Constants.Url);
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.DeleteALogEntry(outLstResult[3]);
+            HomePage.DeleteALogEntry(logEntryData.MRN);
             #endregion Clean up
         }
 
@@ -94,8 +93,7 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23922_AT_24017()
         {
             #region Test data
-            TeamLogEntryInfo teamLogEntryData = new TeamLogEntryInfo();
-            List<string> outLstResult = new List<string> { };
+            LogEntryData logEntryData = new LogEntryData();
             string file1Name = "LGG testing.txt";
             string file2Name = "LGG testing1.txt";
             string uncommonFileName = "LGGTesting.iaa";
@@ -104,34 +102,24 @@ namespace InfectionLogAutomation.Tests
             string uncommonFilePath = Constants.DataPath + uncommonFileName;
             string uploadedBy = Constants.ResidentAdminUser;
             string uploadedDate = DateTime.Now.ToString("MM/dd/yyyy");
-            teamLogEntryData.CurrentTestStatus = "Tested - Pending";
-            teamLogEntryData.CurrentDisposition = "Hospitalized";
             #endregion Test data
 
             #region Pre-condition: There are existing resident log entries with attachments
             DriverUtils.GoToUrl(Constants.Url);
             LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
             HomePage.SelectMenuItem(Constants.NewResidentLogEntryPath);
-            LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out outLstResult);
+            LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out logEntryData);
+            LogEntryDetailPage.SaveLogEntry();
+            HomePage.OpenALogEntry(logEntryData.MRN);
             LogEntryDetailPage.SelectResidentFormTab("Attachments");
             LogEntryDetailPage.SelectAnAttachment(file1Path);
             LogEntryDetailPage.UploadAttachment();
-            LogEntryDetailPage.SelectResidentFormTab("Log Entry");
-            LogEntryDetailPage.SaveLogEntry();
-            DriverUtils.CloseDrivers();
+            LogEntryDetailPage.SelectMenuItem(Constants.DashboardPath);
             #endregion Pre-condition
 
             #region Main steps
-            Log.Info("1. Launch the site");
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
-            DriverUtils.GoToUrl(Constants.Url);
-
-            Log.Info("2. Login with valid user");
-            LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
-
             Log.Info("3. Open an existing log entry at pre-condition");
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.OpenALogEntry(outLstResult[3]);
+            HomePage.OpenALogEntry(logEntryData.MRN);
 
             Log.Info("4. Open Attachments tab");
             LogEntryDetailPage.SelectResidentFormTab("Attachments");
@@ -168,16 +156,19 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("9. Make some changes");
             LogEntryDetailPage.SelectResidentFormTab("Log Entry");
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", teamLogEntryData.CurrentTestStatus);
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", teamLogEntryData.CurrentDisposition);
+            logEntryData.CurrentTestStatus = "Tested - Pending";
+            logEntryData.CurrentDisposition = "Hospitalized";
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryData.CurrentTestStatus);
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", logEntryData.CurrentDisposition);
 
             Log.Info("10. Click on save button");
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("Verify that the log entry is saved successfully with new attachments");
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.OpenALogEntry(outLstResult[3]);
-            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(outLstResult, "Resident"), "Uploaded records is unable to be editted.");
+            logEntryData.InfectionType = "COVID-19";
+            HomePage.OpenALogEntry(logEntryData.MRN);
+            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, "Resident"), "Uploaded records is unable to be editted.");
+            LogEntryDetailPage.SelectResidentFormTab("Attachments");
             Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(file2Name, uploadedBy, uploadedDate), "The document is uploaded unsuccessfully.");
             #endregion Main steps
 
@@ -186,8 +177,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
             DriverUtils.GoToUrl(Constants.Url);
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.DeleteALogEntry(outLstResult[3]);
+            HomePage.DeleteALogEntry(logEntryData.MRN);
             #endregion Clean up
         }
     }

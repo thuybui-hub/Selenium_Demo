@@ -153,6 +153,7 @@ namespace InfectionLogAutomation.PageObject.Home
 
         public void OpenALogEntry(string ID)
         {
+            ShowBothActiveAndInactiveRecords();
             DriverUtils.WaitForPageLoad();
             if (!string.IsNullOrEmpty(ID))
             {
@@ -169,6 +170,7 @@ namespace InfectionLogAutomation.PageObject.Home
         public void DeleteALogEntry(string ID)
         {
             DriverUtils.WaitForPageLoad();
+            ShowBothActiveAndInactiveRecords();
             int rowIndex = tblDashboardTable.GetTableRowIndex(5, ID);
             tblDashboardTable.ClickTableCell(13, rowIndex);
             DriverUtils.wait(1);
