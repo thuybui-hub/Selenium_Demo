@@ -84,10 +84,15 @@ namespace InfectionLogAutomation.PageObject.Home
             Span pickerFrom = new Span(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));
             Span pickerTo = new Span(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));
 
+            //IWebElement pickerFrom = DriverUtils.GetDriver().FindElement(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));
+            //IWebElement pickerTo = DriverUtils.GetDriver().FindElement(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));
+            
             pickerFrom.Click();
             lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
             string frm = lnk.GetAttribute("title");
-            from = DateTime.Parse(frm);            
+            from = DateTime.Parse(frm);
+
+            System.Windows.Forms.SendKeys.SendWait("{tab}");
 
             pickerTo.Click();
             lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
@@ -419,31 +424,45 @@ namespace InfectionLogAutomation.PageObject.Home
         public bool AreSearchCriteriasResetted()
         {
             DriverUtils.WaitForPageLoad();
+            DriverUtils.wait(1);
+
             bool result = true;
+            DateTime from, to;
 
-            List<string> defaultCommunity = null;
-            string defaultLastUpdatedFrom = DateTime.Now.AddDays(-7).ToString("MM/dd/yyyy");
-            string defaultLastUpdatedTo = DateTime.Now.ToString("MM/dd/yyyy");
-            List<string> defaultFilters = new List<string> { "Active" };
+            GetSelectedDateFromDatePicker(out from, out to);
 
-            txtCommunity.Click();
-            List<string> actualCommunity = lstCommunity.GetSelectedOptions();
+            // Date range is 7 days
+            double difference = to.Date.Subtract(from.Date).TotalDays;
 
-            txtLastUpdatedFrom.Click();
-            string actualLastUpdatedForm = txtLastUpdatedFrom.GetText();
+            // Last Updated To is current date
+            double differenceToday = to.Date.Subtract(DateTime.Now.Date).TotalDays;
 
-            txtLastUpdatedTo.Click();
-            string actualLastUpdatedTo = txtLastUpdatedTo.GetText();
-
-            txtFilters.Click();
-            List<string> actualFilters = lstFilters.GetSelectedOptions();
-
-            result = actualCommunity.SequenceEqual(defaultCommunity)
-                  && actualLastUpdatedForm.Equals(defaultLastUpdatedFrom)
-                  && actualLastUpdatedTo.Equals(defaultLastUpdatedTo)
-                  && actualFilters.SequenceEqual(defaultFilters);
-
+            LI selectedFilter = new LI(By.XPath("//ul[@id=\"allFilters_taglist\"]/li"));
+            result = selectedFilter.GetText().Equals("Active")
+                && difference == 7 && differenceToday == 0 && string.IsNullOrEmpty(txtCommunity.GetText());
             return result;
+            //return AreDefaultSearchValuesCorrect() && string.IsNullOrEmpty(txtCommunity.GetText());
+            //List<string> defaultCommunity = null;
+            //string defaultLastUpdatedFrom = DateTime.Now.AddDays(-7).ToString("MM/dd/yyyy");
+            //string defaultLastUpdatedTo = DateTime.Now.ToString("MM/dd/yyyy");
+            //List<string> defaultFilters = new List<string> { "Active" };
+
+            //txtCommunity.Click();
+            //List<string> actualCommunity = lstCommunity.GetSelectedOptions();
+
+            //txtLastUpdatedFrom.Click();
+            //string actualLastUpdatedForm = txtLastUpdatedFrom.GetText();
+
+            //txtLastUpdatedTo.Click();
+            //string actualLastUpdatedTo = txtLastUpdatedTo.GetText();
+
+            //txtFilters.Click();
+            //List<string> actualFilters = lstFilters.GetSelectedOptions();
+
+            //result = actualCommunity.SequenceEqual(defaultCommunity)
+            //      && actualLastUpdatedForm.Equals(defaultLastUpdatedFrom)
+            //      && actualLastUpdatedTo.Equals(defaultLastUpdatedTo)
+            //      && actualFilters.SequenceEqual(defaultFilters);            
         }
 
         /// <summary>
@@ -482,33 +501,54 @@ namespace InfectionLogAutomation.PageObject.Home
             return table.GetColumnHeaderAttribute(columnName, "aria-sort").Contains("descending");
         }
 
-        public bool AreDefaultSearchValueCorrect()
+        /// <summary>
+        /// Check to see if Last Updated From/To & Filters show correct default value
+        /// </summary>
+        /// <returns></returns>
+        public bool AreDefaultSearchValuesCorrect()
         {
             bool result = true;
             DateTime from, to;
 
             GetSelectedDateFromDatePicker(out from, out to);
-            double difference = to.Subtract(from).TotalDays;
+
+            // Date range is 7 days
+            double difference = to.Date.Subtract(from.Date).TotalDays;
+
+            // Last Updated To is current date
+            double differenceToday = to.Date.Subtract(DateTime.Now.Date).TotalDays;
 
             LI selectedFilter = new LI(By.XPath("//ul[@id=\"allFilters_taglist\"]/li"));
             result = selectedFilter.GetText().Equals("Active")
-                && difference == 7;
+                && difference == 7 && differenceToday == 0;
 
             return result;
         }
 
+        /// <summary>
+        /// Check to see if Community is allowed to select multiple items
+        /// </summary>
+        /// <returns></returns>
         public bool IsCommunityMultiselect()
         {
             Div parent = new Div(By.XPath("//ul[@id=\"communityName_taglist\"]//following-sibling::input/parent::div"));            
             return parent.GetAttribute("class").Contains("multiselect");
         }
 
+        /// <summary>
+        /// Check to see if Last Updated From/To is able to see the date from the calendar
+        /// </summary>
+        /// <returns></returns>
         public bool AreDateSelectedFromCalendar()
         {
             return txtLastUpdatedFrom.GetAttribute("data-role").Equals("datepicker")
                 && txtLastUpdatedTo.GetAttribute("data-role").Equals("datepicker");
         }
 
+        /// <summary>
+        /// Check to see if the field Filters contains correct list of items
+        /// </summary>
+        /// <returns></returns>
         public bool IsFiltersFieldCorrect()
         {
             bool result = true;

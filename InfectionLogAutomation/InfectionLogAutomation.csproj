@@ -148,11 +148,13 @@
     <Compile Include="Tests\PBI_23864.cs" />
     <Compile Include="Tests\PBI_23931.cs" />
     <Compile Include="Tests\PBI_23953.cs" />
+    <Compile Include="Tests\PBI_23956.cs" />
     <Compile Include="Tests\PBI_23982.cs" />
     <Compile Include="Tests\PBI_23983.cs" />
     <Compile Include="Tests\PBI_23984.cs" />
     <Compile Include="Tests\PBI_24066.cs" />
     <Compile Include="Tests\PBI_24090.cs" />
+    <Compile Include="Tests\PBI_25307.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

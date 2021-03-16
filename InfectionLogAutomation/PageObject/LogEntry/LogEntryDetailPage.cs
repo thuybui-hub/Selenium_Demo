@@ -569,6 +569,13 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             }
         }
 
+        public void Test()
+        {            
+            DriverUtils.SwitchToIframe(txtSymptoms.GetElement());
+            IWebElement e = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+            string t = e.GetAttribute("contenteditable");            
+        }
+
         #region Attachments
         /// <summary>
         /// Upload an attachment for a resident log entry
