@@ -16,10 +16,9 @@ namespace InfectionLogAutomation.Tests
         public void PBI_25307_AT_25312()
         {
             #region Test Data
-            string from = DateTime.Now.AddDays(2).ToString();
+            string from = DateTime.Now.AddDays(2).Date.ToString();
             List<string> community = new List<string>() { "Rio Las Palmas" };
-            List<string> filters = new List<string>() { "Active", "Inactive" };
-            string to;
+            List<string> filters = new List<string>() { "Active", "Inactive" };            
             #endregion
 
             #region Main Steps
@@ -27,13 +26,18 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);            
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+
+            // Test section
+            //HomePage.OpenALogEntry(0);
+            //LogEntryDetailPage.Test();
+            // end           
 
             Log.Info("Verify that Home page displays correctly");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page displays incorrectly");
 
             Log.Info("Verify that default search values are correct");
-            Assert.IsTrue(HomePage.AreDefaultSearchValueCorrect(), "The default search values display incorrectly");
+            Assert.IsTrue(HomePage.AreDefaultSearchValuesCorrect(), "The default search values display incorrectly");
 
             Log.Info("Verify that users can search with one or more communities");
             Assert.IsTrue(HomePage.IsCommunityMultiselect(), "Unable to select more communities");
@@ -52,14 +56,15 @@ namespace InfectionLogAutomation.Tests
             HomePage.CloseAlertPopup();
 
             Log.Info("4. Perform search criteria");
-            to = DateTime.Now.AddDays(9).ToString();
-            HomePage.PerformASearchCriteria(community, from, to, filters);
+            from = DateTime.Now.AddDays(-5).Date.ToString();
+            HomePage.PerformASearchCriteria(community, from, null, filters);
 
             Log.Info("5. Click on Reset button");
             HomePage.ResetSearchCriteria();
 
             Log.Info("Verify that Reset button restores the search criteria to default settings");
-            bool abc = HomePage.AreSearchCriteriasResetted();
+            bool test = HomePage.AreSearchCriteriasResetted();
+            Assert.IsTrue(HomePage.AreSearchCriteriasResetted(), "The search criterias are not set to default setting");
             #endregion
         }
     }
