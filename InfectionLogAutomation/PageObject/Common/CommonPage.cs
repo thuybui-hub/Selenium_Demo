@@ -80,9 +80,10 @@ namespace InfectionLogAutomation.PageObject.Common
         public void ShowAllILogRecords()
         {
             DriverUtils.WaitForPageLoad();
-            spnPaging.MoveToElement();
+            spnPaging.ScrollToView();
             spnPaging.Click();
             System.Windows.Forms.SendKeys.SendWait("All");
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
         }
 
 
@@ -171,6 +172,8 @@ namespace InfectionLogAutomation.PageObject.Common
             DriverUtils.WaitForPageLoad();
             bool result = true;
             Link navigationItem = new Link(By.LinkText(status));
+            navigationItem.ScrollToView();
+            navigationItem.Click();
             switch (status)
             {
                 case "New Log Entry":

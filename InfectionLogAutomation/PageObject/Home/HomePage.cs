@@ -525,6 +525,11 @@ namespace InfectionLogAutomation.PageObject.Home
             result = result && actualFiltersItems.SequenceEqual(exFilterItems);
             return result;
         }
+
+        public bool IsUserUnableToDeleteLogEntry()
+        {
+            return divDashboardTable.GetAttribute("data-columns").Contains("{ command: ['destroy'], title: 'Delete', hidden: true }");
+        }
         #endregion Check Points
     }
 }

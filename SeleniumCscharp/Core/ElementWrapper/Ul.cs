@@ -37,14 +37,20 @@ namespace SeleniumCSharp.Core.ElementWrapper
             List<string> displayedList = new List<string> { };
             List<IWebElement> listElements = new List<IWebElement>(GetElement().FindElements(By.TagName("li")));
 
-            foreach (IWebElement item in listElements)
+            if(listElements.Count == 0)
             {
-                if (item.Displayed)
+                displayedList = null;
+            }
+            else
+            {
+                foreach (IWebElement item in listElements)
                 {
-                    displayedList.Add(item.Text.Trim());
+                    if (item.Displayed)
+                    {
+                        displayedList.Add(item.Text.Trim());
+                    }
                 }
             }
-
             return displayedList;
         }
 

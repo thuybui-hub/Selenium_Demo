@@ -75,7 +75,7 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(HomePage.IsReadOnlyUserAbleToAddNewRecords("New Log Entry"), "Read Only user is able to perform a bulk insert.");
 
             Log.Info("Verify that Delete icon is invisible for selection to delete the existing Resident Log Entry");
-            //Assert.IsTrue(DashboardPage.deleteILogRecordBtn.ControlDefinition.Contains("display: none;"), "Delete button is still visible on Dashboard table");
+            Assert.IsTrue(HomePage.IsUserUnableToDeleteLogEntry(), "User is able to delete log entry.");
 
             Log.Info("Click on ID of a Resident log entry");
             HomePage.OpenALogEntry(logEntryData.MRN);

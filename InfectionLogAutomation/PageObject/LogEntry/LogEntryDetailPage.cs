@@ -943,24 +943,38 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// <param> </param>
         public bool IsReadOnlyUserAbleToUpdateLogEntryInfo()
         {
-            BaseElement field = new BaseElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
-            List<BaseElement> lstField = field.GetListElements();
-            return spnInfectionTypeValue.IsDisplayed()
+            bool result = true;
+            result = spnInfectionTypeValue.IsDisplayed()
                 && spnOnsetDateValue.IsDisplayed()
                 && txtSymptoms.IsDisplayed()
-                && lstField[0].GetAttribute("contenteditable").Equals("false")
                 && spnTestingStatus.IsDisplayed()
                 && spnTestingStatus.GetAttribute("aria-disabled").Equals("true")
                 && txtTestingStatusDate.IsDisplayed()
-                && txtTestingStatusDate.GetAttribute("readonly").Equals(null)
+                && txtTestingStatusDate.GetAttribute("readonly").Equals("true")
                 && spnDisposition.IsDisplayed()
                 && spnDisposition.GetAttribute("aria-disabled").Equals("true")
                 && txtDispositionDate.IsDisplayed()
-                && txtDispositionDate.GetAttribute("readonly").Equals(null)
-                && txtComments.IsDisplayed()
-                && lstField[1].GetAttribute("contenteditable").Equals("false")
-                && btnSaveLogEntry.IsDisplayed()
-                && btnSaveLogEntry.GetAttribute("disabled").Equals("disabled");
+                && txtDispositionDate.GetAttribute("readonly").Equals("true")
+                && txtComments.IsDisplayed();
+
+            DriverUtils.SwitchToIframe(txtSymptoms.GetElement());
+            IWebElement stp = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+
+            result = result && stp.GetAttribute("contenteditable").Equals("false");
+
+            DriverUtils.SwitchToPreviousParentWindow();
+            
+            DriverUtils.SwitchToIframe(txtComments.GetElement());
+            IWebElement cmt = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+
+            result = result && cmt.GetAttribute("contenteditable").Equals("false");
+            DriverUtils.SwitchToPreviousParentWindow();
+
+            btnSaveLogEntry.ScrollToView();
+
+            result = result && btnSaveLogEntry.GetAttribute("disabled").Equals("true");
+
+            return result;
         }
         #endregion Attachments
         #endregion Check points
