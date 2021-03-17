@@ -23,7 +23,7 @@ namespace InfectionLogAutomation.Tests
             LogEntryData logEntryData = JsonParser.Get<LogEntryData>();
             string fileName = "LGG testing.txt";
             string filePath = Constants.DataPath + fileName;
-            string uploadedBy = Constants.ResidentAdminUser;
+            string uploadedBy = Constants.AdminUserName;
             string uploadedDate = DateTime.Now.ToString("MM/dd/yyyy");
             int totalRecords, totalReadOnlyRecords;
             #endregion Test data
@@ -88,13 +88,14 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(LogEntryDetailPage.IsDocumentUploadedSuccessfully(fileName, uploadedBy, uploadedDate), "Unable to view the uploaded attachments.");
 
             Log.Info("Verify that Read only member is unable to add/edit and delete attachments for a resident log entry");
-            Assert.IsFalse(LogEntryDetailPage.IsAbleToAddAttachment(), "Able to Add attachments.");
-            Assert.IsTrue(LogEntryDetailPage.IsUnableToDeleteAttachment(), "Able to Delete attachments");
+            Assert.IsTrue(LogEntryDetailPage.IsAbleToAddAttachment("unable"), "Able to Add attachments.");
+            Assert.IsTrue(LogEntryDetailPage.IsAbleToDeleteAttachment("unable"), "Able to Delete attachments");
 
             Log.Info("Verify that Read only member is unable to perform 'Initiate Bulk Insert' for all communities");
             Assert.IsTrue(HomePage.IsReadOnlyUserAbleToAddNewRecords("Bulk Processing"), "Read Only user is able to perform a bulk insert.");
 
             Log.Info("Verify that Read only member is able to View Case Log Report");
+            HomePage.SelectMenuItem("Reports");
             Assert.IsTrue(HomePage.GetSubMenuItems("Reports ").Contains("Resident Case Log"), "Read Only member is unable to view Resident Case Log report");
             #endregion Main steps
 

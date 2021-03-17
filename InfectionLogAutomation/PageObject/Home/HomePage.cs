@@ -174,8 +174,8 @@ namespace InfectionLogAutomation.PageObject.Home
 
         public void DeleteALogEntry(string ID)
         {
-            DriverUtils.WaitForPageLoad();
             ShowBothActiveAndInactiveRecords();
+            DriverUtils.WaitForPageLoad();
             int rowIndex = tblDashboardTable.GetTableRowIndex(5, ID);
             tblDashboardTable.ClickTableCell(13, rowIndex);
             DriverUtils.wait(1);

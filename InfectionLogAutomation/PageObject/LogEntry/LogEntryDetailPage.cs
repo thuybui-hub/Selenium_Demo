@@ -840,12 +840,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     title = "Infection Log Entry for Ageility Client " + logEntryData.Name + " (" + logEntryData.MRN + ")";
                     break;
             }
-            Console.WriteLine(lblTitle.GetText() + ": " + title);
-            Console.WriteLine(lblRegionAndCommunity.GetText() + ": " + regionAndCommunityInfo);
-            Console.WriteLine(spnInfectionTypeValue.GetText() + ": " + logEntryData.InfectionType);
-            Console.WriteLine(spnOnsetDateValue.GetText() + ": " + logEntryData.OnsetDate);
-            Console.WriteLine(spnTestingStatus.GetText() + ": " + logEntryData.CurrentTestStatus);
-            Console.WriteLine(spnDisposition.GetText() + ": " + logEntryData.CurrentDisposition);
 
             return lblTitle.GetText().Equals(title)
                 && lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo)
@@ -860,11 +854,23 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// Check if readonly user is able to add attachments or not
         /// </summary>
         /// <param> status = 'able'/'unable'</param>
-        public bool IsAbleToAddAttachment()
+        public bool IsAbleToAddAttachment(string status = "able")
         {
             DriverUtils.WaitForPageLoad();
             bool result = true;
-            result = btnSelectFiles.IsDisplayed() && btnSelectFiles.IsEnabled();
+
+            switch (status)
+            {
+                case "able":
+                    result = btnSelectFiles.IsDisplayed() && btnSelectFiles.IsEnabled();
+                    break;
+                case "unable":
+                    IWebElement button = btnSelectFiles.GetElement().FindElement(By.TagName("input"));
+                    result = button.GetAttribute("disabled").Equals("true");
+                    break;
+                default:
+                    throw new Exception(string.Format("Status value is invalid."));
+            }
             return result;
         }
 
@@ -872,17 +878,23 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// Check if readonly user is able to delete attachments or not
         /// </summary>
         /// <param> status = 'able'/'unable'</param>
-        public bool IsUnableToDeleteAttachment()
+        public bool IsAbleToDeleteAttachment(string status = "able")
         {
             bool result = true;
-            BaseElement btnDeleteAttachment = new BaseElement(By.XPath("//a[@class=\"k-command-cell\"]"));
-            List<BaseElement> lstDeleteBtn = btnDeleteAttachment.GetListElements();
+            List<IWebElement> test = new List<IWebElement>(tblDocumentTable.GetElement().FindElements(By.XPath("//td[@class=\"k-command-cell\"]")));
             
-            foreach (BaseElement btn in lstDeleteBtn)
+            foreach (IWebElement btn in test)
             {
-                if (btn.IsDisplayed())
+                switch (status)
                 {
-                    result = result && btn.GetAttribute("style").Equals("display:none");
+                    case "able":
+                        result = result && btn.Displayed;
+                        break;
+                    case "unable":
+                        result = result && !btn.Displayed;
+                        break;
+                    default:
+                        throw new Exception(string.Format("Status value is invalid."));
                 }
             }
             return result;

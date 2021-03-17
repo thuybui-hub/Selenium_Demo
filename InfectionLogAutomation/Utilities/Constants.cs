@@ -37,7 +37,7 @@ namespace InfectionLogAutomation.Utilities
         public static string TeamCommunitySubmittorUser = ConfigurationManager.AppSettings["teamCommunitySubmittorUser"];
         public static string TeamCommunityAdminUser = ConfigurationManager.AppSettings["teamCommunityAdminUser"];
         public static string ResidentCommunityAdminUser = ConfigurationManager.AppSettings["residentCommunityAdminUser"];
-        public static string ResidentCommunitySubmittorUser = ConfigurationManager.AppSettings["residentCommunityAdminUser"];
+        public static string ResidentCommunitySubmittorUser = ConfigurationManager.AppSettings["residentCommunitySubmittorUser"];
         public static string ClientSubmittorUser = ConfigurationManager.AppSettings["​clientSubmittorUser"];
         public static string ResidentReadOnlyUser = ConfigurationManager.AppSettings["residentReadOnlyUser"];
         public static readonly string DataPath = ConfigurationManager.AppSettings["dataPath"];

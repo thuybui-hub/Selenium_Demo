@@ -172,11 +172,11 @@ namespace InfectionLogAutomation.PageObject.Common
             DriverUtils.WaitForPageLoad();
             bool result = true;
             Link navigationItem = new Link(By.LinkText(status));
-            navigationItem.ScrollToView();
-            navigationItem.Click();
+            lnkInfectiousOutbreakLog.ScrollToView();
             switch (status)
             {
                 case "New Log Entry":
+                    navigationItem.Click();
                     List<string> expectedSubMenu = null;
                     List<string> actualSubmenu = GetSubMenuItems("New Log Entry");
                     result = navigationItem.IsDisplayed() & (actualSubmenu == expectedSubMenu);
