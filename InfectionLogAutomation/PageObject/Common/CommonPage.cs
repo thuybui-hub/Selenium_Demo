@@ -111,11 +111,12 @@ namespace InfectionLogAutomation.PageObject.Common
 
             string alertMsg = alertWin.Text;
 
-            if (!string.IsNullOrEmpty(alertMsg))
-            {
-                alertWin.Accept();
-            }
-            
+            //if (!string.IsNullOrEmpty(alertMsg))
+            //{
+            //    alertWin.Accept();
+            //}
+            if (ExpectedConditions.AlertIsPresent() != null)
+                alertWin.Accept();           
             
         }
         #endregion Main Action

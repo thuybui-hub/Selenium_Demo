@@ -81,20 +81,23 @@ namespace InfectionLogAutomation.PageObject.Home
             from = DateTime.Now;
             to = DateTime.Now;
             Link lnk;
-            Span pickerFrom = new Span(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));
+            Span pickerFrom = new Span(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));            
             Span pickerTo = new Span(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));
 
-            //IWebElement pickerFrom = DriverUtils.GetDriver().FindElement(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));
-            //IWebElement pickerTo = DriverUtils.GetDriver().FindElement(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));
-            
+            bool t1 = pickerFrom.IsDisplayed();
+            bool t2 = pickerTo.IsDisplayed();
+
             pickerFrom.Click();
-            lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
+            DriverUtils.wait(1);
+            //lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
+            lnk = new Link(By.XPath("//td[@class=\"k-state-selected k-state-focused\"]/a"));
             string frm = lnk.GetAttribute("title");
             from = DateTime.Parse(frm);
 
-            System.Windows.Forms.SendKeys.SendWait("{tab}");
+            //System.Windows.Forms.SendKeys.SendWait("{tab}");
 
             pickerTo.Click();
+            DriverUtils.wait(1);
             lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
             string t = lnk.GetAttribute("title");
             to = DateTime.Parse(t);           
@@ -420,51 +423,7 @@ namespace InfectionLogAutomation.PageObject.Home
             result = txtSearch.GetText().Equals("") || txtSearch.GetText().Equals(null);
             return result;
         }
-
-        public bool AreSearchCriteriasResetted()
-        {
-            DriverUtils.WaitForPageLoad();
-            DriverUtils.wait(1);
-
-            bool result = true;
-            DateTime from, to;
-
-            GetSelectedDateFromDatePicker(out from, out to);
-
-            // Date range is 7 days
-            double difference = to.Date.Subtract(from.Date).TotalDays;
-
-            // Last Updated To is current date
-            double differenceToday = to.Date.Subtract(DateTime.Now.Date).TotalDays;
-
-            LI selectedFilter = new LI(By.XPath("//ul[@id=\"allFilters_taglist\"]/li"));
-            result = selectedFilter.GetText().Equals("Active")
-                && difference == 7 && differenceToday == 0 && string.IsNullOrEmpty(txtCommunity.GetText());
-            return result;
-            //return AreDefaultSearchValuesCorrect() && string.IsNullOrEmpty(txtCommunity.GetText());
-            //List<string> defaultCommunity = null;
-            //string defaultLastUpdatedFrom = DateTime.Now.AddDays(-7).ToString("MM/dd/yyyy");
-            //string defaultLastUpdatedTo = DateTime.Now.ToString("MM/dd/yyyy");
-            //List<string> defaultFilters = new List<string> { "Active" };
-
-            //txtCommunity.Click();
-            //List<string> actualCommunity = lstCommunity.GetSelectedOptions();
-
-            //txtLastUpdatedFrom.Click();
-            //string actualLastUpdatedForm = txtLastUpdatedFrom.GetText();
-
-            //txtLastUpdatedTo.Click();
-            //string actualLastUpdatedTo = txtLastUpdatedTo.GetText();
-
-            //txtFilters.Click();
-            //List<string> actualFilters = lstFilters.GetSelectedOptions();
-
-            //result = actualCommunity.SequenceEqual(defaultCommunity)
-            //      && actualLastUpdatedForm.Equals(defaultLastUpdatedFrom)
-            //      && actualLastUpdatedTo.Equals(defaultLastUpdatedTo)
-            //      && actualFilters.SequenceEqual(defaultFilters);            
-        }
-
+        
         /// <summary>
         /// Check to see if a column is sortable
         /// </summary>
@@ -520,7 +479,7 @@ namespace InfectionLogAutomation.PageObject.Home
 
             LI selectedFilter = new LI(By.XPath("//ul[@id=\"allFilters_taglist\"]/li"));
             result = selectedFilter.GetText().Equals("Active")
-                && difference == 7 && differenceToday == 0;
+                && difference == 7 && differenceToday == 0 && string.IsNullOrEmpty(txtCommunity.GetText());
 
             return result;
         }
