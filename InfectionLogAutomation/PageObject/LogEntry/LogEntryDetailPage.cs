@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using SeleniumCSharp.Core.Utilities;
 
 namespace InfectionLogAutomation.PageObject.LogEntry
 {
@@ -58,7 +59,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         // Edit page
         public Span spnInfectionTypeValue, spnOnsetDateValue;
 
-
         // Duplicate pop-up
         public readonly BaseElement divDialogContent;
         public readonly Button btnSaveNewEntry;
@@ -74,6 +74,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public readonly Table tblDocumentTable;
         public readonly Button btnUploadSelectedFile;
         public readonly Button btnClearSelectedFile;
+
+        // Advanced Search pop-up
 
         #region Actions
         public LogEntryDetailPage()
@@ -131,8 +133,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             tblDocumentTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
             btnUploadSelectedFile = new Button(By.XPath("//button[@class=\"k-button k-upload-selected k-primary\" and text()=\"Upload\"]"));
             btnClearSelectedFile = new Button(By.XPath("//button[@class=\"k-button k-clear-selected\" and text()=\"Clear\"]"));
+
+            // Advanced Search pop-up
         }
-                
+
         public void FillClientInfo(string lastName, string firstName, string MRN)
         {
             txtLastName.SendKeys(lastName);
@@ -253,89 +257,95 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             System.Windows.Forms.SendKeys.SendWait(comments);
             lstResult.Add(comments);            
         }
-
-
+        
         /// <summary>
         /// Fill log entry information randomly and return log entry's information selected as LogEntryData
         /// </summary>
         /// <param name="typeOfEntry">typeOfLogEntry can be: Team, Resident, Client</param>
+        /// <param name="logEntryData">Return a log entry data contains all inputted information</param>
+        /// <param name="status">Can be New or Edit</param>
         /// <returns></returns>
-        public void FillLogEntryInfoRandomly(string typeOfEntry, out LogEntryData logEntryData)
+        public void FillLogEntryInfoRandomly(string typeOfEntry, out LogEntryData logEntryData, string status = "New")
         {
             DriverUtils.WaitForPageLoad();
             Random rd = new Random();
             List<string> list;
-            logEntryData = new LogEntryData();
+            logEntryData = JsonParser.Get<LogEntryData>();
 
             string date = DateTime.Now.ToString("MM/dd/yyyy");
             string selectedValue, name, ID, symptom, comments;
 
-            // Fill Region            
-            list = GetItemsFromControlList(Fields.region);
-            selectedValue = list[rd.Next(0, list.Count - 1)].Trim();
-            txtRegion.SendKeys(selectedValue);
-            DriverUtils.wait(1);
-            System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            logEntryData.Region = selectedValue;
-
-            // Fill Community
-            DriverUtils.WaitForPageLoad();
-            list = GetItemsFromControlList(Fields.community);
-            selectedValue = list[rd.Next(0, list.Count - 1)].Trim();
-            txtCommunity.SendKeys(selectedValue);
-            DriverUtils.wait(1);
-            System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            logEntryData.Community = selectedValue;
-
-            // Fill Employee/Resident/Firs tName; Last Name; MRN
-            switch (typeOfEntry)
+            if (status.Equals("New"))
             {
-                case "Team":
-                    DriverUtils.WaitForPageLoad();
-                    list = GetItemsFromControlList(Fields.employee);
-                    selectedValue = list[rd.Next(0, list.Count - 1)];
-                    name = selectedValue.Substring(0, selectedValue.IndexOf("(") - 1);
-                    ID = selectedValue.Substring(selectedValue.IndexOf("(") + 1, selectedValue.IndexOf(")") - selectedValue.IndexOf("(") - 1);
-                    txtEmployee.SendKeys(selectedValue);
-                    DriverUtils.wait(2);
-                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
-                    logEntryData.Name = name;
-                    logEntryData.MRN = ID;
-                    break;
+                // Fill Region
+                list = GetItemsFromControlList(Fields.region);
+                selectedValue = list[rd.Next(0, list.Count - 1)].Trim();
+                txtRegion.SendKeys(selectedValue);
+                DriverUtils.wait(1);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                logEntryData.Region = selectedValue;
 
-                case "Resident":
-                    DriverUtils.WaitForPageLoad();
-                    txtEmployee.Click();
-                    list = lstBoxEmployee.GetSubOptions();
-                    selectedValue = list[rd.Next(0, list.Count - 1)];
-                    int secondSpaceIndex = selectedValue.IndexOf(" ", selectedValue.IndexOf(" ", 0) + 1);
-                    int thirdSpaceIndex = selectedValue.IndexOf(" ", secondSpaceIndex + 1);
-                    name = selectedValue.Substring(0, secondSpaceIndex);
-                    ID = selectedValue.Substring(secondSpaceIndex + 1, thirdSpaceIndex - secondSpaceIndex - 1);
-                    txtEmployee.SendKeys(name);
-                    DriverUtils.wait(2);
-                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
-                    logEntryData.Name = name;
-                    logEntryData.MRN = ID;
-                    break;
+                // Fill Community            
+                DriverUtils.WaitForPageLoad();
+                list = GetItemsFromControlList(Fields.community);
+                selectedValue = list[rd.Next(0, list.Count - 1)].Trim();
+                txtCommunity.SendKeys(selectedValue);
+                DriverUtils.wait(1);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                logEntryData.Community = selectedValue;
 
-                case "Client":
-                    string lastName = "LN" + Utils.GetRandomValue("last name");
-                    string firstName = "FN" + Utils.GetRandomValue("first name");
-                    string MRN = rd.Next(100, 123456789).ToString();
-                    FillClientInfo(lastName, firstName, MRN);
-                    logEntryData.Name = lastName + ", " + firstName;
-                    logEntryData.MRN = MRN;                    
-                    break;
+
+                // Fill Employee/Resident/Firs tName; Last Name; MRN            
+                switch (typeOfEntry)
+                {
+                    case "Team":
+                        DriverUtils.WaitForPageLoad();
+                        list = GetItemsFromControlList(Fields.employee);
+                        selectedValue = list[rd.Next(0, list.Count - 1)];
+                        name = selectedValue.Substring(0, selectedValue.IndexOf("(") - 1);
+                        ID = selectedValue.Substring(selectedValue.IndexOf("(") + 1, selectedValue.IndexOf(")") - selectedValue.IndexOf("(") - 1);
+                        txtEmployee.SendKeys(selectedValue);
+                        DriverUtils.wait(2);
+                        System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                        logEntryData.Name = name;
+                        logEntryData.MRN = ID;
+                        break;
+
+                    case "Resident":
+                        DriverUtils.WaitForPageLoad();
+                        txtEmployee.Click();
+                        list = lstBoxEmployee.GetSubOptions();
+                        selectedValue = list[rd.Next(0, list.Count - 1)];
+                        int secondSpaceIndex = selectedValue.IndexOf(" ", selectedValue.IndexOf(" ", 0) + 1);
+                        int thirdSpaceIndex = selectedValue.IndexOf(" ", secondSpaceIndex + 1);
+                        name = selectedValue.Substring(0, secondSpaceIndex);
+                        ID = selectedValue.Substring(secondSpaceIndex + 1, thirdSpaceIndex - secondSpaceIndex - 1);
+                        txtEmployee.SendKeys(name);
+                        DriverUtils.wait(2);
+                        System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                        logEntryData.Name = name;
+                        logEntryData.MRN = ID;
+                        break;
+
+                    case "Client":
+                        string lastName = "LN" + Utils.GetRandomValue("last name");
+                        string firstName = "FN" + Utils.GetRandomValue("first name");
+                        string MRN = rd.Next(100, 123456789).ToString();
+                        FillClientInfo(lastName, firstName, MRN);
+                        logEntryData.Name = lastName + ", " + firstName;
+                        logEntryData.MRN = MRN;
+                        break;
+                }
+
+                // Fill Onset Date            
+                txtOnsetDate.SendKeys(date);
+                logEntryData.OnsetDate = date;
             }
 
-            // Fill Onset Date            
-            txtOnsetDate.SendKeys(date);
-            logEntryData.OnsetDate = date;            
-
-            // Fill Symptoms
+            // Fill Symptoms                
             symptom = "Symptom " + Utils.GetRandomValue("random value");
             txtSymptoms.Click();
+            System.Windows.Forms.SendKeys.SendWait("^A");
             System.Windows.Forms.SendKeys.SendWait(symptom);
             logEntryData.Symptoms = symptom;            
 
@@ -362,9 +372,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             logEntryData.DispositionDate = date;
 
             // Fill Comments
-            txtComments.ScrollToView();
+            txtComments.ScrollToView();            
             comments = "Comments " + Utils.GetRandomValue("random value");
             txtComments.Click();
+            System.Windows.Forms.SendKeys.SendWait("^A");
             System.Windows.Forms.SendKeys.SendWait(comments);
             logEntryData.Comments = comments;
         }
@@ -479,6 +490,9 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             {
                 btnSaveNewEntry.Click();
             }
+
+            // Close Alert pop-up if any
+            //CloseAlertPopup();
 
             DriverUtils.WaitForPageLoad();            
         }

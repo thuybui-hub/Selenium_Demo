@@ -4,6 +4,8 @@ using InfectionLogAutomation.Utilities;
 using SeleniumCSharp.Core.DriverWrapper;
 using System.Collections.Generic;
 using System;
+using InfectionLogAutomation.DataObject;
+using SeleniumCSharp.Core.Utilities;
 
 namespace InfectionLogAutomation.Tests
 {
@@ -16,7 +18,7 @@ namespace InfectionLogAutomation.Tests
         public void PBI_25307_AT_25312()
         {
             #region Test Data
-            string from = DateTime.Now.AddDays(2).Date.ToString();
+            string from = DateTime.Now.AddDays(2).ToString("MM/dd/yyyy");
             List<string> community = new List<string>() { "Rio Las Palmas" };
             List<string> filters = new List<string>() { "Active", "Inactive" };            
             #endregion
@@ -26,12 +28,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
-
-            // Test section
-            //HomePage.OpenALogEntry(0);
-            //LogEntryDetailPage.Test();
-            // end           
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);                      
 
             Log.Info("Verify that Home page displays correctly");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page displays incorrectly");
@@ -56,15 +53,66 @@ namespace InfectionLogAutomation.Tests
             HomePage.CloseAlertPopup();
 
             Log.Info("4. Perform search criteria");
-            from = DateTime.Now.AddDays(-5).Date.ToString();
+            from = DateTime.Now.AddDays(-5).ToString("MM/dd/yyyy");
             HomePage.PerformASearchCriteria(community, from, null, filters);
 
             Log.Info("5. Click on Reset button");
             HomePage.ResetSearchCriteria();
 
-            Log.Info("Verify that Reset button restores the search criteria to default settings");
-            bool test = HomePage.AreSearchCriteriasResetted();
-            Assert.IsTrue(HomePage.AreSearchCriteriasResetted(), "The search criterias are not set to default setting");
+            Log.Info("Verify that Reset button restores the search criteria to default settings");            
+            Assert.IsTrue(HomePage.AreDefaultSearchValuesCorrect(), "The search criterias are not set to default setting");
+            #endregion
+        }
+
+        [Test]
+        [Description("IO Log: All Record Search Updates: New and Edit a log entry")]
+        public void PBI_25307_AT_25320()
+        {
+            #region Test Data
+            LogEntryData logEntryData = JsonParser.Get<LogEntryData>();
+            LogEntryData logEntryDataEdit = JsonParser.Get<LogEntryData>();
+            #endregion
+
+            #region Main Steps
+            Log.Info("1. Launch the site");
+            DriverUtils.GoToUrl(Constants.Url);
+
+            Log.Info("2. Login with valid user");
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+
+            Log.Info("Verify that Home page displays correctly");
+            Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page displays incorrectly");
+
+            Log.Info("3. Go to new log entry form");
+            HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
+
+            Log.Info("4. Submit a new log entry");
+            LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out logEntryData);
+            LogEntryDetailPage.SaveLogEntry();
+
+            Log.Info("Verify that the user is back to Search page after submitting a log entry");
+            Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page displays incorrectly");
+
+            Log.Info("Verify that Search page displays correctly");
+            Assert.IsTrue(HomePage.AreDefaultSearchValuesCorrect(), "The default search values display incorrectly");
+
+            Log.Info("5. Open the log entry created");
+            HomePage.ShowBothActiveAndInactiveRecords();
+            HomePage.FilterATableColumn("ID", logEntryData.MRN);
+            HomePage.OpenALogEntry(0);
+
+            Log.Info("6. Edit log entry");
+            LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out logEntryDataEdit, "Edit");
+            LogEntryDetailPage.SaveLogEntry();
+
+            Log.Info("Verify that the user is back to Search page after updating a log entry.");
+            Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page displays incorrectly");
+
+            Log.Info("Verify that Search page displays correctly");
+            Assert.IsTrue(HomePage.AreDefaultSearchValuesCorrect(), "The default search values display incorrectly");
+
+            Log.Info("Clean up: Delete the log entry created");
+            HomePage.DeleteALogEntry(logEntryData.MRN);
             #endregion
         }
     }
