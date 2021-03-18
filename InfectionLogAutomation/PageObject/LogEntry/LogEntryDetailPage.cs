@@ -76,6 +76,13 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public readonly Button btnClearSelectedFile;
 
         // Advanced Search pop-up
+        public TextBox txtAsLastName, txtAsFirstName, txtAsEmployeeID;
+        public Button btnSearch, btnSelect, btnCancel;
+        public Label lblIncludeTerminatedEmployee;
+        public CheckBox chbncludeTerminatedEmployee;
+        public Span spnAdvancedsearchTitle;
+        public Table tbladvancedSearchResult;
+        public Div dvemployeeSearchResult;
 
         #region Actions
         public LogEntryDetailPage()
@@ -135,6 +142,17 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             btnClearSelectedFile = new Button(By.XPath("//button[@class=\"k-button k-clear-selected\" and text()=\"Clear\"]"));
 
             // Advanced Search pop-up
+            txtAsLastName = new TextBox(By.Id("aslastName"));
+            txtAsFirstName = new TextBox(By.Id("asfirstName"));
+            txtAsEmployeeID = new TextBox(By.Id("asID"));
+            btnSearch = new Button(By.Id("searchButton"));
+            btnSelect = new Button(By.XPath("//button[text()=\"Select\"]"));
+            btnCancel= new Button(By.XPath("//button[text()=\"Select\"]/following-sibling::button[text()=\"Cancel\"]"));
+            lblIncludeTerminatedEmployee = new Label(By.XPath("//label[contains(text(), \"Include Terminated Employee\")]"));
+            chbncludeTerminatedEmployee = new CheckBox(By.Id("asinactive"));
+            spnAdvancedsearchTitle = new Span(By.XPath("//span[contains(text(), \"Advanced Search\")]"));
+            tbladvancedSearchResult = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
+            dvemployeeSearchResult = new Div(By.XPath("//div[@class=\"k-grid-norecords\"]"));
         }
 
         public void FillClientInfo(string lastName, string firstName, string MRN)
@@ -344,8 +362,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
             // Fill Symptoms                
             symptom = "Symptom " + Utils.GetRandomValue("random value");
-            txtSymptoms.Click();
-            System.Windows.Forms.SendKeys.SendWait("^A");
+            txtSymptoms.Click();            
+            System.Windows.Forms.SendKeys.SendWait("^a");            
             System.Windows.Forms.SendKeys.SendWait(symptom);
             logEntryData.Symptoms = symptom;            
 
@@ -375,7 +393,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             txtComments.ScrollToView();            
             comments = "Comments " + Utils.GetRandomValue("random value");
             txtComments.Click();
-            System.Windows.Forms.SendKeys.SendWait("^A");
+            System.Windows.Forms.SendKeys.SendWait("^a");            
             System.Windows.Forms.SendKeys.SendWait(comments);
             logEntryData.Comments = comments;
         }
@@ -385,42 +403,49 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// </summary>
         /// <param name="logEntryData"></param>
         /// <param name="typeOfEntry">typeOfLogEntry can be: Team, Resident, Client</param>
-        public void FillLogEntryInfo(LogEntryData logEntryData, string typeOfEntry)
+        /// /// <param name="status">Can be New or Edit</param>
+        public void FillLogEntryInfo(LogEntryData logEntryData, string typeOfEntry, string status = "New")
         {
-            // Fill region
-            if (!string.IsNullOrEmpty(logEntryData.Region))
-                txtRegion.SendKeys(logEntryData.Region);
-
-            // Fill community
-            if (!string.IsNullOrEmpty(logEntryData.Community))
-                txtCommunity.SendKeys(logEntryData.Community);
-
-            // Fill employee/resident/Client name
-            if (!string.IsNullOrEmpty(logEntryData.Name))
+            if (status.Equals("New"))
             {
+                // Fill region
+                if (!string.IsNullOrEmpty(logEntryData.Region))
+                    txtRegion.SendKeys(logEntryData.Region);
+
+                // Fill community
+                if (!string.IsNullOrEmpty(logEntryData.Community))
+                    txtCommunity.SendKeys(logEntryData.Community);
+
+                // Fill employee/resident/Client name
                 if (typeOfEntry.Equals("Client"))
                 {
-                    string lastName = logEntryData.Name.Substring(0, logEntryData.Name.IndexOf(","));
-                    string firstName = logEntryData.Name.Substring(logEntryData.Name.IndexOf(" ", 0) + 1, logEntryData.Name.Length - logEntryData.Name.IndexOf(" ", 0) - 1); ;
-                    txtLastName.SendKeys(lastName);
-                    txtFirstName.SendKeys(firstName);
+                    if (!string.IsNullOrEmpty(logEntryData.Name))
+                    {
+                        string lastName = logEntryData.Name.Substring(0, logEntryData.Name.IndexOf(","));
+                        string firstName = logEntryData.Name.Substring(logEntryData.Name.IndexOf(" ", 0) + 1, logEntryData.Name.Length - logEntryData.Name.IndexOf(" ", 0) - 1); ;
+                        txtLastName.SendKeys(lastName);
+                        txtFirstName.SendKeys(firstName);
+                    }
+                    if (!string.IsNullOrEmpty(logEntryData.MRN)) txtMrn.SendKeys(logEntryData.MRN);
                 }
+                // Fill Employee/Resident
                 else
                 {
-                    txtEmployee.SendKeys(logEntryData.Name);
+                    if (!string.IsNullOrEmpty(logEntryData.Name)) txtEmployee.SendKeys(logEntryData.Name);
                 }
-            }
 
-            // Fill OnsetDate
-            if (!string.IsNullOrEmpty(logEntryData.OnsetDate))
-            {
-                txtOnsetDate.SendKeys(logEntryData.OnsetDate);
+                // Fill OnsetDate
+                if (!string.IsNullOrEmpty(logEntryData.OnsetDate))
+                {
+                    txtOnsetDate.SendKeys(logEntryData.OnsetDate);
+                }
             }
 
             // Fill Symptoms
             if (!string.IsNullOrEmpty(logEntryData.Symptoms))
             {
                 txtSymptoms.Click();
+                System.Windows.Forms.SendKeys.SendWait("^a");
                 System.Windows.Forms.SendKeys.SendWait(logEntryData.Symptoms);
             }
 
@@ -428,7 +453,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             if (!string.IsNullOrEmpty(logEntryData.CurrentTestStatus))
             {
                 spnTestingStatus.Click();
-                System.Windows.Forms.SendKeys.SendWait(logEntryData.TestStatusDate);
+                lstBoxTestingStatus.SelectOptionByText(logEntryData.CurrentTestStatus);
             }
 
             // Fill Test Status Date
@@ -441,7 +466,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             if (!string.IsNullOrEmpty(logEntryData.CurrentDisposition))
             {
                 spnDisposition.Click();
-                System.Windows.Forms.SendKeys.SendWait(logEntryData.CurrentDisposition);
+                lstBoxDisposition.SelectOptionByText(logEntryData.CurrentDisposition);
             }
 
             // Fill Disposition Date
@@ -455,6 +480,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             {
                 txtComments.ScrollToView();
                 txtComments.Click();
+                System.Windows.Forms.SendKeys.SendWait("^a");
                 System.Windows.Forms.SendKeys.SendWait(logEntryData.Comments);
             }
         }
@@ -497,6 +523,9 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             DriverUtils.WaitForPageLoad();            
         }
 
+        /// <summary>
+        /// Cancel the editting of a log entry
+        /// </summary>
         public void CancelLogEntry()
         {
             btnCancelLogEntry.ScrollToView();
@@ -665,6 +694,46 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             ConfirmAttachedDeletion(buttonName);
         }
         #endregion Attachment
+
+        #region Advanced Search
+
+        /// <summary>
+        /// Open Advanced Search popup by clicking on Advanced Search button on the log entry form
+        /// </summary>
+        public void OpenAdvancedSearch()
+        {
+            DriverUtils.WaitForPageLoad();
+            if(btnAdvancedSearch.IsEnabled())
+            btnAdvancedSearch.Click();
+        }
+
+        public void FillAdvancedSearchInfo(string lastName, string firstName, string employeeID)
+        {
+            txtAsLastName.SendKeys(lastName);
+            txtAsFirstName.SendKeys(firstName);
+            txtAsEmployeeID.SendKeys(employeeID);
+        }
+
+        public void SearchTeamMember()
+        {
+            if (btnSearch.IsDisplayed()) btnSearch.Click();
+            DriverUtils.WaitForPageLoad();
+        }
+
+        public void DoAdvancedSearch(string lastName, string firstName, string employeeID)
+        {
+            FillAdvancedSearchInfo(lastName, firstName, employeeID);
+            SearchTeamMember();
+        }
+
+        public void SelectFirstTerminatedEmployee()
+        {
+            tbladvancedSearchResult.ClickTableCell(0, 0);            
+            btnSelect.Click();
+            DriverUtils.WaitForPageLoad(1);
+        }
+
+        #endregion Advanced Search
         #endregion Actions        
 
 
@@ -1010,6 +1079,23 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             return result;
         }
         #endregion Attachments
+
+        #region Advanced Search
+        public bool IsAdvancedSearchEnabled()
+        {
+            return btnAdvancedSearch.IsEnabled();
+        }
+        #endregion Advanced Search
+        public bool CheckAdvancedSearchPopupContent()
+        {
+            DriverUtils.WaitForPageLoad();
+
+            return txtAsLastName.IsDisplayed()
+                && txtAsFirstName.IsDisplayed()
+                && txtAsEmployeeID.IsDisplayed()
+                && chbncludeTerminatedEmployee.IsChecked()
+                && btnSearch.IsDisplayed();
+        }
         #endregion Check points
     }
 }

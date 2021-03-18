@@ -29,8 +29,8 @@ namespace InfectionLogAutomation.PageObject.Home
         public Button btnExportToExcel;
         public TextBox txtSearch;
         public BaseElement divDashboardTable;
-        public Table tblDashboardTableHeader;
-        public Table tblDashboardTable;
+        public Table tblDashboardHeader;
+        public Table tblDashboard;
 
         // Filter popup
         public TextBox txtFilterValue;
@@ -58,8 +58,8 @@ namespace InfectionLogAutomation.PageObject.Home
             btnExportToExcel = new Button(By.Id("excelExportButton"));
             txtSearch = new TextBox(By.XPath("//span[@class=\"k-textbox k-grid-search k-display-flex\"]/input"));
             divDashboardTable = new BaseElement(By.Id("logGrid"));
-            tblDashboardTableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
-            tblDashboardTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
+            tblDashboardHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
+            tblDashboard = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
 
             // Filter popup
             txtFilterValue = new TextBox(By.XPath("//form[@aria-hidden=\"false\"]//input[@title=\"Value\"]"));
@@ -165,22 +165,22 @@ namespace InfectionLogAutomation.PageObject.Home
             DriverUtils.WaitForPageLoad();
             if (!string.IsNullOrEmpty(ID))
             {
-                tblDashboardTable.ClickTableCell("ID", ID);
+                tblDashboard.ClickTableCell("ID", ID);
             }
         }
 
         public void OpenALogEntry(int rowIndex)
         {
             DriverUtils.WaitForPageLoad();
-            tblDashboardTable.ClickTableCell(5, rowIndex);
+            tblDashboard.ClickTableCell(5, rowIndex);
         }
 
         public void DeleteALogEntry(string ID)
         {
             ShowBothActiveAndInactiveRecords();
             DriverUtils.WaitForPageLoad();
-            int rowIndex = tblDashboardTable.GetTableRowIndex(5, ID);
-            tblDashboardTable.ClickTableCell(13, rowIndex);
+            int rowIndex = tblDashboard.GetTableRowIndex(5, ID);
+            tblDashboard.ClickTableCell(13, rowIndex);
             DriverUtils.wait(1);
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
         }
@@ -364,7 +364,7 @@ namespace InfectionLogAutomation.PageObject.Home
             if (divNoRecords.IsDisplayed() == false)
             {
                 ShowAllILogRecords();
-                actualResult = tblDashboardTable.GetTableAllCellValueInColumn(columnName);
+                actualResult = tblDashboard.GetTableAllCellValueInColumn(columnName);
                 return actualResult.All(x => x == filterValue);
             }
             else return true;
@@ -377,9 +377,9 @@ namespace InfectionLogAutomation.PageObject.Home
             if (divNoRecords.IsDisplayed() == false)
             {
                 ShowAllILogRecords();
-                for (int i = 0; i < tblDashboardTable.RowCount(); i++)
+                for (int i = 0; i < tblDashboard.RowCount(); i++)
                 {
-                    result = result && tblDashboardTable.GetTableAllCellValueInRow(i).Contains(searchValue);
+                    result = result && tblDashboard.GetTableAllCellValueInRow(i).Contains(searchValue);
                 }
             }
             else result = true;
@@ -528,6 +528,22 @@ namespace InfectionLogAutomation.PageObject.Home
         public bool IsUserUnableToDeleteLogEntry()
         {
             return divDashboardTable.GetAttribute("data-columns").Contains("{ command: ['destroy'], title: 'Delete', hidden: true }");
+        }
+
+        public bool DoAllLogEntriesHaveCorrectLOB(List<string> logEntryList)
+        {
+            bool result = true;
+            bool temp;
+            for (int i = 0; i < logEntryList.Count; i++)
+            {
+                temp = logEntryList[i].ToString().Equals("AL")
+                    || logEntryList[i].ToString().Equals("ALZ")
+                    || logEntryList[i].ToString().Equals("IL")
+                    || logEntryList[i].ToString().Equals("SNF");
+
+                result = result & temp;
+            }
+            return result;
         }
         #endregion Check Points
     }
