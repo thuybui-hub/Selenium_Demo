@@ -49,7 +49,7 @@ namespace InfectionLogAutomation.Tests
             HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.FilterATableColumn("Entry Type", "Resident");
             HomePage.ShowAllILogRecords();
-            totalRecords = HomePage.tblDashboardTable.RowCount();
+            totalRecords = HomePage.tblDashboard.RowCount();
             #endregion Pre-condition: Add new Resident log entry with an attachment
 
             DriverUtils.CloseDrivers();
@@ -68,7 +68,7 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that all Resident records display on Home Page");
             HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.ShowAllILogRecords();
-            totalReadOnlyRecords = HomePage.tblDashboardTable.RowCount();
+            totalReadOnlyRecords = HomePage.tblDashboard.RowCount();
             Assert.IsTrue((totalRecords == totalReadOnlyRecords), "Homepage does not show all Resident records");
 
             Log.Info("Read only member is unable to add new resident log entry for all communities");

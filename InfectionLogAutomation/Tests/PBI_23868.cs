@@ -28,10 +28,10 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Verify that Home page containing dashboard/table of infections displays");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page does not display");
-            Assert.IsTrue(HomePage.tblDashboardTableHeader.IsDisplayed(), "Home page does not contain dashboard/table of infections");
+            Assert.IsTrue(HomePage.tblDashboardHeader.IsDisplayed(), "Home page does not contain dashboard/table of infections");
 
             Log.Info("Get list of columns on Dashboard table");
-            expectedListOfColumnsHeader = HomePage.tblDashboardTableHeader.GetAllColumnsHeader();
+            expectedListOfColumnsHeader = HomePage.tblDashboardHeader.GetAllColumnsHeader();
             expectedListOfColumnsHeader.Sort();
             Constants.DashboardColumnsHeader.Sort();
 

@@ -166,7 +166,7 @@ namespace SeleniumCSharp.Core.ElementWrapper
         }
 
         /// <summary>
-        /// Click o column header
+        /// Click on a column header
         /// </summary>
         /// <param name="columnName"></param>
         public void ClickOnHeaderColumn(string columnName)

@@ -52,8 +52,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.FilterATableColumn("ID", entryInfo[3]);
 
             Log.Info("Verify that the new log entry is saved successfully and displayed in the Dashboard table with value 'Transferred' in column 'Diposition''");
-            Assert.IsTrue(HomePage.tblDashboardTable.RowCount() > 0, "The log entry is not saved successfully");
-            Assert.IsTrue(HomePage.tblDashboardTable.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
+            Assert.IsTrue(HomePage.tblDashboard.RowCount() > 0, "The log entry is not saved successfully");
+            Assert.IsTrue(HomePage.tblDashboard.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
             #endregion AT_23969: New Log Entry forms
 
             #region AT_23970: Edit Log Entry forms
@@ -72,7 +72,7 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that the new log entry is saved successfully and displayed in the Dashboard table with value 'Transferred' in column 'Diposition''");
             HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.FilterATableColumn("ID", entryInfo[3]);
-            Assert.IsTrue(HomePage.tblDashboardTable.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
+            Assert.IsTrue(HomePage.tblDashboard.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
 
             Log.Info("Delete log entry created");
             HomePage.DeleteALogEntry(entryInfo[3]);
@@ -105,8 +105,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.FilterATableColumn("ID", entryInfo[3]);
 
             Log.Info("Verify that the new log entry is saved successfully and displayed in the Dashboard table with value 'Transferred' in column 'Diposition''");
-            Assert.IsTrue(HomePage.tblDashboardTable.RowCount() > 0, "The log entry is not saved successfully");
-            Assert.IsTrue(HomePage.tblDashboardTable.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
+            Assert.IsTrue(HomePage.tblDashboard.RowCount() > 0, "The log entry is not saved successfully");
+            Assert.IsTrue(HomePage.tblDashboard.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
             #endregion AT_23969: New Log Entry forms
 
             #region AT_23970: Edit Log Entry forms
@@ -125,7 +125,7 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that the new log entry is saved successfully and displayed in the Dashboard table with value 'Transferred' in column 'Diposition''");
             HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.FilterATableColumn("ID", entryInfo[3]);
-            Assert.IsTrue(HomePage.tblDashboardTable.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
+            Assert.IsTrue(HomePage.tblDashboard.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
 
             Log.Info("Delete log entry created");
             HomePage.DeleteALogEntry(entryInfo[3]);
@@ -158,8 +158,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.FilterATableColumn("ID", entryInfo[3]);
 
             Log.Info("Verify that the new log entry is saved successfully and displayed in the Dashboard table with value 'Transferred' in column 'Diposition''");
-            Assert.IsTrue(HomePage.tblDashboardTable.RowCount() > 0, "The log entry is not saved successfully");
-            Assert.IsTrue(HomePage.tblDashboardTable.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
+            Assert.IsTrue(HomePage.tblDashboard.RowCount() > 0, "The log entry is not saved successfully");
+            Assert.IsTrue(HomePage.tblDashboard.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
             #endregion AT_23969: New Log Entry forms
 
             #region AT_23970: Edit Log Entry forms
@@ -178,7 +178,7 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that the new log entry is saved successfully and displayed in the Dashboard table with value 'Transferred' in column 'Diposition''");
             HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.FilterATableColumn("ID", entryInfo[3]);
-            Assert.IsTrue(HomePage.tblDashboardTable.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
+            Assert.IsTrue(HomePage.tblDashboard.GetTableCellValue(11, 0).Equals(disposition), "Incorrect disposition shows on Dashboard");
 
             Log.Info("Delete log entry created");
             HomePage.DeleteALogEntry(entryInfo[3]);

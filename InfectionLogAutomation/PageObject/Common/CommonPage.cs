@@ -48,6 +48,19 @@ namespace InfectionLogAutomation.PageObject.Common
         }
 
         #region Main Action
+        public void FillValue(BaseElement element, string value)
+        {
+            if (element.IsDisplayed())
+            {
+                element.Click();
+                //System.Windows.Forms.SendKeys.SendWait("^a");
+                //DriverUtils.wait(1);
+                //System.Windows.Forms.SendKeys.SendWait(value);
+                element.SendKeys(value);
+                DriverUtils.wait(1);
+                System.Windows.Forms.SendKeys.SendWait("{enter}");
+            }
+        }
         public void SelectMenuItem(string path)
         {
             DriverUtils.WaitForPageLoad();
@@ -190,7 +203,18 @@ namespace InfectionLogAutomation.PageObject.Common
             }
             return result;
         }
-        
+
+        /// <summary>
+        /// Check to if all items in a list equal a specific value
+        /// </summary>
+        /// <param name="list">The list needs to be checked</param>
+        /// <param name="value">Value to check</param>
+        /// <returns></returns>
+        public bool DoAllListItemEqualValue(List<string> list, string value)
+        {
+            return list.TrueForAll(i => i.Equals(value));
+        }
+
         #endregion Check Points
     }
 }
