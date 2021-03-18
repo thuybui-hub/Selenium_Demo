@@ -83,6 +83,14 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that Current Disposition field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
 
         [Test]
@@ -187,6 +195,14 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that Current Disposition field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
 
     }

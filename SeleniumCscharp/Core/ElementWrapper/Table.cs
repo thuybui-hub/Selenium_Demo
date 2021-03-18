@@ -97,14 +97,18 @@ namespace SeleniumCSharp.Core.ElementWrapper
             for (int i = 0; i<ths.Count; i++)
             {
                 List<IWebElement> links = new List<IWebElement>(ths[i].FindElements(By.TagName("a")));
-                IWebElement column = links[1];
-                
-                if ((!string.IsNullOrWhiteSpace(column.Text)) && (column.Text.Equals(columnName)))
+
+                if(links.Count > 0)
                 {
-                    columnIndex = i;
-                    break;
+                    IWebElement column = links[1];
+
+                    if ((!string.IsNullOrWhiteSpace(column.Text)) && (column.Text.Equals(columnName)))
+                    {
+                        columnIndex = i;
+                        break;
+                    }
+                    else columnIndex = -1;
                 }
-                else columnIndex = - 1;
             }
             return columnIndex;
         }
