@@ -312,7 +312,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
                 logEntryData.Community = selectedValue;
 
-
                 // Fill Employee/Resident/Firs tName; Last Name; MRN            
                 switch (typeOfEntry)
                 {
@@ -734,8 +733,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         }
 
         #endregion Advanced Search
-        #endregion Actions        
 
+        #endregion Actions
 
         #region Check points
 
@@ -1081,11 +1080,19 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         #endregion Attachments
 
         #region Advanced Search
+        /// <summary>
+        /// Check to see if Advanced Search pop-up is enabled
+        /// </summary>
+        /// <returns></returns>
         public bool IsAdvancedSearchEnabled()
         {
             return btnAdvancedSearch.IsEnabled();
         }
-        #endregion Advanced Search
+        
+        /// <summary>
+        /// Check to see if Advanced Search pop-up is correct
+        /// </summary>
+        /// <returns></returns>
         public bool CheckAdvancedSearchPopupContent()
         {
             DriverUtils.WaitForPageLoad();
@@ -1096,6 +1103,31 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && chbncludeTerminatedEmployee.IsChecked()
                 && btnSearch.IsDisplayed();
         }
+        #endregion Advanced Search
+
+        #region Duplicated pop-up
+        public bool CheckDuplicatePopup(string employee, string type = "Team")
+        {
+            string popupContent = "A record already exists for Team Member " + employee + ". Click \"Save New Entry\" to create a new log entry for this person. Click \"Edit Existing\" if you would like to make changes to the existing log entry.";
+
+            switch (type)
+            {
+                case "Resident":
+                    popupContent = "A record already exists for Resident " + employee + ". Click \"Save New Entry\" to create a new log entry for this person. Click \"Edit Existing\" if you would like to make changes to the existing log entry.";
+                    break;
+                case "Client":
+                    popupContent = "A record already exists for Ageility Client " + employee + ". Click \"Save New Entry\" to create a new log entry for this person. Click \"Edit Existing\" if you would like to make changes to the existing log entry.";
+                    break;
+            }
+            string test = divDialogContent.GetText();
+
+            return divDialogContent.GetText().Equals(popupContent)
+                & btnSaveNewEntry.IsDisplayed()
+                & btnEditExisting.IsDisplayed()
+                & btnCancelEditting.IsDisplayed();
+        }
+        #endregion Duplicated pop-up
+
         #endregion Check points
     }
 }
