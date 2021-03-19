@@ -65,15 +65,16 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
         }
 
         #region Main Actions
-        public void FillBulkInsertRandomly(out BulkProcessingData bulkProcessingData, out int actNumOfSelectedEmployee, int expNumOfEmployee = 1)
+        public void FillBulkInsertRandomly(out List<List<string>> listBulk, out int actNumOfSelectedEmployee, int expNumOfEmployee = 1)
         {
             DriverUtils.WaitForPageLoad();
             Random rd = new Random();
-            List<string> list, listID, listName;
-            bulkProcessingData = new BulkProcessingData();
+            List<string> list, listID, listName, listItem;
+            listBulk = new List<List<string>>();
+            string selectedValue, region, community, date, comments;
 
-            string date = DateTime.Now.ToString("MM/dd/yyyy");
-            string selectedValue, comments;
+            date = DateTime.Now.ToString("MM/dd/yyyy");
+            comments = "Comments " + Utils.GetRandomValue("random value");
 
             // Fill Region            
             list = GetItemsFromControlList(Fields.region);
@@ -81,7 +82,7 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             txtRegion.SendKeys(selectedValue);
             DriverUtils.wait(1);
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            bulkProcessingData.Region = selectedValue;
+            region = selectedValue;
 
             // Fill Community
             DriverUtils.WaitForPageLoad();
@@ -90,7 +91,7 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             txtCommunity.SendKeys(selectedValue);
             DriverUtils.wait(1);
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
-            bulkProcessingData.Community = selectedValue;
+            community = selectedValue;
 
             // Fill Team Member / Resident
             btnSelectEmployee.Click();
@@ -98,12 +99,26 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             DriverUtils.WaitForPageLoad();
             listID = tblSearchResultTable.GetTableAllCellValueInColumn("Person ID");
 
-            List<string> lstSelectedID = new List<string>();
-            List<string> lstSelectedName = new List<string>();
-
             if (expNumOfEmployee > listID.Count || expNumOfEmployee == listID.Count)
             {
                 actNumOfSelectedEmployee = tblSearchResultTable.RowCount();
+
+                for (int i = 0; i < tblSearchResultTable.RowCount(); i++)
+                {
+                    listName = tblSearchResultTable.GetTableAllCellValueInRow(i);
+
+                    listItem = new List<string>();
+                    listItem.Add(region);
+                    listItem.Add(community);
+                    listItem.Add(listName[3]);
+                    listItem.Add(listName[1] + ", " + listName[2]);
+                    listItem.Add(date);
+                    listItem.Add(comments);
+
+                    listBulk.Add(listItem);
+                }
+
+
                 IWebElement checkbox = tblSearchResultTableHeader.GetElement().FindElement(By.TagName("input"));
                 checkbox.Click();
             }
@@ -114,28 +129,36 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
                 int index;
                 while (expNumOfEmployee > 0)
                 {
+                    listItem = new List<string>();
+                    listItem.Add(region);
+                    listItem.Add(community);
+
                     index = rd.Next(0, listID.Count - 1);
-                    lstSelectedID.Add(listID[index]);
+                    listItem.Add(listID[index]);
+                    
                     int rowIndex = tblSearchResultTable.GetTableRowIndex(3, listID[index]);
                     listName = tblSearchResultTable.GetTableAllCellValueInRow(rowIndex);
-                    lstSelectedName.Add(listName[1] + ", " + listName[2]);
+                    listItem.Add(listName[1] + ", " + listName[2]);
+
+                    listItem.Add(date);
+                    listItem.Add(comments);
+
                     lstCheckbox[rowIndex].Click();
                     listID.RemoveAt(index);
                     expNumOfEmployee--;
+
+                    listBulk.Add(listItem);
                 }
             }
             btnSelect.Click();
 
             // Fill Testing Date            
             txtTestingDate.SendKeys(date);
-            bulkProcessingData.TestingDate = date;
 
             // Fill Comments
             txtComments.ScrollToView();
-            comments = "Comments " + Utils.GetRandomValue("random value");
             txtComments.Click();
             System.Windows.Forms.SendKeys.SendWait(comments);
-            bulkProcessingData.Comments = comments;
         }
 
         public void SaveBulkInsert()

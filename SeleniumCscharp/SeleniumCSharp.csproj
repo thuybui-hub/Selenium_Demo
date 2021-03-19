@@ -58,6 +58,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>\\lgdn-server\LogiGearDN\ES\REIT-FiveStarEnhancement\04.DELIVERABLES\Emily Project\ADR\Reference DLLs\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Bson.2.7.2\lib\net45\MongoDB.Bson.dll</HintPath>
       <Private>True</Private>
@@ -175,6 +180,7 @@
     <Compile Include="Core\Helpers\Locator.cs" />
     <Compile Include="Core\Helpers\Logger.cs" />
     <Compile Include="Core\Helpers\WaitHelper.cs" />
+    <Compile Include="Core\Utilities\ExcelConnect.cs" />
     <Compile Include="Core\Utilities\FileReader.cs" />
     <Compile Include="Core\Utilities\FileUtils.cs" />
     <Compile Include="Core\Utilities\JsonParser.cs" />

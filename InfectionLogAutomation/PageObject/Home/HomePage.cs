@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfectionLogAutomation.PageObject.LogEntry;
 
 namespace InfectionLogAutomation.PageObject.Home
 {
@@ -299,6 +300,19 @@ namespace InfectionLogAutomation.PageObject.Home
             DriverUtils.WaitForPageLoad();
             btnReset.Click();
         }
+
+        public List<string> GetAllValueInColumnOfBulkInsertRecords(string columnName, int numberOfRecords)
+        {
+            DriverUtils.WaitForPageLoad();
+            List<string> list = new List<string>() { };
+            int colIndex = tblDashboardHeader.GetTableColumnIndex(columnName);
+
+            for(int i = 0; i < numberOfRecords; i++)
+            {
+                list.Add(tblDashboard.GetTableCellValue(colIndex, i));
+            }
+            return list;
+        }
         #endregion Main Actions
 
         #region Check Points
@@ -542,6 +556,29 @@ namespace InfectionLogAutomation.PageObject.Home
                     || logEntryList[i].ToString().Equals("SNF");
 
                 result = result & temp;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Check to see if the created bulk insert records show the correctly information
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="testingDate"></param>
+        /// <returns></returns>
+        public bool DoesCreatedBulkInsertRecordsShowCorrectInformation(List<string> ID, string testingDate, string page = "Team")
+        {
+            bool result = true;
+            string date = DateTime.Parse(testingDate).AddDays(-1).ToString("MM/dd/yyyy");
+            //List<string> ID = GetAllValueInColumnOfBulkInsertRecords("ID", numberOfRecords);
+
+            LogEntryDetailPage logEntry = new LogEntryDetailPage();
+
+            foreach (string i in ID)
+            {
+                OpenALogEntry(i);
+                //result = result & logEntry.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
+                //BackToPreviousPage();
             }
             return result;
         }

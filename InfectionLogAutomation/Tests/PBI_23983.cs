@@ -42,7 +42,6 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("6. Open the log entry at step #5");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can no longer be updated");
@@ -55,7 +54,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
@@ -68,7 +66,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.TeamAdminUser, Constants.CommonPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
@@ -81,12 +78,19 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
 
         [Test]
@@ -118,7 +122,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.TeamCommunitySubmittorUser, Constants.CommonPassword);
 
             Log.Info("3. Open the Team log entry at precondition");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("4. Try to edit Current Test Status field with all status, except 'Tested - Confirmed'");
@@ -132,7 +135,6 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("6. Reopen the log entry at step #4");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("7. Update lof entry with Current Test Status 'Tested - Confirmed'");
@@ -146,7 +148,6 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("9. Reopen the log entry at step #4");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can no longer be updated");
@@ -159,7 +160,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
@@ -172,7 +172,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.TeamAdminUser, Constants.CommonPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
@@ -185,12 +184,19 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
 
         [Test]
@@ -221,7 +227,6 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("6. Open the log entry at step #5");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can no longer be updated");
@@ -234,7 +239,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
@@ -247,12 +251,19 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
 
         [Test]
@@ -284,7 +295,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.ResidentCommunityAdminUser, Constants.CommonPassword);
 
             Log.Info("Open the Team log entry at precondition");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Try to edit Current Test Status field with all status, except 'Tested - Confirmed'");
@@ -298,7 +308,6 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("Reopen the log entry at step #4");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Update lof entry with Current Test Status 'Tested - Confirmed'");
@@ -312,7 +321,6 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("Reopen the log entry at step #4");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can no longer be updated");
@@ -325,7 +333,6 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
@@ -338,12 +345,19 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
             Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
             #endregion Main steps
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteALogEntry(outLstResult[3]);
+            #endregion Clean up
         }
     }
 }

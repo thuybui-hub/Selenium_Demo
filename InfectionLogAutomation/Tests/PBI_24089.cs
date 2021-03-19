@@ -20,9 +20,12 @@ namespace InfectionLogAutomation.Tests
         public void PBI_24089_AT_24107()
         {
             #region Test data
-            BulkProcessingData bulkProcessingData = JsonParser.Get<BulkProcessingData>();
-            int expectedNumberOfEmployee = 3;
+            int expectedNumberOfEmployee = 20;
             int numberOfCreatedRecords;
+            string excelPathStaff = Constants.DataPath + "INT_Staff_Report.xls";
+            List<string> actualEmployeesList, employeeList, actualResidentList, residentList, LOB, ID;
+            List<List<string>> outListBulkInsert;
+            string BU, outNumberOfRecords, employeeId, employeeName, residentId, residentName;
             #endregion Test data
 
             #region Main steps
@@ -40,12 +43,21 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(BulkInsertPage.DoesUIDisplayCorrectly(), "Page UI displays incorrectly.");
 
             Log.Info("Perform a bulk inserting for a community");
-            BulkInsertPage.FillBulkInsertRandomly(out bulkProcessingData, out numberOfCreatedRecords, expectedNumberOfEmployee);
+            BulkInsertPage.FillBulkInsertRandomly(out outListBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
             BulkInsertPage.SaveBulkInsert();
 
             Log.Info("Go to Home page and notice all uploaded records");
+            actualEmployeesList = HomePage.GetAllValueInColumnOfBulkInsertRecords("Name", numberOfCreatedRecords);
+            actualEmployeesList.Sort();
 
-            Log.Info("");
+            Log.Info("Get list of communities from Workday");
+            //employeeList = ExcelActions.GetCellValuesInColumn(excelPathStaff, "Staffs", "Employee Name", "[Currently Active] = 'Yes' AND [Location - Name] = '" + bulkProcessingData.Community + "'").Distinct().ToList();
+            //employeeList.Sort();
+
+            Log.Info("Verify that the records for bulk processing display correctly.");
+            ID = HomePage.GetAllValueInColumnOfBulkInsertRecords("ID", numberOfCreatedRecords);
+            //Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
+            //Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(ID, bulkProcessingData.TestingDate), "Data of Bulk Insert records displays incorrectly.");
 
             Log.Info("Try to edit uploaded records");
 
@@ -108,7 +120,7 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(BulkInsertPage.DoesUIDisplayCorrectly(), "Page UI displays incorrectly.");
 
             Log.Info("Perform a bulk inserting for a community");
-            BulkInsertPage.FillBulkInsertRandomly(out bulkProcessingData, out numberOfCreatedRecords, expectedNumberOfEmployee);
+            BulkInsertPage.FillBulkInsertRandomly(out outListBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
             BulkInsertPage.SaveBulkInsert();
 
             Log.Info("Go to Home page and notice all uploaded records");
