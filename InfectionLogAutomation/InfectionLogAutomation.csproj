@@ -144,11 +144,13 @@
     <Compile Include="Tests\PBI_23868.cs" />
     <Compile Include="Tests\PBI_23870.cs" />
     <Compile Include="Tests\PBI_23873.cs" />
+    <Compile Include="Tests\PBI_23911.cs" />
     <Compile Include="Tests\PBI_23915.cs" />
     <Compile Include="Tests\PBI_23922.cs" />
     <Compile Include="Tests\PBI_23924.cs" />
     <Compile Include="Tests\PBI_23864.cs" />
     <Compile Include="Tests\PBI_23931.cs" />
+    <Compile Include="Tests\PBI_23935.cs" />
     <Compile Include="Tests\PBI_23953.cs" />
     <Compile Include="Tests\PBI_23956.cs" />
     <Compile Include="Tests\PBI_23982.cs" />

@@ -2,9 +2,6 @@
 using InfectionLogAutomation.PageObject.Login;
 using InfectionLogAutomation.Utilities;
 using SeleniumCSharp.Core.DriverWrapper;
-using System;
-using InfectionLogAutomation.DataObject;
-using SeleniumCSharp.Core.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -84,9 +81,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.FilterATableColumn("Entry Type", "Ageility Client");
 
             Log.Info("Verify that Team log entries have no LOB information");
-            logEntriesList = HomePage.tblDashboard.GetTableAllCellValueInColumn("Resident LOB").Distinct().ToList();
-            //Assert.IsTrue(string.IsNullOrEmpty(string.Join(",", logEntriesList)), "There is LOB information for Ageility Client");
-            Assert.IsTrue(logEntriesList.SequenceEqual(lstNull), "There is LOB information for Team Log Entries");
+            logEntriesList = HomePage.tblDashboard.GetTableAllCellValueInColumn("Resident LOB").Distinct().ToList();            
+            Assert.IsTrue(string.IsNullOrEmpty(string.Join(",", logEntriesList)), "There is LOB information for Team Log Entries");
             #endregion
         }
     }
