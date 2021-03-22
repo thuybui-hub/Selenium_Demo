@@ -20,12 +20,13 @@ namespace InfectionLogAutomation.Tests
         public void PBI_24089_AT_24107()
         {
             #region Test data
-            int expectedNumberOfEmployee = 20;
+            int expectedNumberOfEmployee = 3;
             int numberOfCreatedRecords;
             string excelPathStaff = Constants.DataPath + "INT_Staff_Report.xls";
             List<string> actualEmployeesList, employeeList, actualResidentList, residentList, LOB, ID;
             List<List<string>> outListBulkInsert;
             string BU, outNumberOfRecords, employeeId, employeeName, residentId, residentName;
+            LogEntryData logEntryData = new LogEntryData();
             #endregion Test data
 
             #region Main steps
@@ -51,142 +52,159 @@ namespace InfectionLogAutomation.Tests
             actualEmployeesList.Sort();
 
             Log.Info("Get list of communities from Workday");
-            //employeeList = ExcelActions.GetCellValuesInColumn(excelPathStaff, "Staffs", "Employee Name", "[Currently Active] = 'Yes' AND [Location - Name] = '" + bulkProcessingData.Community + "'").Distinct().ToList();
-            //employeeList.Sort();
+            employeeList = ExcelActions.GetCellValuesInColumn(excelPathStaff, "Staffs", "Employee Name", "[Currently Active] = 'Yes' AND [Location - Name] = '" + outListBulkInsert[0][1] + "'").Distinct().ToList();
+            employeeList.Sort();
 
             Log.Info("Verify that the records for bulk processing display correctly.");
             ID = HomePage.GetAllValueInColumnOfBulkInsertRecords("ID", numberOfCreatedRecords);
-            //Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
-            //Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(ID, bulkProcessingData.TestingDate), "Data of Bulk Insert records displays incorrectly.");
+            Assert.IsTrue(actualEmployeesList.All(x => employeeList.Contains(x)), "Inactive Employees display on Dashboaed table.");
+            Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(outListBulkInsert, "Team Bulk"), "Data of Bulk Insert records displays incorrectly.");
 
             Log.Info("Try to edit uploaded records");
+            logEntryData.Symptoms = "LGG Testing";
+            logEntryData.CurrentTestStatus = "Tested - Negative";
+            logEntryData.CurrentDisposition = "Hospitalized";
+            logEntryData.Comments = "LGG Testing";
+            HomePage.OpenALogEntry(outListBulkInsert[0][2]);
+            LogEntryDetailPage.FillLogEntryInfo(logEntryData, "Team", "Edit");
+            LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("Verify that uploaded records are able to edit");
+            logEntryData.Region = outListBulkInsert[0][0];
+            logEntryData.Community = outListBulkInsert[0][1];
+            logEntryData.MRN = outListBulkInsert[0][2];
+            logEntryData.Name = outListBulkInsert[0][3];
+            logEntryData.InfectionType = "COVID-19";
+            logEntryData.OnsetDate = outListBulkInsert[0][4];
+            logEntryData.TestStatusDate = outListBulkInsert[0][4];
+            logEntryData.DispositionDate = outListBulkInsert[0][4];
+            HomePage.OpenALogEntry(outListBulkInsert[0][2]);
+            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, "Team Bulk"), "Upload record are unable to edit.");
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region DVP/DDHR: sp-test51
-            Log.Info("6.1. Logout and login with Team Admin account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamAdminUser, Constants.CommonPassword);
+            //#region DVP/DDHR: sp-test51
+            //Log.Info("6.1. Logout and login with Team Admin account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamAdminUser, Constants.CommonPassword);
 
-            //Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            //actualEmployeesList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
-            //actualEmployeesList.Sort();
-            //Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
-            #endregion DVP/DDHR: sp-test51
+            ////Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            ////actualEmployeesList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
+            ////actualEmployeesList.Sort();
+            ////Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
+            //#endregion DVP/DDHR: sp-test51
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region RDO/RDHR/Senior RDO: sp-test54
-            Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //#region RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            //Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            //actualEmployeesList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
-            //actualEmployeesList.Sort();
-            //Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
-            #endregion RDO/RDHR/Senior RDO: sp-test54
+            ////Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            ////actualEmployeesList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
+            ////actualEmployeesList.Sort();
+            ////Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
+            //#endregion RDO/RDHR/Senior RDO: sp-test54
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region ED/HR Partners: sp-test57
-            Log.Info("6.7. Logout and login with Team Community Submittor account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunitySubmittorUser, Constants.CommonPassword);
+            //#region ED/HR Partners: sp-test57
+            //Log.Info("6.7. Logout and login with Team Community Submittor account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunitySubmittorUser, Constants.CommonPassword);
 
-            //Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            //actualEmployeesList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
-            //actualEmployeesList.Sort();
-            //Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
-            #endregion ED/HR Partners: sp-test57
+            ////Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            ////actualEmployeesList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
+            ////actualEmployeesList.Sort();
+            ////Assert.IsTrue(actualEmployeesList.SequenceEqual(employeeList), "Inactive Employees display on Dashboaed table.");
+            //#endregion ED/HR Partners: sp-test57
             #endregion Bulk Processing - Insert Team
 
-            #region Bulk Processing - Insert Resident
-            Log.Info("Navigate to Infectious Outbreak application (http://qa.ilog.fve.ad.5ssl.com/)");
-            DriverUtils.GoToUrl(Constants.Url);
+            //#region Bulk Processing - Insert Resident
+            //Log.Info("Navigate to Infectious Outbreak application (http://qa.ilog.fve.ad.5ssl.com/)");
+            //DriverUtils.GoToUrl(Constants.Url);
 
-            Log.Info("Log in with valid account (e.g. gnguyen)");
-            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            //Log.Info("Log in with valid account (e.g. gnguyen)");
+            //LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
 
-            Log.Info("Go to Bulk Insert -> Team");
-            HomePage.SelectMenuItem(Constants.NewResidentBulkInsertPath);
+            //Log.Info("Go to Bulk Insert -> Team");
+            //HomePage.SelectMenuItem(Constants.NewResidentBulkInsertPath);
 
-            Log.Info("Verify that the file provide us with following information: Community, Date of Testing, Team Member/Resident");
-            Assert.IsTrue(BulkInsertPage.DoesUIDisplayCorrectly(), "Page UI displays incorrectly.");
+            //Log.Info("Verify that the file provide us with following information: Community, Date of Testing, Team Member/Resident");
+            //Assert.IsTrue(BulkInsertPage.DoesUIDisplayCorrectly(), "Page UI displays incorrectly.");
 
-            Log.Info("Perform a bulk inserting for a community");
-            BulkInsertPage.FillBulkInsertRandomly(out outListBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
-            BulkInsertPage.SaveBulkInsert();
+            //Log.Info("Perform a bulk inserting for a community");
+            //BulkInsertPage.FillBulkInsertRandomly(out outListBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
+            //BulkInsertPage.SaveBulkInsert();
 
-            Log.Info("Go to Home page and notice all uploaded records");
+            //Log.Info("Go to Home page and notice all uploaded records");
 
-            Log.Info("");
+            //Log.Info("");
 
-            Log.Info("Try to edit uploaded records");
+            //Log.Info("Try to edit uploaded records");
 
-            Log.Info("Verify that uploaded records are able to edit");
+            //Log.Info("Verify that uploaded records are able to edit");
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region DDH: sp-test52
-            Log.Info("6.2. Logout and login with Resident Admin account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
+            //#region DDH: sp-test52
+            //Log.Info("6.2. Logout and login with Resident Admin account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.ResidentAdminUser, Constants.CommonPassword);
 
-            //Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            //actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
-            //actualResidentList.Sort();
-            //Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
-            #endregion DDH: sp-test52
+            ////Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            ////actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
+            ////actualResidentList.Sort();
+            ////Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
+            //#endregion DDH: sp-test52
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region RDH: sp-test55
-            Log.Info("6.5. Logout and login with Resident Community Admin account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.ResidentCommunityAdminUser, Constants.CommonPassword);
+            //#region RDH: sp-test55
+            //Log.Info("6.5. Logout and login with Resident Community Admin account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.ResidentCommunityAdminUser, Constants.CommonPassword);
 
-            //Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            //actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
-            //actualResidentList.Sort();
-            //Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
-            #endregion RDH: sp-test55
+            ////Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            ////actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
+            ////actualResidentList.Sort();
+            ////Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
+            //#endregion RDH: sp-test55
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region RDO/RDHR/Senior RDO: sp-test54
-            Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //#region RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            //Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            //actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
-            //actualResidentList.Sort();
-            //Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
-            #endregion RDO/RDHR/Senior RDO: sp-test54
+            ////Logger.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            ////actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
+            ////actualResidentList.Sort();
+            ////Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
+            //#endregion RDO/RDHR/Senior RDO: sp-test54
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region Read Only: sp-test58
-            Log.Info("6.8. Logout and login with ​Resident Read Only account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.ResidentReadOnlyUser, Constants.CommonPassword);
+            //#region Read Only: sp-test58
+            //Log.Info("6.8. Logout and login with ​Resident Read Only account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.ResidentReadOnlyUser, Constants.CommonPassword);
 
-            Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            //actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
-            //actualResidentList.Sort();
-            //Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
-            #endregion Read Only: sp-test58
-            #endregion Bulk Processing - Insert Resident
+            //Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            ////actualResidentList = DashboardPage.GetAllValueInColumnOfBulkInsertRecords("Name", outNumberOfRecords);
+            ////actualResidentList.Sort();
+            ////Assert.IsTrue(actualResidentList.SequenceEqual(residentList), "Inactive Employees display on Dashboaed table.");
+            //#endregion Read Only: sp-test58
+            //#endregion Bulk Processing - Insert Resident
             #endregion Main steps
         }
     }

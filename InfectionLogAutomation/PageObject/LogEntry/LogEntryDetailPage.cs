@@ -910,11 +910,17 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         public bool DoesDataOnEditPageDisplayCorrectly(LogEntryData logEntryData, string page = "Team")
         {
             DriverUtils.WaitForPageLoad();
+
+            bool result = true;
+
             string title = "Infection Log Entry for Team Member " + logEntryData.Name + " (" + logEntryData.MRN + ")";
             string regionAndCommunityInfo = "at " + logEntryData.Region + ", " + logEntryData.Community;
 
             switch (page)
             {
+                case "Team Bulk":
+                    title = "Infection Log Entry for Team Member " + logEntryData.Name + " ( " + logEntryData.MRN + ")";
+                    break;
                 case "Resident":
                     title = "Infection Log Entry for Resident " + logEntryData.Name + " (" + logEntryData.MRN + ")";
                     break;
@@ -923,12 +929,28 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     break;
             }
 
-            return lblTitle.GetText().Equals(title)
+            result = lblTitle.GetText().Equals(title)
                 && lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo)
                 && spnInfectionTypeValue.GetText().Equals(logEntryData.InfectionType)
                 && (spnOnsetDateValue.GetText().Equals(logEntryData.OnsetDate) || spnOnsetDateValue.GetText().Equals(DateTime.Parse(logEntryData.OnsetDate).AddDays(-1).ToString("MM/dd/yyyy")) || spnOnsetDateValue.GetText().Equals(DateTime.Parse(logEntryData.OnsetDate).AddDays(-2).ToString("MM/dd/yyyy")))
                 && spnTestingStatus.GetText().Equals(logEntryData.CurrentTestStatus)
+                && (DateTime.Parse(txtTestingStatusDate.GetValue()).ToString("MM/dd/yyyy").Equals(logEntryData.TestStatusDate) || DateTime.Parse(txtTestingStatusDate.GetValue()).ToString("MM/dd/yyyy").Equals(DateTime.Parse(logEntryData.TestStatusDate).AddDays(-1).ToString("MM/dd/yyyy")) || DateTime.Parse(txtTestingStatusDate.GetValue()).ToString("MM/dd/yyyy").Equals(DateTime.Parse(logEntryData.TestStatusDate).AddDays(-2).ToString("MM/dd/yyyy")))
                 && spnDisposition.GetText().Equals(logEntryData.CurrentDisposition);
+
+            DriverUtils.SwitchToIframe(txtSymptoms.GetElement());
+            IWebElement stp = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+
+            result = result && stp.Text.Equals(logEntryData.Symptoms);
+
+            DriverUtils.SwitchToPreviousParentWindow();
+
+            DriverUtils.SwitchToIframe(txtComments.GetElement());
+            IWebElement cmt = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+
+            result = result && cmt.Text.Equals(logEntryData.Comments);
+            DriverUtils.SwitchToPreviousParentWindow();
+
+            return result;
         }
 
 

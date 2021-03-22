@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfectionLogAutomation.PageObject.LogEntry;
+using InfectionLogAutomation.DataObject;
 
 namespace InfectionLogAutomation.PageObject.Home
 {
@@ -566,20 +567,57 @@ namespace InfectionLogAutomation.PageObject.Home
         /// <param name="ID"></param>
         /// <param name="testingDate"></param>
         /// <returns></returns>
-        public bool DoesCreatedBulkInsertRecordsShowCorrectInformation(List<string> ID, string testingDate, string page = "Team")
+        public bool DoesCreatedBulkInsertRecordsShowCorrectInformation(List<List<string>> bulkInsert, string page = "Team")
         {
             bool result = true;
-            string date = DateTime.Parse(testingDate).AddDays(-1).ToString("MM/dd/yyyy");
-            //List<string> ID = GetAllValueInColumnOfBulkInsertRecords("ID", numberOfRecords);
+            string date = DateTime.Parse(bulkInsert[0][4]).AddDays(-1).ToString("MM/dd/yyyy");
 
-            LogEntryDetailPage logEntry = new LogEntryDetailPage();
+            LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
+            LogEntryData logEntryData = new LogEntryData();
 
-            foreach (string i in ID)
+            for (int i = 0; i < bulkInsert.Count; i++)
             {
-                OpenALogEntry(i);
-                //result = result & logEntry.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
-                //BackToPreviousPage();
+                logEntryData.Region = bulkInsert[i][0];
+                logEntryData.Community = bulkInsert[i][1];
+                logEntryData.MRN = bulkInsert[i][2];
+                logEntryData.Name = bulkInsert[i][3];
+                logEntryData.InfectionType = "COVID-19";
+                logEntryData.OnsetDate = bulkInsert[i][4];
+                logEntryData.CurrentTestStatus = "Tested - Pending";
+                logEntryData.CurrentDisposition = "Not Quarantined";
+                logEntryData.Symptoms = "N/A";
+                logEntryData.Comments = bulkInsert[i][5];
+                logEntryData.TestStatusDate = bulkInsert[i][4];
+                logEntryData.DispositionDate = bulkInsert[i][4];
+
+                OpenALogEntry(bulkInsert[i][2]);
+                DriverUtils.WaitForPageLoad();
+                result = result && logEntryPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
+                DriverUtils.WaitForPageLoad();
+                DriverUtils.BackToPreviousPage();
             }
+
+            //foreach (List<string> logEntry in bulkInsert)
+            //{
+            //    logEntryData.Region = logEntry[0];
+            //    logEntryData.Community = logEntry[1];
+            //    logEntryData.MRN = logEntry[2];
+            //    logEntryData.Name = logEntry[3];
+            //    logEntryData.InfectionType = "COVID-19";
+            //    logEntryData.OnsetDate = logEntry[4];
+            //    logEntryData.CurrentTestStatus = "Tested - Pending";
+            //    logEntryData.CurrentDisposition = "Not Quarantined";
+            //    logEntryData.Symptoms = "N/A";
+            //    logEntryData.Comments = logEntry[5];
+            //    logEntryData.TestStatusDate = logEntry[4];
+            //    logEntryData.DispositionDate = logEntry[4];
+
+            //    OpenALogEntry(logEntry[2]);
+            //    result = result & logEntryPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
+
+            //    DriverUtils.BackToPreviousPage();
+            //}
+            
             return result;
         }
         #endregion Check Points
