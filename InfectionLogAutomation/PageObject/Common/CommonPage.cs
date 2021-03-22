@@ -215,6 +215,24 @@ namespace InfectionLogAutomation.PageObject.Common
             return list.TrueForAll(i => i.Equals(value));
         }
 
+        /// <summary>
+        /// Check to see if an alert presents
+        /// </summary>
+        /// <returns></returns>
+        public bool isAlertPresent()
+        {
+            try
+            {
+                DriverUtils.GetDriver().SwitchTo().Alert();                
+                return true;
+            }
+            
+            catch (NoAlertPresentException Ex)
+            {
+                return false;
+            } 
+        }
+
         #endregion Check Points
     }
 }

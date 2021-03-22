@@ -405,15 +405,26 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// /// <param name="status">Can be New or Edit</param>
         public void FillLogEntryInfo(LogEntryData logEntryData, string typeOfEntry, string status = "New")
         {
+            DriverUtils.WaitForPageLoad();
+
             if (status.Equals("New"))
             {
                 // Fill region
                 if (!string.IsNullOrEmpty(logEntryData.Region))
+                {
                     txtRegion.SendKeys(logEntryData.Region);
+                    DriverUtils.wait(1);
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                }
 
                 // Fill community
                 if (!string.IsNullOrEmpty(logEntryData.Community))
+                {
+                    DriverUtils.WaitForPageLoad();
                     txtCommunity.SendKeys(logEntryData.Community);
+                    DriverUtils.wait(1);
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                }
 
                 // Fill employee/resident/Client name
                 if (typeOfEntry.Equals("Client"))
@@ -430,7 +441,13 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 // Fill Employee/Resident
                 else
                 {
-                    if (!string.IsNullOrEmpty(logEntryData.Name)) txtEmployee.SendKeys(logEntryData.Name);
+                    if (!string.IsNullOrEmpty(logEntryData.Name))
+                    {
+                        DriverUtils.WaitForPageLoad();
+                        txtEmployee.SendKeys(logEntryData.Name);
+                        DriverUtils.wait(2);
+                        System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                    }
                 }
 
                 // Fill OnsetDate
@@ -1130,6 +1147,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         #region Duplicated pop-up
         public bool CheckDuplicatePopup(string employee, string type = "Team")
         {
+            DriverUtils.WaitForPageLoad();
             string popupContent = "A record already exists for Team Member " + employee + ". Click \"Save New Entry\" to create a new log entry for this person. Click \"Edit Existing\" if you would like to make changes to the existing log entry.";
 
             switch (type)
@@ -1142,7 +1160,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     break;
             }
             string test = divDialogContent.GetText();
-
+            //System.Console.WriteLine(popupContent);
             return divDialogContent.GetText().Equals(popupContent)
                 & btnSaveNewEntry.IsDisplayed()
                 & btnEditExisting.IsDisplayed()
