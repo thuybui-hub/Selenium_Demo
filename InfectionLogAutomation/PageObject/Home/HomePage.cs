@@ -72,37 +72,31 @@ namespace InfectionLogAutomation.PageObject.Home
 
         #region Main Actions
 
-        /// <summary>
-        /// Return selected Last Updated From; Last Updated To
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        public void GetSelectedDateFromDatePicker(out DateTime from, out DateTime to)
-        {
-            from = DateTime.Now;
-            to = DateTime.Now;
-            Link lnk;
-            Span pickerFrom = new Span(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));            
-            Span pickerTo = new Span(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));
+        ///// <summary>
+        ///// Return selected Last Updated From; Last Updated To
+        ///// </summary>
+        ///// <param name="from"></param>
+        ///// <param name="to"></param>
+        //public void GetSelectedDateFromDatePicker(out DateTime from, out DateTime to)
+        //{
+        //    from = DateTime.Now;
+        //    to = DateTime.Now;
+        //    Link lnk;
+        //    Span pickerFrom = new Span(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));            
+        //    Span pickerTo = new Span(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));            
 
-            bool t1 = pickerFrom.IsDisplayed();
-            bool t2 = pickerTo.IsDisplayed();
+        //    pickerFrom.Click();
+        //    DriverUtils.wait(1);            
+        //    lnk = new Link(By.XPath("//td[@class=\"k-state-selected k-state-focused\"]/a"));
+        //    string frm = lnk.GetAttribute("title");
+        //    from = DateTime.Parse(frm);            
 
-            pickerFrom.Click();
-            DriverUtils.wait(1);
-            //lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
-            lnk = new Link(By.XPath("//td[@class=\"k-state-selected k-state-focused\"]/a"));
-            string frm = lnk.GetAttribute("title");
-            from = DateTime.Parse(frm);
-
-            //System.Windows.Forms.SendKeys.SendWait("{tab}");
-
-            pickerTo.Click();
-            DriverUtils.wait(1);
-            lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
-            string t = lnk.GetAttribute("title");
-            to = DateTime.Parse(t);           
-        }
+        //    pickerTo.Click();
+        //    DriverUtils.wait(1);
+        //    lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
+        //    string t = lnk.GetAttribute("title");
+        //    to = DateTime.Parse(t);           
+        //}
 
         public void ClearAllFilters()
         {
@@ -184,6 +178,32 @@ namespace InfectionLogAutomation.PageObject.Home
             tblDashboard.ClickTableCell(13, rowIndex);
             DriverUtils.wait(1);
             System.Windows.Forms.SendKeys.SendWait("{Enter}");
+        }
+
+        public void DeleteLogEntries(int numberOfRecords, string startPosition = "bottom")
+        {
+            DriverUtils.WaitForPageLoad();
+
+            while (numberOfRecords > 0)
+            {
+                if (tblDashboard.RowCount() > 0)
+                {
+                    if (startPosition.Equals("top"))
+                    {
+                        tblDashboard.ClickTableCell(13, 0);
+                        System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                        DriverUtils.WaitForPageLoad();
+                    }
+                    else
+                    {
+                        tblDashboard.ClickTableCell(13, tblDashboard.RowCount()-1);
+                        System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                        DriverUtils.WaitForPageLoad();
+                    }
+
+                }
+                numberOfRecords--;
+            }
         }
 
         public void FillSearchCriterias(string community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, string filters = null)
@@ -483,7 +503,10 @@ namespace InfectionLogAutomation.PageObject.Home
             bool result = true;
             DateTime from, to;
 
-            GetSelectedDateFromDatePicker(out from, out to);
+            //GetSelectedDateFromDatePicker(out from, out to);
+            from = Convert.ToDateTime(txtLastUpdatedFrom.GetValue());
+            to = Convert.ToDateTime(txtLastUpdatedTo.GetValue());
+            string f = txtFilters.GetValue();
 
             // Date range is 7 days
             double difference = to.Date.Subtract(from.Date).TotalDays;

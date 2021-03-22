@@ -72,8 +72,7 @@ namespace InfectionLogAutomation.Tests
             HomePage.FilterATableColumn("Entry Type", "Team Member");
 
             Log.Info("Verify that Team log entries have no LOB information");
-            logEntriesList = HomePage.tblDashboard.GetTableAllCellValueInColumn("Resident LOB").Distinct().ToList();
-            //Assert.IsTrue(string.IsNullOrEmpty(string.Join(",", logEntriesList)), "There is LOB information for Team Log Entries");
+            logEntriesList = HomePage.tblDashboard.GetTableAllCellValueInColumn("Resident LOB").Distinct().ToList();            
             Assert.IsTrue(logEntriesList.SequenceEqual(lstNull), "There is LOB information for Team Log Entries");
 
             Log.Info("Filter log entries by type = Ageility Client");
