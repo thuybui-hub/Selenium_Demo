@@ -144,6 +144,7 @@ namespace InfectionLogAutomation.PageObject.Home
         public void FilterATableColumn(string columnName, string filterValue)
         {
             DriverUtils.WaitForPageLoad();
+            DriverUtils.wait(1);
             ClickOnTableColumnFilter(columnName);            
             EnterFilterData(filterValue);
         }
@@ -192,12 +193,14 @@ namespace InfectionLogAutomation.PageObject.Home
                     if (startPosition.Equals("top"))
                     {
                         tblDashboard.ClickTableCell(13, 0);
+                        DriverUtils.wait(1);
                         System.Windows.Forms.SendKeys.SendWait("{Enter}");
                         DriverUtils.WaitForPageLoad();
                     }
                     else
                     {
                         tblDashboard.ClickTableCell(13, tblDashboard.RowCount()-1);
+                        DriverUtils.wait(1);
                         System.Windows.Forms.SendKeys.SendWait("{Enter}");
                         DriverUtils.WaitForPageLoad();
                     }
