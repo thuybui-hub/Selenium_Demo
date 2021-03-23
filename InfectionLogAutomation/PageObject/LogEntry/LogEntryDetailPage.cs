@@ -375,9 +375,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
             // Fill Test Status date
             txtTestingStatusDate.SendKeys(date);
-            logEntryData.TestStatusDate = date;            
+            logEntryData.TestStatusDate = date;
 
-            // Fill Disposition            
+            // Fill Disposition
+            spnDisposition.ScrollToView();            
             list = GetItemsFromControlList(Fields.disposition);
             selectedValue = list[rd.Next(0, list.Count - 1)];
             spnDisposition.Click();
@@ -481,6 +482,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             // Fill Disposition
             if (!string.IsNullOrEmpty(logEntryData.CurrentDisposition))
             {
+                spnDisposition.ScrollToView();
                 spnDisposition.Click();
                 lstBoxDisposition.SelectOptionByText(logEntryData.CurrentDisposition);
             }
@@ -1159,8 +1161,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     popupContent = "A record already exists for Ageility Client " + employee + ". Click \"Save New Entry\" to create a new log entry for this person. Click \"Edit Existing\" if you would like to make changes to the existing log entry.";
                     break;
             }
-            string test = divDialogContent.GetText();
-            //System.Console.WriteLine(popupContent);
+
+            System.Console.WriteLine("EXPECTATION IS: " + popupContent);
+            System.Console.WriteLine("ACTUAL IS: " + divDialogContent.GetText());
+
             return divDialogContent.GetText().Equals(popupContent)
                 & btnSaveNewEntry.IsDisplayed()
                 & btnEditExisting.IsDisplayed()
