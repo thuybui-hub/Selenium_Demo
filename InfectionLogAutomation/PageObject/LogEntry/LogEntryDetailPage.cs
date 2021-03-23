@@ -952,7 +952,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && (spnOnsetDateValue.GetText().Equals(logEntryData.OnsetDate) || spnOnsetDateValue.GetText().Equals(DateTime.Parse(logEntryData.OnsetDate).AddDays(-1).ToString("MM/dd/yyyy")) || spnOnsetDateValue.GetText().Equals(DateTime.Parse(logEntryData.OnsetDate).AddDays(-2).ToString("MM/dd/yyyy")))
                 && spnTestingStatus.GetText().Equals(logEntryData.CurrentTestStatus)
                 && (DateTime.Parse(txtTestingStatusDate.GetValue()).ToString("MM/dd/yyyy").Equals(logEntryData.TestStatusDate) || DateTime.Parse(txtTestingStatusDate.GetValue()).ToString("MM/dd/yyyy").Equals(DateTime.Parse(logEntryData.TestStatusDate).AddDays(-1).ToString("MM/dd/yyyy")) || DateTime.Parse(txtTestingStatusDate.GetValue()).ToString("MM/dd/yyyy").Equals(DateTime.Parse(logEntryData.TestStatusDate).AddDays(-2).ToString("MM/dd/yyyy")))
-                && spnDisposition.GetText().Equals(logEntryData.CurrentDisposition);
+                && spnDisposition.GetText().Equals(logEntryData.CurrentDisposition)
+                && (DateTime.Parse(txtDispositionDate.GetValue()).ToString("MM/dd/yyyy").Equals(logEntryData.DispositionDate) || DateTime.Parse(txtDispositionDate.GetValue()).ToString("MM/dd/yyyy").Equals(DateTime.Parse(logEntryData.DispositionDate).AddDays(-1).ToString("MM/dd/yyyy")) || DateTime.Parse(txtDispositionDate.GetValue()).ToString("MM/dd/yyyy").Equals(DateTime.Parse(logEntryData.DispositionDate).AddDays(-2).ToString("MM/dd/yyyy")));
 
             DriverUtils.SwitchToIframe(txtSymptoms.GetElement());
             IWebElement stp = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
