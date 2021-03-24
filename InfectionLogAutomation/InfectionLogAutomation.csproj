@@ -160,6 +160,7 @@
     <Compile Include="Tests\PBI_24066.cs" />
     <Compile Include="Tests\PBI_24089.cs" />
     <Compile Include="Tests\PBI_24090.cs" />
+    <Compile Include="Tests\PBI_24100.cs" />
     <Compile Include="Tests\PBI_25307.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />

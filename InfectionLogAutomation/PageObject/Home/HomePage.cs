@@ -337,6 +337,65 @@ namespace InfectionLogAutomation.PageObject.Home
             }
             return list;
         }
+
+        public List<List<string>> GetAllCreatedBulkInsertRecordsData(List<string> id)
+        {
+            List<List<string>> bulkInsert = new List<List<string>>();
+            List<string> logEntry = new List<string>();
+            LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
+
+            for(int i = 0; i<id.Count; i++)
+            {
+                OpenALogEntry(i);
+                // Get Name and Id
+                string title = lblTitle.GetText();
+                
+                string mrn = title.Substring(title.IndexOf("(", 0) + 1, title.Length - title.IndexOf("(", 0) - 2).Trim();
+                
+                string firstName = title.Substring(title.IndexOf(",", 0) + 2, title.IndexOf("(", 0) - title.IndexOf(",", 0) - 3);
+                string newString = title.Substring(0, title.IndexOf(",", 0));
+                string lastName = newString.Substring(newString.LastIndexOf(" ") + 1, newString.Length - newString.LastIndexOf(" ") - 1);
+                string name = lastName + ", " + firstName;
+
+                // Get Region and Community
+                string regionAndCommunity = lblRegionAndCommunity.GetText();
+                string region = regionAndCommunity.Substring(regionAndCommunity.IndexOf(" ", 0) + 1, regionAndCommunity.IndexOf(",", 0) - regionAndCommunity.IndexOf(" ", 0) - 1);
+                string community = regionAndCommunity.Substring(regionAndCommunity.IndexOf(",", 0) + 2, regionAndCommunity.Length - regionAndCommunity.IndexOf(",", 0) - 2);
+
+                // Get others
+                string onsetDate = logEntryPage.spnOnsetDateValue.GetText();
+                string testStatus = logEntryPage.spnTestingStatus.GetText();
+                string disposition = logEntryPage.spnDisposition.GetText();
+                string testStatusDate = logEntryPage.txtTestingStatusDate.GetValue();
+                string dispositionDate = logEntryPage.txtDispositionDate.GetValue();
+
+                DriverUtils.SwitchToIframe(logEntryPage.txtSymptoms.GetElement());
+                IWebElement stp = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+                string symptom = stp.Text;
+                DriverUtils.SwitchToPreviousParentWindow();
+
+                DriverUtils.SwitchToIframe(logEntryPage.txtComments.GetElement());
+                IWebElement cmt = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+                string comment = cmt.Text;
+                DriverUtils.SwitchToPreviousParentWindow();
+                
+                logEntry.Add(region);
+                logEntry.Add(community);
+                logEntry.Add(mrn);
+                logEntry.Add(name);
+                logEntry.Add(onsetDate);
+                logEntry.Add(testStatus);
+                logEntry.Add(disposition);
+                logEntry.Add(testStatusDate);
+                logEntry.Add(dispositionDate);
+                logEntry.Add(symptom);
+                logEntry.Add(comment);
+
+                bulkInsert.Add(logEntry);
+            }
+            
+            return bulkInsert;
+        }
         #endregion Main Actions
 
         #region Check Points
@@ -598,6 +657,7 @@ namespace InfectionLogAutomation.PageObject.Home
             bool result = true;
             string date = DateTime.Parse(bulkInsert[0][4]).AddDays(-1).ToString("MM/dd/yyyy");
 
+            // need to update, input and compare these 2 lists
             LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
             LogEntryData logEntryData = new LogEntryData();
 

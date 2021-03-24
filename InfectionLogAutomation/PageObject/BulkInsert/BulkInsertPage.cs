@@ -270,6 +270,19 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
             return result;
         }
+
+        public void Test(List<string> actList, List<string> expList)
+        {
+            Console.WriteLine("Mismatches: ------------------------------------------------------------------------");
+
+            foreach (string x in actList)
+            {
+                if (!expList.Contains(x))
+                {
+                    Console.WriteLine(x);
+                }
+            }
+        }
         #endregion Check Points
     }
 }
