@@ -153,10 +153,11 @@ namespace SeleniumCSharp.Core.ElementWrapper
         public List<string> GetTableAllCellValueInRow(int rowIndex = 0)
         {            
             List<string> list = new List<string>() { };
+
+            DriverUtils.WaitForPageLoad();
             IWebElement tbl = GetElement();
 
             List<IWebElement> trs = new List<IWebElement>(tbl.FindElements(By.TagName("tr")));
-
             List<IWebElement> tds = new List<IWebElement>(trs[rowIndex].FindElements(By.TagName("td")));
 
             for (int i = 0; i < tds.Count; i++)

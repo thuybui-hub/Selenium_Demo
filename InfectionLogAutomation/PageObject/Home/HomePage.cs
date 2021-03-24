@@ -349,6 +349,7 @@ namespace InfectionLogAutomation.PageObject.Home
         public bool IsHomePageDisplayed()
         {
             DriverUtils.WaitForPageLoad();
+            DriverUtils.wait(1);
             return lnkInfectiousOutbreakLog.IsDisplayed()
                 && txtCommunity.IsDisplayed()
                 && txtLastUpdatedFrom.IsDisplayed()
@@ -646,6 +647,52 @@ namespace InfectionLogAutomation.PageObject.Home
             
             return result;
         }
+
+
+        /// <summary>
+        /// Check to see if log entry info is shown correctly on the Dashboard
+        /// </summary>
+        /// <param name="entryType">Entry Type can be: Team, Resident, Client</param>
+        /// <param name="acLogEntryData"></param>
+        /// <param name="exLogEntryData"></param>
+        public bool DoesLogEntryDataMatchDashboard(string entryType, List<string> acLogEntryData, LogEntryData exLogEntryData)
+        {
+            bool matched = true;
+
+            DriverUtils.WaitForPageLoad();
+            System.Console.WriteLine("Actual IS: " + acLogEntryData[2] + "_" + exLogEntryData.Region);
+            System.Console.WriteLine("Actual IS: " + acLogEntryData[4] + "_" + exLogEntryData.Community);
+            System.Console.WriteLine("Actual IS: " + acLogEntryData[5] + "_" + exLogEntryData.MRN);
+            System.Console.WriteLine("Actual IS: " + acLogEntryData[6] + "_" + exLogEntryData.Name);
+            System.Console.WriteLine("Actual IS: " + acLogEntryData[8] + "_" + exLogEntryData.InfectionType);
+            System.Console.WriteLine("Actual IS: " + acLogEntryData[10] + "_" + exLogEntryData.CurrentTestStatus);
+            System.Console.WriteLine("Actual IS: " + acLogEntryData[11] + "_" + exLogEntryData.CurrentDisposition);
+            matched = acLogEntryData[2].Equals(exLogEntryData.Region)
+                && acLogEntryData[4].Equals(exLogEntryData.Community)
+                && acLogEntryData[5].Equals(exLogEntryData.MRN)
+                && acLogEntryData[6].Equals(exLogEntryData.Name)
+                && acLogEntryData[8].Equals(exLogEntryData.InfectionType)
+                && acLogEntryData[10].Equals(exLogEntryData.CurrentTestStatus)
+                && acLogEntryData[11].Equals(exLogEntryData.CurrentDisposition);
+            //&& acLogEntryData[12].Equals(exLogEntryData.InfectionType) 
+            //acLogEntryData[12].Equals("Team Member");
+            switch (entryType)
+            {
+                case "Team":
+                    matched = matched && acLogEntryData[12].Equals("Team Member");
+                    break;
+                case "Resident":
+                    matched = matched && acLogEntryData[12].Equals("Resident");
+                    break;
+                case "Client":
+                    matched = matched && acLogEntryData[12].Equals("Ageility Client");
+                    break;
+            }
+
+            return matched;
+        }
+
+        
         #endregion Check Points
     }
 }
