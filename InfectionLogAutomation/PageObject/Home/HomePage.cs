@@ -46,7 +46,7 @@ namespace InfectionLogAutomation.PageObject.Home
             // Search Criterias
             txtCommunity = new TextBox(By.XPath("//ul[@id=\"communityName_taglist\"]//following-sibling::input"));
             cbbCommunity = new ComboBox(By.XPath("//select[@id=\"communityName\"]"));
-            lstCommunity = new Ul(By.XPath("//ul[@id=\"communityName_taglist\"]"));
+            lstCommunity = new Ul(By.XPath("//ul[@id=\"communityName_listbox\"]"));
             txtLastUpdatedFrom = new TextBox(By.Id("datepickerFrom"));
             txtLastUpdatedTo = new TextBox(By.Id("datepickerTo"));
             txtFilters = new TextBox(By.XPath("//ul[@id=\"allFilters_taglist\"]//following-sibling::input"));
@@ -623,31 +623,41 @@ namespace InfectionLogAutomation.PageObject.Home
                 DriverUtils.WaitForPageLoad();
                 DriverUtils.BackToPreviousPage();
             }
-
-            //foreach (List<string> logEntry in bulkInsert)
-            //{
-            //    logEntryData.Region = logEntry[0];
-            //    logEntryData.Community = logEntry[1];
-            //    logEntryData.MRN = logEntry[2];
-            //    logEntryData.Name = logEntry[3];
-            //    logEntryData.InfectionType = "COVID-19";
-            //    logEntryData.OnsetDate = logEntry[4];
-            //    logEntryData.CurrentTestStatus = "Tested - Pending";
-            //    logEntryData.CurrentDisposition = "Not Quarantined";
-            //    logEntryData.Symptoms = "N/A";
-            //    logEntryData.Comments = logEntry[5];
-            //    logEntryData.TestStatusDate = logEntry[4];
-            //    logEntryData.DispositionDate = logEntry[4];
-
-            //    OpenALogEntry(logEntry[2]);
-            //    result = result & logEntryPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
-
-            //    DriverUtils.BackToPreviousPage();
-            //}
-            
             return result;
         }
 
+        public bool AreBulkInsertRecordsDisplayedAsPerBusinessRules(List<List<string>> listBulkInsert)
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            
+            txtCommunity.Click();
+            DriverUtils.WaitForPageLoad();
+            List<string> assignedCommunity = lstCommunity.GetOptions();
+            System.Windows.Forms.SendKeys.SendWait("{tab}");
+
+            if (assignedCommunity.Contains(listBulkInsert[0][1]))
+            {
+                // Dashboard shows Bulk Insert records for this community
+                ShowBothActiveAndInactiveRecords();
+                ShowAllILogRecords();
+                List<string> listCommunity = tblDashboard.GetTableAllCellValueInColumn("Community");
+                List<string> listEmployee = tblDashboard.GetTableAllCellValueInColumn("Name");
+                result = listCommunity.Contains(listBulkInsert[0][1])
+                      && listBulkInsert.All(x => listEmployee.Contains(x[3]));
+            }
+            else
+            {
+                // Dashboard does not show Bulk Insert records for this community
+                ShowBothActiveAndInactiveRecords();
+                ShowAllILogRecords();
+                List<string> list = tblDashboard.GetTableAllCellValueInColumn("Community");
+                result = !list.Contains(listBulkInsert[0][1]);
+            }
+
+            return result;
+        }
+        
 
         /// <summary>
         /// Check to see if log entry info is shown correctly on the Dashboard
@@ -690,9 +700,13 @@ namespace InfectionLogAutomation.PageObject.Home
             }
 
             return matched;
+        }                
+
+        public bool DoesResidentBulkInsertRecordsNotEqualIL(List<string> LOB)
+        {
+            return LOB.All(x => x != "IL" & x != null);
         }
 
-        
         #endregion Check Points
     }
 }
