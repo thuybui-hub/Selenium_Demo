@@ -1,20 +1,11 @@
 ﻿using InfectionLogAutomation.PageObject.Common;
 using InfectionLogAutomation.Utilities;
-using Microsoft.VisualStudio.TestTools.UITesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using SeleniumCSharp.Core.DriverWrapper;
 using SeleniumCSharp.Core.ElementWrapper;
 using System;
 using System.Collections.Generic;
 using InfectionLogAutomation.DataObject;
-using NUnit.Framework;
-using OpenQA.Selenium.IE;
-
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using SeleniumCSharp.Core.Utilities;
 
 namespace InfectionLogAutomation.PageObject.LogEntry
@@ -160,8 +151,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             txtLastName.SendKeys(lastName);
             txtFirstName.SendKeys(firstName);
             txtMrn.SendKeys(MRN);
-        }
-        
+        }        
 
         /// <summary>
         /// Fill log entry information randomly and return log entry's information selected
@@ -533,10 +523,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             if (btnSaveNewEntry.IsDisplayed())
             {
                 btnSaveNewEntry.Click();
-            }
-
-            // Close Alert pop-up if any
-            //CloseAlertPopup();
+            }            
 
             DriverUtils.WaitForPageLoad();            
         }
@@ -947,6 +934,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     title = "Infection Log Entry for Ageility Client " + logEntryData.Name + " (" + logEntryData.MRN + ")";
                     break;
             }
+            //System.Console.WriteLine(title);
+            //System.Console.WriteLine(lblTitle.GetText());
+            //System.Console.WriteLine("Region: " + lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo));
+            //System.Console.WriteLine("Infection Type: " + spnInfectionTypeValue.GetText().Equals(logEntryData.InfectionType));
 
             result = lblTitle.GetText().Equals(title)
                 && lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo)
@@ -1162,9 +1153,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     popupContent = "A record already exists for Ageility Client " + employee + ". Click \"Save New Entry\" to create a new log entry for this person. Click \"Edit Existing\" if you would like to make changes to the existing log entry.";
                     break;
             }
-
-            System.Console.WriteLine("EXPECTATION IS: " + popupContent);
-            System.Console.WriteLine("ACTUAL IS: " + divDialogContent.GetText());
 
             return divDialogContent.GetText().Equals(popupContent)
                 & btnSaveNewEntry.IsDisplayed()
