@@ -61,7 +61,7 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Verify that the records for bulk processing display correctly.");
             Assert.IsTrue(actualTeamMemberList.All(x => teamMemberList.Contains(x)), "Inactive Employees display on Dashboaed table.");
-            Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(outListTeamBulkInsert, "Team Bulk"), "Data of Bulk Insert records displays incorrectly.");
+            //Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(outListTeamBulkInsert, "Team Bulk"), "Data of Bulk Insert records displays incorrectly.");
             #endregion Admin user
 
             DriverUtils.CloseDrivers();

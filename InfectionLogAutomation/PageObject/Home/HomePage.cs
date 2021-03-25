@@ -338,15 +338,16 @@ namespace InfectionLogAutomation.PageObject.Home
             return list;
         }
 
-        public List<List<string>> GetAllCreatedBulkInsertRecordsData(List<string> id)
+        public List<List<string>> GetAllCreatedBulkInsertRecordsData(List<List<string>> ID)
         {
             List<List<string>> bulkInsert = new List<List<string>>();
-            List<string> logEntry = new List<string>();
+            List<string> logEntry;
             LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
 
-            for(int i = 0; i<id.Count; i++)
+            for(int i = 0; i< ID.Count; i++)
             {
-                OpenALogEntry(i);
+                OpenALogEntry(ID[i][2]);
+                DriverUtils.WaitForPageLoad();
                 // Get Name and Id
                 string title = lblTitle.GetText();
                 
@@ -366,8 +367,8 @@ namespace InfectionLogAutomation.PageObject.Home
                 string onsetDate = logEntryPage.spnOnsetDateValue.GetText();
                 string testStatus = logEntryPage.spnTestingStatus.GetText();
                 string disposition = logEntryPage.spnDisposition.GetText();
-                string testStatusDate = logEntryPage.txtTestingStatusDate.GetValue();
-                string dispositionDate = logEntryPage.txtDispositionDate.GetValue();
+                string testStatusDate = DateTime.Parse(logEntryPage.txtTestingStatusDate.GetValue()).ToString("MM/dd/yyyy");
+                string dispositionDate = DateTime.Parse(logEntryPage.txtDispositionDate.GetValue()).ToString("MM/dd/yyyy");
 
                 DriverUtils.SwitchToIframe(logEntryPage.txtSymptoms.GetElement());
                 IWebElement stp = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
@@ -378,7 +379,8 @@ namespace InfectionLogAutomation.PageObject.Home
                 IWebElement cmt = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
                 string comment = cmt.Text;
                 DriverUtils.SwitchToPreviousParentWindow();
-                
+
+                logEntry = new List<string>();
                 logEntry.Add(region);
                 logEntry.Add(community);
                 logEntry.Add(mrn);
@@ -392,6 +394,7 @@ namespace InfectionLogAutomation.PageObject.Home
                 logEntry.Add(comment);
 
                 bulkInsert.Add(logEntry);
+                DriverUtils.BackToPreviousPage();
             }
             
             return bulkInsert;
@@ -653,35 +656,52 @@ namespace InfectionLogAutomation.PageObject.Home
         /// <param name="ID"></param>
         /// <param name="testingDate"></param>
         /// <returns></returns>
-        public bool DoesCreatedBulkInsertRecordsShowCorrectInformation(List<List<string>> bulkInsert, string page = "Team")
+        public bool DoesCreatedBulkInsertRecordsShowCorrectInformation(List<List<string>> actualList, List<List<string>> expectedList)
         {
             bool result = true;
-            string date = DateTime.Parse(bulkInsert[0][4]).AddDays(-1).ToString("MM/dd/yyyy");
+            //string date = DateTime.Parse(expectedList[0][4]).AddDays(-1).ToString("MM/dd/yyyy");
 
             // need to update, input and compare these 2 lists
-            LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
-            LogEntryData logEntryData = new LogEntryData();
+            //LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
+            //LogEntryData logEntryData = new LogEntryData();
 
-            for (int i = 0; i < bulkInsert.Count; i++)
+            string testStatus = "Tested - Pending";
+            string disposition = "Not Quarantined";
+            string symptom = "N/A";
+
+            for (int i = 0; i < expectedList.Count; i++)
             {
-                logEntryData.Region = bulkInsert[i][0];
-                logEntryData.Community = bulkInsert[i][1];
-                logEntryData.MRN = bulkInsert[i][2];
-                logEntryData.Name = bulkInsert[i][3];
-                logEntryData.InfectionType = "COVID-19";
-                logEntryData.OnsetDate = bulkInsert[i][4];
-                logEntryData.CurrentTestStatus = "Tested - Pending";
-                logEntryData.CurrentDisposition = "Not Quarantined";
-                logEntryData.Symptoms = "N/A";
-                logEntryData.Comments = bulkInsert[i][5];
-                logEntryData.TestStatusDate = bulkInsert[i][4];
-                logEntryData.DispositionDate = bulkInsert[i][4];
+                result = result && actualList[i][0].Equals(expectedList[i][0])
+                    && actualList[i][1].Equals(expectedList[i][1])
+                    && actualList[i][2].Equals(expectedList[i][2])
+                    && actualList[i][3].Equals(expectedList[i][3])
+                    && (actualList[i][4].Equals(expectedList[i][4]) || actualList[i][4].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-1).ToString("MM/dd/yyyy")) || actualList[i][4].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-2).ToString("MM/dd/yyyy")))
+                    && actualList[i][5].Equals(testStatus)
+                    && actualList[i][6].Equals(disposition)
+                    && (actualList[i][7].Equals(expectedList[i][4]) || actualList[i][7].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-1).ToString("MM/dd/yyyy")) || actualList[i][7].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-2).ToString("MM/dd/yyyy")))
+                    && (actualList[i][8].Equals(expectedList[i][4]) || actualList[i][8].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-1).ToString("MM/dd/yyyy")) || actualList[i][8].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-2).ToString("MM/dd/yyyy")))
+                    && actualList[i][9].Equals(symptom)
+                    && actualList[i][10].Equals(expectedList[i][5]);
 
-                OpenALogEntry(bulkInsert[i][2]);
-                DriverUtils.WaitForPageLoad();
-                result = result && logEntryPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
-                DriverUtils.WaitForPageLoad();
-                DriverUtils.BackToPreviousPage();
+
+                //logEntryData.Region = bulkInsert[i][0];
+                //logEntryData.Community = bulkInsert[i][1];
+                //logEntryData.MRN = bulkInsert[i][2];
+                //logEntryData.Name = bulkInsert[i][3];
+                //logEntryData.InfectionType = "COVID-19";
+                //logEntryData.OnsetDate = bulkInsert[i][4];
+                //logEntryData.CurrentTestStatus = "Tested - Pending";
+                //logEntryData.CurrentDisposition = "Not Quarantined";
+                //logEntryData.Symptoms = "N/A";
+                //logEntryData.Comments = bulkInsert[i][5];
+                //logEntryData.TestStatusDate = bulkInsert[i][4];
+                //logEntryData.DispositionDate = bulkInsert[i][4];
+
+                //OpenALogEntry(bulkInsert[i][2]);
+                //DriverUtils.WaitForPageLoad();
+                //result = result && logEntryPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
+                //DriverUtils.WaitForPageLoad();
+                //DriverUtils.BackToPreviousPage();
             }
             return result;
         }

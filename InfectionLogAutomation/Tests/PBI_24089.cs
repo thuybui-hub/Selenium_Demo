@@ -48,6 +48,7 @@ namespace InfectionLogAutomation.Tests
             BulkInsertPage.SaveBulkInsert();
 
             Log.Info("Go to Home page and notice all uploaded records");
+            List<string> listId = HomePage.GetAllValueInColumnOfBulkInsertRecords("ID", numberOfCreatedRecords);
             actualTeamMemberList = HomePage.GetAllValueInColumnOfBulkInsertRecords("Name", numberOfCreatedRecords);
             actualTeamMemberList.Sort();
 
@@ -57,7 +58,8 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Verify that the records for bulk processing display correctly.");
             Assert.IsTrue(actualTeamMemberList.All(x => teamMemberList.Contains(x)), "Inactive Employees display on Dashboaed table.");
-            Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(outListTeamBulkInsert, "Team Bulk"), "Data of Bulk Insert records displays incorrectly.");
+            List<List<string>> actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListTeamBulkInsert);
+            Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
 
             Log.Info("Try to edit uploaded records");
             logEntryData.Symptoms = "LGG Testing";
@@ -149,7 +151,8 @@ namespace InfectionLogAutomation.Tests
             LOB = HomePage.GetAllValueInColumnOfBulkInsertRecords("Resident LOB", numberOfCreatedRecords);
             Assert.IsTrue(actualResidentList.All(x => residentList.Contains(x)), "Inactive Employees display on Dashboaed table.");
             Assert.IsTrue(HomePage.DoesResidentBulkInsertRecordsNotEqualIL(LOB), "Records for employee with LOB = IL is created.");
-            Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(outListResidentBulkInsert, "Resident"), "Data of Bulk Insert records displays incorrectly.");
+            List<List<string>> actualResidentBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListTeamBulkInsert);
+            Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualResidentBulkInsertData, outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
 
             Log.Info("Try to edit uploaded records");
             logEntryData.Symptoms = "LGG Testing";
