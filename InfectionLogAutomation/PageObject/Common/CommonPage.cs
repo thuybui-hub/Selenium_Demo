@@ -196,7 +196,7 @@ namespace InfectionLogAutomation.PageObject.Common
                     result = navigationItem.IsDisplayed() & (actualSubmenu == expectedSubMenu);
                     break;
                 case "Bulk Processing":
-                    result = !navigationItem.IsDisplayed();
+                    result = navigationItem.IsDisplayed();
                     break;
                 default:
                     throw new Exception(string.Format("Status value is invalid."));

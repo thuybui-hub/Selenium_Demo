@@ -161,6 +161,83 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             System.Windows.Forms.SendKeys.SendWait(comments);
         }
 
+        public void FillLogEntryInfo(string region, string community, List<string> employeeList, string date, string comment)
+        {
+            DriverUtils.WaitForPageLoad();
+            Random rd = new Random();
+            List<string> list, listID, listName, listItem;
+            string selectedValue;
+
+            // Fill region
+            if (!string.IsNullOrEmpty(region))
+            {
+                txtRegion.SendKeys(region);
+                DriverUtils.wait(1);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            // Fill community
+            if (!string.IsNullOrEmpty(community))
+            {
+                DriverUtils.WaitForPageLoad();
+                txtCommunity.SendKeys(community);
+                DriverUtils.wait(1);
+                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+            }
+
+            // Fill Team Member / Resident
+            if (employeeList != null)
+            {
+                btnSelectEmployee.Click();
+                btnSearch.Click();
+                DriverUtils.WaitForPageLoad();
+                List<IWebElement> lstCheckbox = new List<IWebElement>(tblSearchResultTable.GetElement().FindElements(By.TagName("input")));
+                int index;
+
+                //foreach(string employee in employeeList)
+                //{
+                //    int rowIndex = tblSearchResultTable.GetTableRowIndex(3, listID[index]);
+                //}
+
+
+                //while (employeeList.Count > 0)
+                //{
+                //    listItem = new List<string>();
+
+                //    index = rd.Next(0, listID.Count - 1);
+                //    listItem.Add(listID[index]);
+
+                //    int rowIndex = tblSearchResultTable.GetTableRowIndex(3, listID[index]);
+                //    listName = tblSearchResultTable.GetTableAllCellValueInRow(rowIndex);
+                //    listItem.Add(listName[1] + ", " + listName[2]);
+                    
+
+                //    lstCheckbox[rowIndex].Click();
+                //    listID.RemoveAt(index);
+                //    expNumOfEmployee--;
+
+                //    listBulk.Add(listItem);
+                //}
+
+                btnSelect.Click();
+            }
+
+            // Fill Testing Date
+            if (!string.IsNullOrEmpty(date))
+            {
+                txtTestingDate.SendKeys(date);
+            }
+
+            // Fill Comments
+            if (!string.IsNullOrEmpty(comment))
+            {
+                txtComments.ScrollToView();
+                txtComments.Click();
+                System.Windows.Forms.SendKeys.SendWait("^a");
+                System.Windows.Forms.SendKeys.SendWait(comment);
+            }
+        }
+
         public void SaveBulkInsert()
         {
             DriverUtils.WaitForPageLoad();
@@ -227,9 +304,63 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             return displayedList;
         }
 
-        public string test()
+        public void FillInSearchEnployeeForm(string name)
         {
-            return divNotes.GetText();
+            string firstName = name.Substring(0, name.IndexOf(","));
+            string lastName = name.Substring(name.IndexOf(",") + 2, name.Length - name.IndexOf(",") - 2);
+
+            txtFirstName.SendKeys(firstName);
+            System.Windows.Forms.SendKeys.SendWait("{tab}");
+
+            txtLastName.SendKeys(lastName);
+            System.Windows.Forms.SendKeys.SendWait("{tab}");
+        }
+
+        public void FillInSearchEnployeeForm(string lastName = null, string firstName = null)
+        {
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                DriverUtils.WaitForPageLoad();
+                txtCommunity.SendKeys(firstName);
+                System.Windows.Forms.SendKeys.SendWait("{tab}");
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                DriverUtils.WaitForPageLoad();
+                txtCommunity.SendKeys(lastName);
+                System.Windows.Forms.SendKeys.SendWait("{tab}");
+            }
+        }
+
+        public void SearchEmployee()
+        {
+            DriverUtils.WaitForPageLoad();
+            btnSearch.Click();
+        }
+
+        public void PerformASearchEmployee(string name)
+        {
+            FillInSearchEnployeeForm(name);
+            SearchEmployee();
+        }
+
+        public void PerformASearchEmployee(string lastName, string firstName)
+        {
+            FillInSearchEnployeeForm(lastName, firstName);
+            SearchEmployee();
+        }
+
+        public void CancelSearchEmployee()
+        {
+            DriverUtils.WaitForPageLoad();
+            btnCancel.Click();
+        }
+
+        public void SelectCheckedEmployee()
+        {
+            DriverUtils.WaitForPageLoad();
+            btnSelect.Click();
         }
         #endregion Main Actions
 
@@ -269,19 +400,6 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             result = result && btnInsert.IsDisplayed() && btnCancelBulkInsert.IsDisplayed();
 
             return result;
-        }
-
-        public void Test(List<string> actList, List<string> expList)
-        {
-            Console.WriteLine("Mismatches: ------------------------------------------------------------------------");
-
-            foreach (string x in actList)
-            {
-                if (!expList.Contains(x))
-                {
-                    Console.WriteLine(x);
-                }
-            }
         }
         #endregion Check Points
     }
