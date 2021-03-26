@@ -58,8 +58,7 @@ namespace InfectionLogAutomation.Tests
             Log.Info("6. Open the log entry just created");
             HomePage.OpenALogEntry(logEntryData.MRN);
 
-            Log.Info("Verify that line item content should match content in a form, and be in the same fields");
-            System.Console.WriteLine(logEntryData);
+            Log.Info("Verify that line item content should match content in a form, and be in the same fields");            
             Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, "Team"), "Line item content in Dashboard and form do not match each other");
 
             Log.Info("7. Make the change");
