@@ -151,7 +151,7 @@ namespace InfectionLogAutomation.Tests
             LOB = HomePage.GetAllValueInColumnOfBulkInsertRecords("Resident LOB", numberOfCreatedRecords);
             Assert.IsTrue(actualResidentList.All(x => residentList.Contains(x)), "Inactive Employees display on Dashboaed table.");
             Assert.IsTrue(HomePage.DoesResidentBulkInsertRecordsNotEqualIL(LOB), "Records for employee with LOB = IL is created.");
-            List<List<string>> actualResidentBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListTeamBulkInsert);
+            List<List<string>> actualResidentBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListResidentBulkInsert);
             Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualResidentBulkInsertData, outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
 
             Log.Info("Try to edit uploaded records");
