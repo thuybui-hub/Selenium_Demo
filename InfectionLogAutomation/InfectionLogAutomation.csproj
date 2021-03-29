@@ -144,7 +144,6 @@
     <Compile Include="Tests\PBI_23868.cs" />
     <Compile Include="Tests\PBI_23870.cs" />
     <Compile Include="Tests\PBI_23873.cs" />
-    <Compile Include="Tests\PBI_23877.cs" />
     <Compile Include="Tests\PBI_23897.cs" />
     <Compile Include="Tests\PBI_23911.cs" />
     <Compile Include="Tests\PBI_23915.cs" />
@@ -163,6 +162,8 @@
     <Compile Include="Tests\PBI_24089.cs" />
     <Compile Include="Tests\PBI_24090.cs" />
     <Compile Include="Tests\PBI_24100.cs" />
+    <Compile Include="Tests\PBI_25305.cs" />
+    <Compile Include="Tests\PBI_25306.cs" />
     <Compile Include="Tests\PBI_25307.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />

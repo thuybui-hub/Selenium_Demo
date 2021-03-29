@@ -338,15 +338,15 @@ namespace InfectionLogAutomation.PageObject.Home
             return list;
         }
 
-        public List<List<string>> GetAllCreatedBulkInsertRecordsData(List<List<string>> ID)
+        public List<List<string>> GetAllCreatedBulkInsertRecordsData(List<List<string>> employeeList)
         {
             List<List<string>> bulkInsert = new List<List<string>>();
             List<string> logEntry;
             LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
 
-            for(int i = 0; i< ID.Count; i++)
+            for(int i = 0; i< employeeList.Count; i++)
             {
-                OpenALogEntry(ID[i][2]);
+                OpenALogEntry(employeeList[i][2]);
                 DriverUtils.WaitForPageLoad();
                 // Get Name and Id
                 string title = lblTitle.GetText();

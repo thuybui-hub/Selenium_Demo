@@ -27,6 +27,8 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
         public readonly Button btnCancelBulkInsert;
 
         // Select Employee pop-up
+        public readonly BaseElement divSelectEmployeePopup;
+        public readonly Span spnPopupTitle;
         public readonly TextBox txtLastName;
         public readonly TextBox txtFirstName;
         public readonly Button btnSearch;
@@ -38,6 +40,8 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
         public BulkInsertPage()
         {
+            divSelectEmployeePopup = new BaseElement(By.XPath("//div[@class=\"k-widget k-window k-dialog\"]"));
+            spnPopupTitle = new Span(By.XPath("//span[@class=\"k-window-title k-dialog-title\"]"));
             txtRegion = new TextBox(By.XPath("//ul[@id=\"region_taglist\"]//following-sibling::input"));
             lstRegion = new Ul(By.XPath("//ul[@id=\"region_listbox\"]"));
             txtCommunity = new TextBox(By.XPath("//ul[@id=\"communityName_taglist\"]//following-sibling::input"));
@@ -165,8 +169,6 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
         {
             DriverUtils.WaitForPageLoad();
             Random rd = new Random();
-            List<string> list, listID, listName, listItem;
-            string selectedValue;
 
             // Fill region
             if (!string.IsNullOrEmpty(region))
@@ -188,38 +190,23 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             // Fill Team Member / Resident
             if (employeeList != null)
             {
-                btnSelectEmployee.Click();
-                btnSearch.Click();
-                DriverUtils.WaitForPageLoad();
-                List<IWebElement> lstCheckbox = new List<IWebElement>(tblSearchResultTable.GetElement().FindElements(By.TagName("input")));
-                int index;
-
-                //foreach(string employee in employeeList)
-                //{
-                //    int rowIndex = tblSearchResultTable.GetTableRowIndex(3, listID[index]);
-                //}
-
-
-                //while (employeeList.Count > 0)
-                //{
-                //    listItem = new List<string>();
-
-                //    index = rd.Next(0, listID.Count - 1);
-                //    listItem.Add(listID[index]);
-
-                //    int rowIndex = tblSearchResultTable.GetTableRowIndex(3, listID[index]);
-                //    listName = tblSearchResultTable.GetTableAllCellValueInRow(rowIndex);
-                //    listItem.Add(listName[1] + ", " + listName[2]);
-                    
-
-                //    lstCheckbox[rowIndex].Click();
-                //    listID.RemoveAt(index);
-                //    expNumOfEmployee--;
-
-                //    listBulk.Add(listItem);
-                //}
-
-                btnSelect.Click();
+                int i = 0;
+                do
+                {
+                    OpenSearchEmployeePopup();
+                    PerformASearchEmployee(employeeList[i]);
+                    if (!divNoRecords.IsDisplayed())
+                    {
+                        CheckOnEmployeeCheckBox(0);
+                        SelectCheckedEmployee();
+                    }
+                    else
+                    {
+                        CancelSearchEmployee();
+                    }
+                    i++;
+                }
+                while (i < employeeList.Count);
             }
 
             // Fill Testing Date
@@ -304,31 +291,31 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             return displayedList;
         }
 
+        public void OpenSearchEmployeePopup()
+        {
+            DriverUtils.WaitForPageLoad();
+            btnSelectEmployee.Click();
+        }
+
         public void FillInSearchEnployeeForm(string name)
         {
             string firstName = name.Substring(0, name.IndexOf(","));
             string lastName = name.Substring(name.IndexOf(",") + 2, name.Length - name.IndexOf(",") - 2);
 
-            txtFirstName.SendKeys(firstName);
-            System.Windows.Forms.SendKeys.SendWait("{tab}");
-
-            txtLastName.SendKeys(lastName);
-            System.Windows.Forms.SendKeys.SendWait("{tab}");
+            FillInSearchEnployeeForm(lastName, firstName);
         }
 
         public void FillInSearchEnployeeForm(string lastName = null, string firstName = null)
         {
             if (!string.IsNullOrEmpty(firstName))
             {
-                DriverUtils.WaitForPageLoad();
-                txtCommunity.SendKeys(firstName);
+                txtLastName.SendKeys(firstName);
                 System.Windows.Forms.SendKeys.SendWait("{tab}");
             }
 
             if (!string.IsNullOrEmpty(lastName))
             {
-                DriverUtils.WaitForPageLoad();
-                txtCommunity.SendKeys(lastName);
+                txtFirstName.SendKeys(lastName);
                 System.Windows.Forms.SendKeys.SendWait("{tab}");
             }
         }
@@ -355,6 +342,13 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
         {
             DriverUtils.WaitForPageLoad();
             btnCancel.Click();
+        }
+
+        public void CheckOnEmployeeCheckBox(int rowIndex)
+        {
+            DriverUtils.WaitForPageLoad();
+            List<IWebElement> lstCheckbox = new List<IWebElement>(tblSearchResultTable.GetElement().FindElements(By.TagName("input")));
+            lstCheckbox[rowIndex].Click();
         }
 
         public void SelectCheckedEmployee()
@@ -398,6 +392,58 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             btnInsert.ScrollToView();
 
             result = result && btnInsert.IsDisplayed() && btnCancelBulkInsert.IsDisplayed();
+
+            return result;
+        }
+
+        public bool CheckSelectEmployeePopupExit()
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            result = divSelectEmployeePopup.IsDisplayed();
+            return result;
+        }
+
+        public bool DoesSelectPopupUIDisplayCorrectly()
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+
+            result = txtLastName.IsDisplayed()
+                && txtFirstName.IsDisplayed()
+                && btnSearch.IsDisplayed()
+                && btnSelect.IsDisplayed()
+                && btnCancel.IsDisplayed();                
+
+            btnSearch.Click();
+            DriverUtils.WaitForPageLoad();
+
+            result = result
+                  && divSearchResultTable.IsDisplayed()
+                  && IsColumnHeaderSortable(tblSearchResultTableHeader, "Last Name")
+                  && IsColumnHeaderSortable(tblSearchResultTableHeader, "First Name")
+                  && IsColumnHeaderSortable(tblSearchResultTableHeader, "Person ID");
+
+            return result;
+        }
+
+        public bool IsColumnHeaderSortable(Table table, string columnName)
+        {
+            DriverUtils.WaitForPageLoad();
+            return table.GetColumnHeaderAttribute(columnName, "data-role").Contains("columnsorter");
+        }
+
+        public bool DoesSearchRecordsPartialMatchSearchCriteria(string lastName, string firstName)
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+
+            List<string> firstNameList, lastNamelist;
+
+            firstNameList = tblSearchResultTable.GetTableAllCellValueInColumn(2);
+            lastNamelist = tblSearchResultTable.GetTableAllCellValueInColumn(1);
+
+            result = lastNamelist.All(ln => ln.ToLower().Contains(lastName.ToLower())) && firstNameList.All(fn => fn.ToLower().Contains(firstName.ToLower())); 
 
             return result;
         }
