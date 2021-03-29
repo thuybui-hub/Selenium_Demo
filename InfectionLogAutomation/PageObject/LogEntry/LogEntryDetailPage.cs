@@ -964,6 +964,30 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             return result;
         }
 
+        public bool DoesEditUIDisplayCorrectly(string entryType = "Team")
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+
+            result = result && txtSymptoms.IsDisplayed()
+                && spnTestingStatus.IsDisplayed()
+                && spnTestingStatus.GetAttribute("role").Equals("listbox")
+                && txtTestingStatusDate.IsDisplayed()
+                & txtTestingStatusDate.GetAttribute("data-role").Equals("datepicker")
+                && spnDisposition.IsDisplayed()
+                && spnDisposition.GetAttribute("role").Equals("listbox")
+                && txtDispositionDate.IsDisplayed()
+                && txtDispositionDate.GetAttribute("data-role").Equals("datepicker");
+
+            txtComments.ScrollToView();
+            result = result
+                && txtComments.IsDisplayed()
+                && btnSaveLogEntry.IsDisplayed()
+                && btnCancelLogEntry.IsDisplayed();
+
+            return result;
+        }
+
 
         #region Attachments/// <summary>
         /// Check if readonly user is able to add attachments or not
