@@ -145,7 +145,7 @@ namespace InfectionLogAutomation.Tests
             }
 
             Log.EndTest();
-        }
+        }        
 
         protected Logger Log { get; set; }
         private ExtentTest extentTest;
