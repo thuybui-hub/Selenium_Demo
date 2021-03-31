@@ -33,7 +33,7 @@ namespace InfectionLogAutomation.Utilities
         public static string CommonPassword = ConfigurationManager.AppSettings["commonPassword"];
         public static string TeamAdminUser = ConfigurationManager.AppSettings["teamAdminUser"];
         public static string ResidentAdminUser = ConfigurationManager.AppSettings["residentAdminUser"];
-        public static string ClientAdminUser = ConfigurationManager.AppSettings["clientAdminUser"];
+        public static string AgeilityProfileMembers = ConfigurationManager.AppSettings["ageilityProfileMembers"];
         public static string TeamCommunitySubmittorUser = ConfigurationManager.AppSettings["teamCommunitySubmittorUser"];
         public static string TeamCommunityAdminUser = ConfigurationManager.AppSettings["teamCommunityAdminUser"];
         public static string ResidentCommunityAdminUser = ConfigurationManager.AppSettings["residentCommunityAdminUser"];

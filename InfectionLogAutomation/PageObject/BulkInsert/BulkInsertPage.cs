@@ -37,6 +37,8 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
         public readonly BaseElement divSearchResultTable;
         public readonly Table tblSearchResultTable;
         public readonly Table tblSearchResultTableHeader;
+        public TextBox txtFilterValue;
+        public Button btnFilter;
 
         public BulkInsertPage()
         {
@@ -65,6 +67,8 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             divSearchResultTable = new BaseElement(By.Id("employeesearchresult"));
             tblSearchResultTableHeader = new Table(By.XPath("//div[@class=\"k-grid-header-wrap k-auto-scrollable\"]/table"));
             tblSearchResultTable = new Table(By.XPath("//div[@class=\"k-grid-content k-auto-scrollable\"]/table"));
+            txtFilterValue = new TextBox(By.XPath("//form[@aria-hidden=\"false\"]//input[@title=\"Value\"]"));
+            btnFilter = new Button(By.XPath("//form[@aria-hidden=\"false\"]//button[text()=\"Filter\"]"));
 
         }
 
@@ -121,10 +125,7 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
                     listBulk.Add(listItem);
                 }
-
-
-                IWebElement checkbox = tblSearchResultTableHeader.GetElement().FindElement(By.TagName("input"));
-                checkbox.Click();
+                CheckAllSearchRecords();
             }
             else
             {
@@ -307,17 +308,25 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
         public void FillInSearchEnployeeForm(string lastName = null, string firstName = null)
         {
-            if (!string.IsNullOrEmpty(firstName))
+            if (!string.IsNullOrEmpty(lastName))
             {
-                txtLastName.SendKeys(firstName);
+                txtLastName.SendKeys(lastName);
                 System.Windows.Forms.SendKeys.SendWait("{tab}");
             }
 
-            if (!string.IsNullOrEmpty(lastName))
+            if (!string.IsNullOrEmpty(firstName))
             {
-                txtFirstName.SendKeys(lastName);
+                txtFirstName.SendKeys(firstName);
                 System.Windows.Forms.SendKeys.SendWait("{tab}");
             }
+        }
+
+        public void ClearSearchCriteria()
+        {
+            DriverUtils.WaitForPageLoad();
+            txtLastName.GetElement().Clear();
+            txtFirstName.GetElement().Clear();
+            SearchEmployee();
         }
 
         public void SearchEmployee()
@@ -344,6 +353,16 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             btnCancel.Click();
         }
 
+        public void CheckOnEmployeeCheckBox(List<string> ID)
+        {
+            DriverUtils.WaitForPageLoad();
+            foreach (string i in ID)
+            {
+                int rowIndex = tblSearchResultTable.GetTableRowIndex(3, i);
+                CheckOnEmployeeCheckBox(rowIndex);
+            }
+        }
+
         public void CheckOnEmployeeCheckBox(int rowIndex)
         {
             DriverUtils.WaitForPageLoad();
@@ -351,10 +370,47 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
             lstCheckbox[rowIndex].Click();
         }
 
+        public void CheckAllSearchRecords()
+        {
+            DriverUtils.WaitForPageLoad();
+            IWebElement checkbox = tblSearchResultTableHeader.GetElement().FindElement(By.TagName("input"));
+            checkbox.Click();
+        }
+
         public void SelectCheckedEmployee()
         {
             DriverUtils.WaitForPageLoad();
             btnSelect.Click();
+        }
+
+        public Link GetTableColumnFilter(string columnName)
+        {
+            return new Link(By.XPath("//a[text()=\"" + columnName + "\"]//preceding-sibling::a"));
+        }
+
+        public void ClickOnTableColumnFilter(string columnName)
+        {
+            DriverUtils.WaitForPageLoad();
+            Link columnFilter = GetTableColumnFilter(columnName);
+            columnFilter.WaitForVisible();
+            columnFilter.Click();
+        }
+
+        public void EnterFilterData(string filterValue)
+        {
+            DriverUtils.WaitForPageLoad();
+            txtFilterValue = new TextBox(By.XPath("//form[@aria-hidden=\"false\"]//input[@title=\"Value\"]"));
+            btnFilter = new Button(By.XPath("//form[@aria-hidden=\"false\"]//button[text()=\"Filter\"]"));
+            txtFilterValue.SendKeys(filterValue);
+            btnFilter.Click();
+        }
+
+        public void FilterATableColumn(string columnName, string filterValue)
+        {
+            DriverUtils.WaitForPageLoad();
+            DriverUtils.wait(1);
+            ClickOnTableColumnFilter(columnName);
+            EnterFilterData(filterValue);
         }
         #endregion Main Actions
 
@@ -426,13 +482,7 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
             return result;
         }
-
-        public bool IsColumnHeaderSortable(Table table, string columnName)
-        {
-            DriverUtils.WaitForPageLoad();
-            return table.GetColumnHeaderAttribute(columnName, "data-role").Contains("columnsorter");
-        }
-
+        
         public bool DoesSearchRecordsPartialMatchSearchCriteria(string lastName, string firstName)
         {
             DriverUtils.WaitForPageLoad();
@@ -442,10 +492,63 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
             firstNameList = tblSearchResultTable.GetTableAllCellValueInColumn(2);
             lastNamelist = tblSearchResultTable.GetTableAllCellValueInColumn(1);
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                result = result && lastNamelist.All(ln => ln.ToLower().Contains(lastName.ToLower()));
+            }
 
-            result = lastNamelist.All(ln => ln.ToLower().Contains(lastName.ToLower())) && firstNameList.All(fn => fn.ToLower().Contains(firstName.ToLower())); 
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                result = result && firstNameList.All(fn => fn.ToLower().Contains(firstName.ToLower()));
+            }
 
             return result;
+        }
+
+        public bool AreCorrespondingEmployeesCheckedOrUnchecked(List<string> ID = null, string status = "Checked")
+        {
+            bool result = true;
+            List<IWebElement> lstCheckbox;
+
+            if (ID != null)
+            {
+                foreach (string i in ID)
+                {
+                    int rowIndex = tblSearchResultTable.GetTableRowIndex(3, i);
+                    switch (status)
+                    {
+                        case "Checked":
+                            lstCheckbox = new List<IWebElement>(tblSearchResultTable.GetElement().FindElements(By.TagName("input")));
+                            result = result && lstCheckbox[rowIndex].GetAttribute("aria-checked").Equals("true");
+                            break;
+                        case "Unchecked":
+                            lstCheckbox = new List<IWebElement>(tblSearchResultTable.GetElement().FindElements(By.TagName("input")));
+                            result = result && lstCheckbox[rowIndex].GetAttribute("aria-checked").Equals("false");
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                if (status.Equals("CheckedAll"))
+                {
+                    IWebElement checkbox = tblSearchResultTableHeader.GetElement().FindElement(By.TagName("input"));
+                    result = result && checkbox.GetAttribute("aria-checked").Equals("true");
+                }
+            }
+            return result;
+        }
+
+        public bool DoesFilterDataDisplayCorrectly(string columnName, string filterValue)
+        {
+            DriverUtils.WaitForPageLoad();
+            List<string> actualResult;
+            if (divNoRecords.IsDisplayed() == false)
+            {
+                actualResult = tblSearchResultTable.GetTableAllCellValueInColumn(columnName);
+                return actualResult.All(x => x.ToLower() == filterValue.ToLower());
+            }
+            else return true;
         }
         #endregion Check Points
     }
