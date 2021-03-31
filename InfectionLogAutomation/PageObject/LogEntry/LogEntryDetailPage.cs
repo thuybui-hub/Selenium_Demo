@@ -1099,7 +1099,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         /// Check if readonly user is able to update log entry information or not
         /// </summary>
         /// <param> </param>
-        public bool IsReadOnlyUserAbleToUpdateLogEntryInfo()
+        public bool AreFieldsUnableToUpdateLogEntryInfo()
         {
             bool result = true;
             result = spnInfectionTypeValue.IsDisplayed()

@@ -184,8 +184,7 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();            
             #endregion Pre-condition            
 
-            Log.Info("3. Click on ID to open a log entry created above");
-            System.Console.WriteLine(originalLogEntryData.MRN);
+            Log.Info("3. Click on ID to open a log entry created above");            
             HomePage.OpenALogEntry(originalLogEntryData.MRN);
 
             Log.Info("4. Make the changes");
@@ -214,8 +213,7 @@ namespace InfectionLogAutomation.Tests
             Log.Info("8. Save the changes");
             LogEntryDetailPage.SaveLogEntry();
 
-            Log.Info("9. Click on ID to open a log entry created above");
-            System.Console.WriteLine(originalLogEntryData.MRN);
+            Log.Info("9. Click on ID to open a log entry created above");            
             HomePage.OpenALogEntry(originalLogEntryData.MRN);
 
             Log.Info("Verify that change is saved");

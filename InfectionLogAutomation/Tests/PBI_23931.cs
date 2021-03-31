@@ -81,7 +81,7 @@ namespace InfectionLogAutomation.Tests
             HomePage.OpenALogEntry(logEntryData.MRN);
 
             Log.Info("Verify that user is unable to edit resident entry type log entries");
-            Assert.IsTrue(LogEntryDetailPage.IsReadOnlyUserAbleToUpdateLogEntryInfo(), "Read Only user is able to edit resident log entry");
+            Assert.IsTrue(LogEntryDetailPage.AreFieldsUnableToUpdateLogEntryInfo(), "Read Only user is able to edit resident log entry");
 
             Log.Info("Verify that Read only member is able to view attachments for a resident log entry");
             LogEntryDetailPage.SelectResidentFormTab("Attachments");
