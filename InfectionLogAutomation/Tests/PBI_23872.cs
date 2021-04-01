@@ -7,19 +7,18 @@ using System;
 using SeleniumCSharp.Core.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
 namespace InfectionLogAutomation.Tests
 {
-    [TestFixture]
+    [TestFixture]    
     [Parallelizable(ParallelScope.Fixtures)]    
     public class PBI_23872: TestBase
     {
-        [Test]
-        [Description("IO Log - Roles and Permission Updates: Team")]
-        //[DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", @"..\..\..\InfectionLogAutomation\Resources\TestData\TeamUsersAccess.csv", "TeamUsersAccess#csv", DataAccessMethod.Sequential), DeploymentItem("TeamUsersAccess.csv")]        
-        public void PBI_23872_AT_23888()
+        [TestCase("fve\\sp-test51", "Password1")]
+        [TestCase("fve\\gnguyen", "Welcome@0121")]
+        [Description("IO Log - Roles and Permission Updates: Team")]        
+        public void PBI_23872_AT_23888(string userName, string password)
         {
             #region Test Data
             LogEntryData logEntryData;            
@@ -28,10 +27,6 @@ namespace InfectionLogAutomation.Tests
             Random rd = new Random();
             string pageTitle = "Infection Log Entry for Team Member";
             int beforeCount, afterCount;            
-            
-            //string filePath = FileUtils.GetParentPath() + "\\Resources\\TestData\\TeamUsersAccess.csv";
-            //string test = FileReader.ReadFile(filePath);
-            
             #endregion
 
             #region Main Steps            
@@ -39,7 +34,7 @@ namespace InfectionLogAutomation.Tests
             DriverUtils.GoToUrl(Constants.Url);
 
             Log.Info("2. Login with valid user");
-            LoginPage.Login(Constants.TeamAdminUser, Constants.CommonPassword);            
+            LoginPage.Login(userName, password);            
 
             Log.Info("Verify that Home page containing dashboard/table of infections displays");
             Assert.IsTrue(HomePage.IsHomePageDisplayed(), "The Homepage does not display");
@@ -58,7 +53,7 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(acSubOption.SequenceEqual(exSubOptions), "Resident & Client are also included under New Log Entry");            
 
             Log.Info("Verify that Delete link at the end of each record is enable");
-            //Assert.IsFalse(HomePage.IsUserUnableToDeleteLogEntry(), "User is unable to delete log entry.");
+            Assert.IsFalse(HomePage.IsUserUnableToDeleteLogEntry(), "User is unable to delete log entry.");
 
             #region Pre-condition: Create a new log entry
             Log.Info("Go to New Log Entry -> Team");

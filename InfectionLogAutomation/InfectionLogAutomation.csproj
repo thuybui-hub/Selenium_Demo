@@ -51,9 +51,18 @@
       <HintPath>..\packages\FluentAssertions.5.9.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.TestTools.UITest.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.TestTools.UITesting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestTools.WindowsStore.UITesting, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -129,6 +138,7 @@
     <Compile Include="DataObject\LoginData.cs" />
     <Compile Include="DataObject\ResidentLogEntryInfo.cs" />
     <Compile Include="DataObject\TeamLogEntryInfo.cs" />
+    <Compile Include="DataObject\TeamUsersAccess.cs" />
     <Compile Include="PageObject\BulkInsert\BulkInsertPage.cs" />
     <Compile Include="PageObject\Common\CommonPage.cs" />
     <Compile Include="PageObject\Home\HomePage.cs" />
@@ -143,6 +153,7 @@
     <Compile Include="Tests\PBI_23863.cs" />
     <Compile Include="Tests\PBI_23868.cs" />
     <Compile Include="Tests\PBI_23870.cs" />
+    <Compile Include="Tests\PBI_23872.cs" />
     <Compile Include="Tests\PBI_23873.cs" />
     <Compile Include="Tests\PBI_23874.cs" />
     <Compile Include="Tests\PBI_23875.cs" />
@@ -168,7 +179,6 @@
     <Compile Include="Tests\PBI_25305.cs" />
     <Compile Include="Tests\PBI_25306.cs" />
     <Compile Include="Tests\PBI_25307.cs" />
-    <Compile Include="Tests\PBI_25351.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -181,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Resources\TestData\TeamUsersAccess.csv" />
     <None Include="packages.config" />
     <None Include="Resources\DriverConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
