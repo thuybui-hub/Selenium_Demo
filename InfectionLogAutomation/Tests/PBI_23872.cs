@@ -26,15 +26,7 @@ namespace InfectionLogAutomation.Tests
             List<string> acSubOption, deleteLink;
             Random rd = new Random();
             string pageTitle = "Infection Log Entry for Team Member";
-<<<<<<< HEAD
             int beforeCount, afterCount;
-            
-            //string filePath = FileUtils.GetParentPath() + "\\Resources\\TestData\\TeamUsersAccess.csv";
-            //string test = FileReader.ReadFile(filePath);
-            
-=======
-            int beforeCount, afterCount;            
->>>>>>> main
             #endregion
 
             #region Main Steps            
