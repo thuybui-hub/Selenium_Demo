@@ -137,14 +137,14 @@ namespace InfectionLogAutomation.Tests
             #endregion ​Resident Admin: sp-test52
 
             #region ​​​Client Admin: sp-test53
-            Log.Info("6.3. Logout and login with Client Admin account");
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.ClientAdminUser, Constants.CommonPassword);
+            //Log.Info("6.3. Logout and login with Client Admin account");
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.ClientAdminUser, Constants.CommonPassword);
 
-            Log.Info("Verify that Clear Filters button exists on Dashboard table.");
-            Assert.IsFalse(HomePage.btnClearFilters.IsDisplayed(), "Clear Filters button does not exist on Dashboard table.");
+            //Log.Info("Verify that Clear Filters button exists on Dashboard table.");
+            //Assert.IsFalse(HomePage.btnClearFilters.IsDisplayed(), "Clear Filters button does not exist on Dashboard table.");
             #endregion ​​Client Admin: sp-test53
 
             #region ​Team Community Admin / Resident Community Submittor: sp-test54

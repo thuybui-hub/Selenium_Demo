@@ -593,9 +593,27 @@ namespace InfectionLogAutomation.PageObject.Home
             return result;
         }
 
-        public bool IsUserUnableToDeleteLogEntry()
+        public bool IsUserUnableToDeleteLogEntry(string status = "able")
         {
-            return divDashboardTable.GetAttribute("data-columns").Contains("{ command: ['destroy'], title: 'Delete', hidden: true }");
+            bool result = true;
+            List<IWebElement> test = new List<IWebElement>(tblDashboard.GetElement().FindElements(By.XPath("//td[@class=\"k-command-cell\"]")));
+
+            foreach (IWebElement btn in test)
+            {
+                switch (status)
+                {
+                    case "able":
+                        result = result && btn.Displayed;
+                        break;
+                    case "unable":
+                        result = result && !btn.Displayed;
+                        break;
+                    default:
+                        throw new Exception(string.Format("Status value is invalid."));
+                }
+            }
+            return result;
+            //return divDashboardTable.GetAttribute("data-columns").Contains("{ command: ['destroy'], title: 'Delete', hidden: true }");
         }
 
         public bool DoAllLogEntriesHaveCorrectLOB(List<string> logEntryList)

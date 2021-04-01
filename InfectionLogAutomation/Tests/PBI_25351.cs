@@ -23,6 +23,8 @@ namespace InfectionLogAutomation.Tests
             List<string> expNewLogEntryOptions = new List<string>() { "Team" };
             List<string> expBulkOptions = new List<string>() { "Insert Team", "Edit Team" };
             LogEntryData logEntryData = new LogEntryData();
+            Random rd = new Random();
+            int resultRows, resultRowsAfterDelete;
             #endregion Test data
 
             #region Main steps
@@ -52,25 +54,35 @@ namespace InfectionLogAutomation.Tests
             LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("Verify that the log entry is created successfully.");
-            //
+            HomePage.ShowBothActiveAndInactiveRecords();
+            HomePage.FilterATableColumn("ID", logEntryData.MRN);
+            resultRows = HomePage.tblDashboard.RowCount();
+            Assert.IsTrue(resultRows > 0, "New log entry is saved");
+            HomePage.ClearAllFilters();
 
             Log.Info("4. Edit a log entry ");
             HomePage.OpenALogEntry(logEntryData.MRN);
-            //
+            logEntryData.Symptoms = logEntryData.Symptoms + " changed";
+            logEntryData.Comments = logEntryData.Comments + " changed";
+            logEntryData.CurrentTestStatus = Constants.TestStatus[rd.Next(0, Constants.TestStatus.Count - 1)];
+            logEntryData.CurrentDisposition = Constants.Disposition[rd.Next(0, Constants.Disposition.Count - 1)];
+            LogEntryDetailPage.FillLogEntryInfo(logEntryData, "Team", "Edit");
+            LogEntryDetailPage.SaveLogEntry();
 
             Log.Info("Verify that these users are able to edit Ageility team member records only");
-            //
+            HomePage.OpenALogEntry(logEntryData.MRN);
+            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, "Team"), "The change is NOT saved");
 
             Log.Info("5. Delete a log entry ");
+            LogEntryDetailPage.SelectMenuItem(Constants.DashboardPath);
             HomePage.DeleteALogEntry(logEntryData.MRN);
 
             Log.Info("Verify that these users are able to delete Ageility team member records only");
-            //
-
+            HomePage.ShowBothActiveAndInactiveRecords();
+            HomePage.FilterATableColumn("ID", logEntryData.MRN);
+            resultRowsAfterDelete = HomePage.tblDashboard.RowCount();
+            Assert.IsTrue((resultRowsAfterDelete == resultRows - 1) || HomePage.divNoRecords.IsDisplayed(), "Log entry is delete");
             #endregion Main steps
-
-            #region Clean up
-            #endregion Clean up
         }
     }
 }
