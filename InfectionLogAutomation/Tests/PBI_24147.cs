@@ -181,7 +181,7 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Verify that: Community submitter member is unable to delete an existing resident log entry for their communties");
             HomePage.FilterATableColumn("Entry Type", "Resident");
-            Assert.IsTrue(HomePage.IsUserUnableToDeleteLogEntry("unable"), "Able to delete log entries");
+            Assert.IsTrue(HomePage.CanUserDeleteLogEntry("unable"), "Able to delete log entries");
 
             Log.Info("Verify that: Community submitter member is unable to view/add/edit and delete attachments for a resident log entry");
             Assert.IsTrue(LogEntryDetailPage.IsAbleToAddAttachment("unable"), "There is no field to attach a document.");
@@ -211,7 +211,7 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(LogEntryDetailPage.AreFieldsUnableToUpdateLogEntryInfo(), "There is no field to attach a document.");
 
             Log.Info("Verify that: Read only member is unable to delete an existing resident log entry for all communties");
-            Assert.IsTrue(HomePage.IsUserUnableToDeleteLogEntry("unable"), "Able to delete log entries");
+            Assert.IsTrue(HomePage.CanUserDeleteLogEntry("unable"), "Able to delete log entries");
 
             Log.Info("Verify that: Read only member is unable to perform 'Initiate Bulk Insert' for all communities");
             Assert.IsTrue(HomePage.IsReadOnlyUserAbleToAddNewRecords("Bulk Processing"), "Able to add new records.");

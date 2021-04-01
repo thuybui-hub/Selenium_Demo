@@ -593,7 +593,7 @@ namespace InfectionLogAutomation.PageObject.Home
             return result;
         }
 
-        public bool IsUserUnableToDeleteLogEntry(string status = "able")
+        public bool CanUserDeleteLogEntry(string status = "able")
         {
             bool result = true;
             List<IWebElement> test = new List<IWebElement>(tblDashboard.GetElement().FindElements(By.XPath("//td[@class=\"k-command-cell\"]")));
