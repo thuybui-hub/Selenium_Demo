@@ -145,7 +145,24 @@ namespace InfectionLogAutomation.Tests
             }
 
             Log.EndTest();
-        }        
+        }
+
+        //private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContextInstance;
+        ///// <summary>
+        /////Gets or sets the test context which provides
+        /////information about and functionality for the current test run.
+        /////</summary>
+        //public Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
+        //{
+        //    get
+        //    {
+        //        return testContextInstance;
+        //    }
+        //    set
+        //    {
+        //        testContextInstance = value;
+        //    }
+        //}
 
         protected Logger Log { get; set; }
         private ExtentTest extentTest;

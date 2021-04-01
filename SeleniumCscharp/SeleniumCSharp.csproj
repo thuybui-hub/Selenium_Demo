@@ -180,6 +180,7 @@
     <Compile Include="Core\Helpers\Locator.cs" />
     <Compile Include="Core\Helpers\Logger.cs" />
     <Compile Include="Core\Helpers\WaitHelper.cs" />
+    <Compile Include="Core\Utilities\CSVReadWrite.cs" />
     <Compile Include="Core\Utilities\ExcelConnect.cs" />
     <Compile Include="Core\Utilities\FileReader.cs" />
     <Compile Include="Core\Utilities\FileUtils.cs" />
