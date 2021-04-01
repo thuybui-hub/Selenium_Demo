@@ -233,6 +233,41 @@ namespace InfectionLogAutomation.PageObject.Common
             } 
         }
 
+        /// <summary>
+        /// Check to see if a column is sortable
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public bool IsColumnHeaderSortable(Table table, string columnName)
+        {
+            DriverUtils.WaitForPageLoad();
+            return table.GetColumnHeaderAttribute(columnName, "data-role").Contains("columnsorter");
+        }
+
+        /// <summary>
+        /// Check to see if a column is sorted by ascending order
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public bool IsColumnHeaderSortedByAscendingOrder(Table table, string columnName)
+        {
+            DriverUtils.WaitForPageLoad();
+            return table.GetColumnHeaderAttribute(columnName, "aria-sort").Contains("ascending");
+        }
+
+        /// <summary>
+        /// Check to see if a column is sorted by descending
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public bool IsColumnHeaderSortedByDescendingOrder(Table table, string columnName)
+        {
+            DriverUtils.WaitForPageLoad();
+            return table.GetColumnHeaderAttribute(columnName, "aria-sort").Contains("descending");
+        }
         #endregion Check Points
     }
 }

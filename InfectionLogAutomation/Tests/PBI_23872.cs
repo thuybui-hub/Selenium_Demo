@@ -26,11 +26,15 @@ namespace InfectionLogAutomation.Tests
             List<string> acSubOption, deleteLink;
             Random rd = new Random();
             string pageTitle = "Infection Log Entry for Team Member";
+<<<<<<< HEAD
             int beforeCount, afterCount;
             
             //string filePath = FileUtils.GetParentPath() + "\\Resources\\TestData\\TeamUsersAccess.csv";
             //string test = FileReader.ReadFile(filePath);
             
+=======
+            int beforeCount, afterCount;            
+>>>>>>> main
             #endregion
 
             #region Main Steps            
@@ -57,7 +61,7 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(acSubOption.SequenceEqual(exSubOptions), "Resident & Client are also included under New Log Entry");            
 
             Log.Info("Verify that Delete link at the end of each record is enable");
-            //Assert.IsFalse(HomePage.IsUserUnableToDeleteLogEntry(), "User is unable to delete log entry.");
+            Assert.IsFalse(HomePage.IsUserUnableToDeleteLogEntry(), "User is unable to delete log entry.");
 
             #region Pre-condition: Create a new log entry
             Log.Info("Go to New Log Entry -> Team");

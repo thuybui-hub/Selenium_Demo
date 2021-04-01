@@ -524,42 +524,6 @@ namespace InfectionLogAutomation.PageObject.Home
             result = txtSearch.GetText().Equals("") || txtSearch.GetText().Equals(null);
             return result;
         }
-        
-        /// <summary>
-        /// Check to see if a column is sortable
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="columnName"></param>
-        /// <returns></returns>
-        public bool IsColumnHeaderSortable(Table table, string columnName)
-        {
-            DriverUtils.WaitForPageLoad();
-            return table.GetColumnHeaderAttribute(columnName, "data-role").Contains("columnsorter");
-        }
-
-        /// <summary>
-        /// Check to see if a column is sorted by ascending order
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="columnName"></param>
-        /// <returns></returns>
-        public bool IsColumnHeaderSortedByAscendingOrder(Table table, string columnName)
-        {
-            DriverUtils.WaitForPageLoad();
-            return table.GetColumnHeaderAttribute(columnName, "aria-sort").Contains("ascending");
-        }
-
-        /// <summary>
-        /// Check to see if a column is sorted by descending
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="columnName"></param>
-        /// <returns></returns>
-        public bool IsColumnHeaderSortedByDescendingOrder(Table table, string columnName)
-        {
-            DriverUtils.WaitForPageLoad();
-            return table.GetColumnHeaderAttribute(columnName, "aria-sort").Contains("descending");
-        }
 
         /// <summary>
         /// Check to see if Last Updated From/To & Filters show correct default value
@@ -629,9 +593,27 @@ namespace InfectionLogAutomation.PageObject.Home
             return result;
         }
 
-        public bool IsUserUnableToDeleteLogEntry()
+        public bool IsUserUnableToDeleteLogEntry(string status = "able")
         {
-            return divDashboardTable.GetAttribute("data-columns").Contains("{ command: ['destroy'], title: 'Delete', hidden: true }");
+            bool result = true;
+            List<IWebElement> test = new List<IWebElement>(tblDashboard.GetElement().FindElements(By.XPath("//td[@class=\"k-command-cell\"]")));
+
+            foreach (IWebElement btn in test)
+            {
+                switch (status)
+                {
+                    case "able":
+                        result = result && btn.Displayed;
+                        break;
+                    case "unable":
+                        result = result && !btn.Displayed;
+                        break;
+                    default:
+                        throw new Exception(string.Format("Status value is invalid."));
+                }
+            }
+            return result;
+            //return divDashboardTable.GetAttribute("data-columns").Contains("{ command: ['destroy'], title: 'Delete', hidden: true }");
         }
 
         public bool DoAllLogEntriesHaveCorrectLOB(List<string> logEntryList)
@@ -659,11 +641,6 @@ namespace InfectionLogAutomation.PageObject.Home
         public bool DoesCreatedBulkInsertRecordsShowCorrectInformation(List<List<string>> actualList, List<List<string>> expectedList)
         {
             bool result = true;
-            //string date = DateTime.Parse(expectedList[0][4]).AddDays(-1).ToString("MM/dd/yyyy");
-
-            // need to update, input and compare these 2 lists
-            //LogEntryDetailPage logEntryPage = new LogEntryDetailPage();
-            //LogEntryData logEntryData = new LogEntryData();
 
             string testStatus = "Tested - Pending";
             string disposition = "Not Quarantined";
@@ -682,26 +659,6 @@ namespace InfectionLogAutomation.PageObject.Home
                     && (actualList[i][8].Equals(expectedList[i][4]) || actualList[i][8].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-1).ToString("MM/dd/yyyy")) || actualList[i][8].Equals(DateTime.Parse(expectedList[i][4]).AddDays(-2).ToString("MM/dd/yyyy")))
                     && actualList[i][9].Equals(symptom)
                     && actualList[i][10].Equals(expectedList[i][5]);
-
-
-                //logEntryData.Region = bulkInsert[i][0];
-                //logEntryData.Community = bulkInsert[i][1];
-                //logEntryData.MRN = bulkInsert[i][2];
-                //logEntryData.Name = bulkInsert[i][3];
-                //logEntryData.InfectionType = "COVID-19";
-                //logEntryData.OnsetDate = bulkInsert[i][4];
-                //logEntryData.CurrentTestStatus = "Tested - Pending";
-                //logEntryData.CurrentDisposition = "Not Quarantined";
-                //logEntryData.Symptoms = "N/A";
-                //logEntryData.Comments = bulkInsert[i][5];
-                //logEntryData.TestStatusDate = bulkInsert[i][4];
-                //logEntryData.DispositionDate = bulkInsert[i][4];
-
-                //OpenALogEntry(bulkInsert[i][2]);
-                //DriverUtils.WaitForPageLoad();
-                //result = result && logEntryPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, page);
-                //DriverUtils.WaitForPageLoad();
-                //DriverUtils.BackToPreviousPage();
             }
             return result;
         }
