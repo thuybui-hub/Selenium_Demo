@@ -333,7 +333,7 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.ResidentReadOnlyUser, Constants.CommonPassword);
 
             Log.Info("Verify that Read only member is unable to perform 'Initiate Bulk Insert' for all communities");
-            Assert.IsFalse(HomePage.IsReadOnlyUserAbleToAddNewRecords("Bulk Processing"), "Read Only user is able to perform a bulk insert.");
+            Assert.IsFalse(HomePage.IsUserAbleToAddNewRecords("unable", "Bulk Processing", "Resident"), "Read Only user is able to perform a bulk insert.");
             #endregion Read Only: sp-test58
             #endregion Main steps
 
