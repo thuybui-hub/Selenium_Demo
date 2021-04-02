@@ -593,6 +593,24 @@ namespace InfectionLogAutomation.PageObject.Home
             return result;
         }
 
+        public bool IsUserUnableToOpenLogEntry()
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+
+            //List<IWebElement> test = new List<IWebElement>(tblDashboard.GetElement().FindElements(By.TagName("a")));
+            //result = test.Equals(null);
+            List<IWebElement> trs = new List<IWebElement>(tblDashboard.GetElement().FindElements(By.TagName("tr")));
+
+            foreach (IWebElement tr in trs)
+            {
+                List<IWebElement> tds = new List<IWebElement>(tr.FindElements(By.TagName("td")));
+                List<IWebElement> a = new List<IWebElement>(tds[5].FindElements(By.TagName("span")));
+                result = result && (a.Count > 0);
+            }
+            return result;
+        }
+
         public bool CanUserDeleteLogEntry(string status = "able")
         {
             bool result = true;

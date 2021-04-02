@@ -201,7 +201,7 @@ namespace InfectionLogAutomation.PageObject.Common
                             break;
                         case "unable":
                             actualSubmenu = GetSubMenuItems(typeOfRecords);
-                            result = navigationItem.IsDisplayed() && !actualSubmenu.Contains(typeOfEntries);
+                            result = navigationItem.IsDisplayed() && (actualSubmenu==null || !actualSubmenu.Contains(typeOfEntries));
                             break;
                     }
                     System.Windows.Forms.SendKeys.SendWait("{Enter}");
@@ -241,6 +241,26 @@ namespace InfectionLogAutomation.PageObject.Common
                 default:
                     throw new Exception(string.Format("Status value is invalid."));
             }
+            return result;
+        }
+
+        public bool IsUserAbleToViewResidentCaseLogReport(string status = "able")
+        {
+            DriverUtils.WaitForPageLoad();
+            bool result = true;
+            Link navigationItem = new Link(By.LinkText("Reports"));
+            switch (status)
+            {
+                case "able":
+                    result = navigationItem.IsDisplayed();
+                    SelectMenuItem("Reports");
+                    result = result && GetSubMenuItems("Reports ").Contains("Resident Case Log");
+                    break;
+                case "unable":
+                    result = !navigationItem.IsDisplayed();
+                    break;
+            }
+
             return result;
         }
 
