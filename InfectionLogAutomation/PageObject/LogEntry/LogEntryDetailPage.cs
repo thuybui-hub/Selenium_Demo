@@ -354,9 +354,10 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             txtSymptoms.Click();            
             System.Windows.Forms.SendKeys.SendWait("^a");            
             System.Windows.Forms.SendKeys.SendWait(symptom);
-            logEntryData.Symptoms = symptom;            
+            logEntryData.Symptoms = symptom;
 
-            // Fill Test Status            
+            // Fill Test Status
+            spnTestingStatus.ScrollToView();
             list = GetItemsFromControlList(Fields.testStatus);
             selectedValue = list[rd.Next(0, list.Count - 1)];
             spnTestingStatus.Click();
@@ -368,7 +369,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             logEntryData.TestStatusDate = date;
 
             // Fill Disposition
-            spnDisposition.ScrollToView();            
+            //spnDisposition.ScrollToView();            
             list = GetItemsFromControlList(Fields.disposition);
             selectedValue = list[rd.Next(0, list.Count - 1)];
             spnDisposition.Click();
