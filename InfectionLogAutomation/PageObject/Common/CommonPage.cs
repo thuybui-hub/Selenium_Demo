@@ -39,7 +39,7 @@ namespace InfectionLogAutomation.PageObject.Common
             spnPaging = new Span(By.XPath("//span[@class=\"k-pager-sizes k-label\"]//span[@class=\"k-input\"]"));
 
             // Page title
-            lblTitle = new Label(By.XPath("//div[@id=\"logForm\"]//h3"));
+            lblTitle = new Label(By.XPath("//h3"));
 
             // Table
             divNoRecords = new BaseElement(By.XPath("//div[@class=\"k-grid-norecords\"]"));
@@ -181,22 +181,62 @@ namespace InfectionLogAutomation.PageObject.Common
             return result;
         }
 
-        public bool IsReadOnlyUserAbleToAddNewRecords(string status)
+        public bool IsUserAbleToAddNewRecords(string status, string typeOfRecords, string typeOfEntries)
         {
             DriverUtils.WaitForPageLoad();
             bool result = true;
-            Link navigationItem = new Link(By.LinkText(status));
+            Link navigationItem = new Link(By.LinkText(typeOfRecords));
             lnkInfectiousOutbreakLog.ScrollToView();
-            switch (status)
+
+            List<string> actualSubmenu, expectedSubMenu;
+            switch (typeOfRecords)
             {
                 case "New Log Entry":
                     navigationItem.Click();
-                    List<string> expectedSubMenu = null;
-                    List<string> actualSubmenu = GetSubMenuItems("New Log Entry");
-                    result = navigationItem.IsDisplayed() & (actualSubmenu == expectedSubMenu);
+                    switch (status)
+                    {
+                        case "able":
+                            actualSubmenu = GetSubMenuItems(typeOfRecords);
+                            result = navigationItem.IsDisplayed() && actualSubmenu.Contains(typeOfEntries);
+                            break;
+                        case "unable":
+                            actualSubmenu = GetSubMenuItems(typeOfRecords);
+                            result = navigationItem.IsDisplayed() && !actualSubmenu.Contains(typeOfEntries);
+                            break;
+                    }
+                    System.Windows.Forms.SendKeys.SendWait("{Enter}");
                     break;
                 case "Bulk Processing":
-                    result = navigationItem.IsDisplayed();
+                    expectedSubMenu = new List<string>();
+                    actualSubmenu = new List<string>();
+                    if (typeOfEntries == "Team")
+                    {
+                        expectedSubMenu = new List<string>() { "Insert Team", "Edit Team" };
+                    }
+                    if (typeOfEntries == "Resident")
+                    {
+                        expectedSubMenu = new List<string>() { "Insert Resident", "Edit Resident" };
+                    }
+
+                    switch (status)
+                    {
+                        case "able":
+                            navigationItem.Click();
+                            actualSubmenu = GetSubMenuItems(typeOfRecords);
+                            result = navigationItem.IsDisplayed() && expectedSubMenu.All(x => actualSubmenu.Contains(x));
+                            System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                            break;
+                        case "unable":
+                            result = !navigationItem.IsDisplayed();
+                            if (result==false)
+                            {
+                                navigationItem.Click();
+                                actualSubmenu = GetSubMenuItems(typeOfRecords);
+                                result = expectedSubMenu.All(x => !actualSubmenu.Contains(x));
+                                System.Windows.Forms.SendKeys.SendWait("{Enter}");
+                            }
+                            break;
+                    }
                     break;
                 default:
                     throw new Exception(string.Format("Status value is invalid."));

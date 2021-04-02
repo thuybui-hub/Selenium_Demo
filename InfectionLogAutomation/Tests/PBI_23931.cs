@@ -72,7 +72,7 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue((totalRecords == totalReadOnlyRecords), "Homepage does not show all Resident records");
 
             Log.Info("Read only member is unable to add new resident log entry for all communities");
-            Assert.IsTrue(HomePage.IsReadOnlyUserAbleToAddNewRecords("New Log Entry"), "Read Only user is able to perform a bulk insert.");
+            Assert.IsTrue(HomePage.IsUserAbleToAddNewRecords("unable", "New Log Entry", "Resident"), "Read Only user is able to perform a bulk insert.");
 
             Log.Info("Verify that Delete icon is invisible for selection to delete the existing Resident Log Entry");
             Assert.IsTrue(HomePage.CanUserDeleteLogEntry("unable"), "User is able to delete log entry.");
@@ -92,7 +92,7 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(LogEntryDetailPage.IsAbleToDeleteAttachment("unable"), "Able to Delete attachments");
 
             Log.Info("Verify that Read only member is unable to perform 'Initiate Bulk Insert' for all communities");
-            Assert.IsTrue(HomePage.IsReadOnlyUserAbleToAddNewRecords("Bulk Processing"), "Read Only user is able to perform a bulk insert.");
+            Assert.IsTrue(HomePage.IsUserAbleToAddNewRecords("unable", "Bulk Processing", "Resident"), "Read Only user is able to perform a bulk insert.");
 
             Log.Info("Verify that Read only member is able to View Case Log Report");
             HomePage.SelectMenuItem("Reports");
