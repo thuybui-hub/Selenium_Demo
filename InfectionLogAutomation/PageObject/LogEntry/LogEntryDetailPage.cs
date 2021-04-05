@@ -460,8 +460,11 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             // Fill Test Status
             if (!string.IsNullOrEmpty(logEntryData.CurrentTestStatus))
             {
-                spnTestingStatus.Click();
-                lstBoxTestingStatus.SelectOptionByText(logEntryData.CurrentTestStatus);
+                if (spnTestingStatus.GetAttribute("aria-disabled").ToString().Equals("false"))
+                {
+                    spnTestingStatus.Click();
+                    lstBoxTestingStatus.SelectOptionByText(logEntryData.CurrentTestStatus);
+                }
             }
 
             // Fill Test Status Date
@@ -474,8 +477,11 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             if (!string.IsNullOrEmpty(logEntryData.CurrentDisposition))
             {
                 spnDisposition.ScrollToView();
-                spnDisposition.Click();
-                lstBoxDisposition.SelectOptionByText(logEntryData.CurrentDisposition);
+                if (spnDisposition.GetAttribute("aria-disabled").ToString().Equals("false"))
+                {
+                    spnDisposition.Click();
+                    lstBoxDisposition.SelectOptionByText(logEntryData.CurrentDisposition);
+                }
             }
 
             // Fill Disposition Date
@@ -1123,6 +1129,49 @@ namespace InfectionLogAutomation.PageObject.LogEntry
 
             DriverUtils.SwitchToPreviousParentWindow();
             
+            DriverUtils.SwitchToIframe(txtComments.GetElement());
+            IWebElement cmt = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+
+            result = result && cmt.GetAttribute("contenteditable").Equals("false");
+            DriverUtils.SwitchToPreviousParentWindow();
+
+            btnSaveLogEntry.ScrollToView();
+
+            result = result && btnSaveLogEntry.GetAttribute("disabled").Equals("true");
+
+            return result;
+        }
+
+        /// <summary>
+        /// Check if readonly user is able to update log entry information or not
+        /// </summary>
+        /// <param> </param>
+        public bool AreFieldsUnableToUpdateLogEntryInfo(bool testingStatusNeedChecking)
+        {
+            bool result = true;
+            result = spnInfectionTypeValue.IsDisplayed()
+                && spnOnsetDateValue.IsDisplayed()
+                && txtSymptoms.IsDisplayed()
+                && spnTestingStatus.IsDisplayed()
+                && spnTestingStatus.GetAttribute("aria-disabled").Equals("true")
+                && txtTestingStatusDate.IsDisplayed()
+                && txtTestingStatusDate.GetAttribute("readonly").Equals("true")
+                && spnDisposition.IsDisplayed()
+                //&& spnDisposition.GetAttribute("aria-disabled").Equals("true")
+                && txtDispositionDate.IsDisplayed()
+                && txtDispositionDate.GetAttribute("readonly").Equals("true")
+                && txtComments.IsDisplayed();
+
+            if (testingStatusNeedChecking)
+                result = result && spnDisposition.GetAttribute("aria-disabled").Equals("true");
+
+            DriverUtils.SwitchToIframe(txtSymptoms.GetElement());
+            IWebElement stp = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
+
+            result = result && stp.GetAttribute("contenteditable").Equals("false");
+
+            DriverUtils.SwitchToPreviousParentWindow();
+
             DriverUtils.SwitchToIframe(txtComments.GetElement());
             IWebElement cmt = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
 
