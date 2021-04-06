@@ -6,8 +6,7 @@ using InfectionLogAutomation.DataObject;
 
 namespace InfectionLogAutomation.Tests
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
+    [TestFixture]    
     public class PBI_23875: TestBase
     {
         [Test]

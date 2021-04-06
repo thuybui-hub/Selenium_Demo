@@ -1,14 +1,9 @@
 ﻿using OpenQA.Selenium;
 using SeleniumCSharp.Core.ElementWrapper;
 using SeleniumCSharp.Core.DriverWrapper;
-using InfectionLogAutomation.Utilities;
-using OpenQA.Selenium.Interactions;
-using System.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenQA.Selenium.Support.UI;
 
 namespace InfectionLogAutomation.PageObject.Common
@@ -48,6 +43,13 @@ namespace InfectionLogAutomation.PageObject.Common
         }
 
         #region Main Action
+        public void WriteList(List<string> list)
+        {
+            System.Console.WriteLine("These are values in the list");
+            foreach (string item in list)
+                System.Console.WriteLine(item);
+        }
+
         public void FillValue(BaseElement element, string value)
         {
             if (element.IsDisplayed())
@@ -123,11 +125,7 @@ namespace InfectionLogAutomation.PageObject.Common
             IAlert alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
 
             string alertMsg = alertWin.Text;
-
-            //if (!string.IsNullOrEmpty(alertMsg))
-            //{
-            //    alertWin.Accept();
-            //}
+            
             if (ExpectedConditions.AlertIsPresent() != null)
                 alertWin.Accept();           
             
@@ -135,25 +133,6 @@ namespace InfectionLogAutomation.PageObject.Common
         #endregion Main Action
 
         #region Check Points
-        /// <summary>
-        /// Check to see if the alert windown pop-up shows
-        /// </summary>
-        /// <returns></returns>
-        //public bool IsAlertPresent()
-        //{
-        //    bool isPresent = false;
-        //    try
-        //    {
-        //        alertWin = DriverUtils.GetDriver().SwitchTo().Alert();
-        //        isPresent = true;
-        //    }
-        //    catch (NoAlertPresentException ex)
-        //    {
-        //    }
-
-        //    return isPresent;
-        //}
-
         /// <summary>
         /// Check to see if a form displays via form's title
         /// </summary>
@@ -265,7 +244,7 @@ namespace InfectionLogAutomation.PageObject.Common
         }
 
         /// <summary>
-        /// Check to if all items in a list equal a specific value
+        /// Check to see if all items in a list equal a specific value
         /// </summary>
         /// <param name="list">The list needs to be checked</param>
         /// <param name="value">Value to check</param>

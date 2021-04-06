@@ -5,8 +5,6 @@ using SeleniumCSharp.Core.ElementWrapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InfectionLogAutomation.PageObject.LogEntry;
 using InfectionLogAutomation.DataObject;
 
@@ -71,34 +69,7 @@ namespace InfectionLogAutomation.PageObject.Home
             btnClear = new Button(By.XPath("//button[text()=\"Clear\"]"));
         }
 
-        #region Main Actions
-
-        ///// <summary>
-        ///// Return selected Last Updated From; Last Updated To
-        ///// </summary>
-        ///// <param name="from"></param>
-        ///// <param name="to"></param>
-        //public void GetSelectedDateFromDatePicker(out DateTime from, out DateTime to)
-        //{
-        //    from = DateTime.Now;
-        //    to = DateTime.Now;
-        //    Link lnk;
-        //    Span pickerFrom = new Span(By.XPath("//span[@aria-controls=\"datepickerFrom_dateview\"]"));            
-        //    Span pickerTo = new Span(By.XPath("//span[@aria-controls=\"datepickerTo_dateview\"]"));            
-
-        //    pickerFrom.Click();
-        //    DriverUtils.wait(1);            
-        //    lnk = new Link(By.XPath("//td[@class=\"k-state-selected k-state-focused\"]/a"));
-        //    string frm = lnk.GetAttribute("title");
-        //    from = DateTime.Parse(frm);            
-
-        //    pickerTo.Click();
-        //    DriverUtils.wait(1);
-        //    lnk =  new Link(By.XPath("//td[@aria-selected=\"true\"]/a"));
-        //    string t = lnk.GetAttribute("title");
-        //    to = DateTime.Parse(t);           
-        //}
-
+        #region Main Actions        
         public void ClearAllFilters()
         {
             DriverUtils.WaitForPageLoad();
@@ -111,13 +82,7 @@ namespace InfectionLogAutomation.PageObject.Home
             DriverUtils.WaitForPageLoad();
             txtSearch.Click();
             System.Windows.Forms.SendKeys.SendWait(searchValue);
-        }
-
-        public void ExportToExcel()
-        {
-            DriverUtils.WaitForPageLoad();
-            btnExportToExcel.Click();
-        }
+        }        
 
         public Link GetTableColumnFilter(string columnName)
         {
@@ -147,13 +112,6 @@ namespace InfectionLogAutomation.PageObject.Home
             DriverUtils.wait(1);
             ClickOnTableColumnFilter(columnName);            
             EnterFilterData(filterValue);
-        }
-
-        public void ClearAFilteredTableColumn(string columnName)
-        {
-            ClickOnTableColumnFilter(columnName);
-            btnClear.WaitForVisible();
-            btnClear.Click();
         }
 
         public void OpenALogEntry(string ID)
@@ -251,14 +209,7 @@ namespace InfectionLogAutomation.PageObject.Home
                 DriverUtils.wait(1);
                 System.Windows.Forms.SendKeys.SendWait("{Enter}");
             }
-        }
-
-        public void PerformASearchCriteria(string community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, string filters = null)
-        {
-            FillSearchCriterias(community, lastUpdatedFrom, lastUpdatedTo, filters);
-            DriverUtils.WaitForPageLoad();
-            btnSearch.Click();
-        }
+        }        
 
         public void PerformASearchCriteria(List<string> community = null, string lastUpdatedFrom = null, string lastUpdatedTo = null, List<string> filters = null)
         {
@@ -630,8 +581,7 @@ namespace InfectionLogAutomation.PageObject.Home
                         throw new Exception(string.Format("Status value is invalid."));
                 }
             }
-            return result;
-            //return divDashboardTable.GetAttribute("data-columns").Contains("{ command: ['destroy'], title: 'Delete', hidden: true }");
+            return result;            
         }
 
         public bool DoAllLogEntriesHaveCorrectLOB(List<string> logEntryList)
@@ -724,14 +674,7 @@ namespace InfectionLogAutomation.PageObject.Home
         {
             bool matched = true;
 
-            DriverUtils.WaitForPageLoad();
-            System.Console.WriteLine("Actual IS: " + acLogEntryData[2] + "_" + exLogEntryData.Region);
-            System.Console.WriteLine("Actual IS: " + acLogEntryData[4] + "_" + exLogEntryData.Community);
-            System.Console.WriteLine("Actual IS: " + acLogEntryData[5] + "_" + exLogEntryData.MRN);
-            System.Console.WriteLine("Actual IS: " + acLogEntryData[6] + "_" + exLogEntryData.Name);
-            System.Console.WriteLine("Actual IS: " + acLogEntryData[8] + "_" + exLogEntryData.InfectionType);
-            System.Console.WriteLine("Actual IS: " + acLogEntryData[10] + "_" + exLogEntryData.CurrentTestStatus);
-            System.Console.WriteLine("Actual IS: " + acLogEntryData[11] + "_" + exLogEntryData.CurrentDisposition);
+            DriverUtils.WaitForPageLoad();            
             matched = acLogEntryData[2].Equals(exLogEntryData.Region)
                 && acLogEntryData[4].Equals(exLogEntryData.Community)
                 && acLogEntryData[5].Equals(exLogEntryData.MRN)
@@ -739,8 +682,7 @@ namespace InfectionLogAutomation.PageObject.Home
                 && acLogEntryData[8].Equals(exLogEntryData.InfectionType)
                 && acLogEntryData[10].Equals(exLogEntryData.CurrentTestStatus)
                 && acLogEntryData[11].Equals(exLogEntryData.CurrentDisposition);
-            //&& acLogEntryData[12].Equals(exLogEntryData.InfectionType) 
-            //acLogEntryData[12].Equals("Team Member");
+            
             switch (entryType)
             {
                 case "Team":

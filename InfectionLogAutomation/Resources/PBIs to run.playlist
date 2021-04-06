@@ -1,0 +1,5 @@
+<Playlist Version="1.0">
+<Add Test="InfectionLogAutomation.Tests.PBI_23862.PBI_23862_AT_23878" />
+<Add Test="InfectionLogAutomation.Tests.PBI_23862.PBI_23862_AT_23879" />
+<Add Test="InfectionLogAutomation.Tests.PBI_23862.PBI_23862_AT_23880" />
+</Playlist>

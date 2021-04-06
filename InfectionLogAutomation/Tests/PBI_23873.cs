@@ -3,6 +3,7 @@ using InfectionLogAutomation.PageObject.Login;
 using InfectionLogAutomation.Utilities;
 using SeleniumCSharp.Core.DriverWrapper;
 using System.Collections.Generic;
+using InfectionLogAutomation.DataObject;
 
 namespace InfectionLogAutomation.Tests
 {
@@ -27,8 +28,8 @@ namespace InfectionLogAutomation.Tests
             string dispositionHeader = "Disposition";
             string entryTypeHeader = "Entry Type";
             string pageTitle = "Infection Log Entry for Team Member";
-
-            List<string> entryInfo;            
+            LogEntryData logEntryData;
+            //List<string> entryInfo;            
             #endregion
 
             #region Main Steps
@@ -46,7 +47,7 @@ namespace InfectionLogAutomation.Tests
             // Go to New Log Entry
             HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
             // Fill Log Entry info randomly
-            LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out entryInfo);
+            LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out logEntryData);
             // Save new team log entry
             LogEntryDetailPage.SaveLogEntry();            
             HomePage.ShowBothActiveAndInactiveRecords();
@@ -130,24 +131,24 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("Filter by Region column");
             HomePage.ClearAllFilters();
-            HomePage.FilterATableColumn(regionHeader, entryInfo[0]);            
+            HomePage.FilterATableColumn(regionHeader, logEntryData.Region);            
             Log.Info("Verify that Region column is filtered correctly");            
-            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(regionHeader, entryInfo[0]), "Filtered data for Region is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(regionHeader, logEntryData.Region), "Filtered data for Region is incorrect");
 
             Log.Info("Filter by Community column");
-            HomePage.FilterATableColumn(communityHeader, entryInfo[1]);            
+            HomePage.FilterATableColumn(communityHeader, logEntryData.Community);            
             Log.Info("Verify that Community column is filtered correctly");
-            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(communityHeader, entryInfo[1]), "Filtered data for Community is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(communityHeader, logEntryData.Community), "Filtered data for Community is incorrect");
 
             Log.Info("Filter by Test Status column");
-            HomePage.FilterATableColumn(testStatusHeader, entryInfo[6]);            
+            HomePage.FilterATableColumn(testStatusHeader, logEntryData.CurrentTestStatus);            
             Log.Info("Verify that Test Status column is filtered correctly");
-            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(testStatusHeader, entryInfo[6]), "Filtered data for Test Status is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(testStatusHeader, logEntryData.CurrentTestStatus), "Filtered data for Test Status is incorrect");
 
             Log.Info("Filter by Disposition column");
-            HomePage.FilterATableColumn(dispositionHeader, entryInfo[8]);            
+            HomePage.FilterATableColumn(dispositionHeader, logEntryData.CurrentDisposition);            
             Log.Info("Verify that Disposition column is filtered correctly");
-            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(dispositionHeader, entryInfo[8]), "Filtered data for Disposition is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(dispositionHeader, logEntryData.CurrentDisposition), "Filtered data for Disposition is incorrect");
 
             Log.Info("Filter by Entry Type");
             HomePage.FilterATableColumn("Entry Type", "Team Member");
@@ -155,28 +156,25 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly("Entry Type", "Team Member"), "Filtered data for Entry Type is incorrect");
 
             Log.Info("Filter by Name column");
-            HomePage.FilterATableColumn(nameHeader, entryInfo[2]);            
+            HomePage.FilterATableColumn(nameHeader, logEntryData.Name);            
             Log.Info("Verify that Name column is filtered correctly");
-            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(nameHeader, entryInfo[2]), "Filtered data for Name is incorrect");
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(nameHeader, logEntryData.Name), "Filtered data for Name is incorrect");
 
             Log.Info("Filter by ID column");
-            HomePage.FilterATableColumn(IDHeader, entryInfo[3]);            
+            HomePage.FilterATableColumn(IDHeader, logEntryData.MRN);            
             Log.Info("Verify that ID column is filtered correctly");
-            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(IDHeader, entryInfo[3]), "Filtered data for ID is incorrect");
-
-            //Log.Info("Get entry's info");
-            entryInfo = HomePage.tblDashboard.GetTableAllCellValueInRow(0);
+            Assert.IsTrue(HomePage.DoesFilterDataDisplayCorrectly(IDHeader, logEntryData.MRN), "Filtered data for ID is incorrect");            
 
             Log.Info("Click on ID");
             HomePage.OpenALogEntry(0);
 
             Log.Info("Verify that existing Log entries are opened");
             Assert.IsTrue(LogEntryDetailPage.CheckPageExist(pageTitle), "Existing Log entry is not opened");
-            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(entryInfo, "Team"), "Existing log entry's data is correct");
+            Assert.IsTrue(LogEntryDetailPage.DoesDataOnEditPageDisplayCorrectly(logEntryData, "Team"), "Existing log entry's data is correct");
 
             Log.Info("Delete log entry created");
             LogEntryDetailPage.SelectMenuItem(Constants.DashboardPath);
-            HomePage.DeleteALogEntry(entryInfo[5]);
+            HomePage.DeleteALogEntry(logEntryData.MRN);
             #endregion
         }
     }
