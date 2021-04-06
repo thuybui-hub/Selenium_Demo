@@ -1,5 +1,4 @@
-﻿using InfectionLogAutomation.DataObject;
-using InfectionLogAutomation.PageObject.Common;
+﻿using InfectionLogAutomation.PageObject.Common;
 using InfectionLogAutomation.Utilities;
 using OpenQA.Selenium;
 using SeleniumCSharp.Core.DriverWrapper;
@@ -454,10 +453,9 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
         public bool CheckSelectEmployeePopupExit()
         {
-            DriverUtils.WaitForPageLoad();
-            bool result = true;
-            result = divSelectEmployeePopup.IsDisplayed();
-            return result;
+            DriverUtils.WaitForPageLoad();            
+            return divSelectEmployeePopup.IsDisplayed();
+            
         }
 
         public bool DoesSelectPopupUIDisplayCorrectly()

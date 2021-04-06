@@ -10,8 +10,7 @@ using System.Linq;
 
 namespace InfectionLogAutomation.Tests
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
+    [TestFixture]    
     public class PBI_23872 : TestBase
     {
         [TestCase("fve\\sp-test51", "Password1")]
@@ -335,7 +334,7 @@ namespace InfectionLogAutomation.Tests
         [TestCase("fve\\sp-test52", "Password1")]
         [TestCase("fve\\gnguyen", "Welcome@0121")]
         [Description("IO Log - Roles and Permission Updates: Resident: DDH & admin are able to view/edit/delete Resident Log Entry")]
-        public void PBI_2372_AT_23889_DDH_Admin(string userName, string password)
+        public void PBI_23872_AT_23889_DDH_Admin(string userName, string password)
         {
             #region Test Data
             LogEntryData logEntryData;
@@ -431,7 +430,7 @@ namespace InfectionLogAutomation.Tests
         [TestCase("fve\\sp-test54", "Password1")]
         [TestCase("fve\\sp-test57", "Password1")]
         [Description("IO Log - Roles and Permission Updates: Resident: Some roles have no permission to access Resident Log Entry")]
-        public void PBI_2372_AT_23889(string userName, string pass)
+        public void PBI_23872_AT_23889(string userName, string pass)
         {
             #region Test Data
             string subOptions;
@@ -456,7 +455,7 @@ namespace InfectionLogAutomation.Tests
 
         [Test]
         [Description("IO Log - Roles and Permission Updates: Resident: RDH is able to view/edit Resident Log Entry and unable to delete a Resident Log Entry")]
-        public void PBI_2372_AT_23889_RDH()
+        public void PBI_23872_AT_23889_RDH()
         {
             #region Test Data
             LogEntryData logEntryData;
@@ -536,7 +535,7 @@ namespace InfectionLogAutomation.Tests
 
         [Test]
         [Description("IO Log - Roles and Permission Updates: Client: admin are able to view/edit/delete Resident Log Entry")]
-        public void PBI_2372_AT_23890_Admin()
+        public void PBI_23872_AT_23890_Admin()
         {
             #region Test Data
             LogEntryData logEntryData;
@@ -634,7 +633,7 @@ namespace InfectionLogAutomation.Tests
         [TestCase("fve\\sp-test55", "Password1")]
         [TestCase("fve\\sp-test57", "Password1")]
         [Description("IO Log - Roles and Permission Updates: Client: Some roles have no permission to access Resident Log Entry")]
-        public void PBI_2372_AT_23890(string userName, string pass)
+        public void PBI_23872_AT_23890(string userName, string pass)
         {
             #region Test Data
             string subOptions;

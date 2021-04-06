@@ -151,6 +151,7 @@
     </Compile>
     <Compile Include="Tests\PBI_23862.cs" />
     <Compile Include="Tests\PBI_23863.cs" />
+    <Compile Include="Tests\PBI_23866.cs" />
     <Compile Include="Tests\PBI_23868.cs" />
     <Compile Include="Tests\PBI_23870.cs" />
     <Compile Include="Tests\PBI_23872.cs" />

@@ -9,8 +9,7 @@ using System.Linq;
 
 namespace InfectionLogAutomation.Tests
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
+    [TestFixture]    
     public class PBI_23866: TestBase
     {
         [Test]
@@ -21,7 +20,7 @@ namespace InfectionLogAutomation.Tests
             List<string> actualRegionsList, actualCommunitiesList, actualEmployeesList, communitiesList, employeesList, BU;
             string excelPathStaff = Constants.DataPath + "INT_Staff_Report.xls";
             string excelPathCommunities = Constants.DataPath + "INT049_RPT_MyFVE_Communities.xls";
-            List<string> regionList = ExcelActions.GetCellValuesInColumn(excelPathCommunities, "Communities", "Region", "[Inactive] is null AND [Divestiture Date] is null").Distinct().ToList();
+            List<string> regionList = ExcelActions.GetCellValuesInColumn(excelPathCommunities, "Communities", "Region", "[Inactive] is null AND [Divestiture Date] is null AND [Assigned] is null").Distinct().ToList();
             regionList.Sort();
             regionList.Remove("Rehab/Wellness");
 
@@ -45,11 +44,15 @@ namespace InfectionLogAutomation.Tests
             actualRegionsList.Sort();
 
             Log.Info("Verify that list of regions on form and Workday match each other");
+            LogEntryDetailPage.WriteList(actualRegionsList);
+            LogEntryDetailPage.WriteList(regionList);
             Assert.IsTrue(actualRegionsList.SequenceEqual(regionList), "List of regions on form and Workday do not match each other");
 
             Log.Info("Select a region");
             region = actualRegionsList[rd.Next(0, actualRegionsList.Count - 1)];
-            LogEntryDetailPage.txtRegion.SendKeys(region);            
+            LogEntryDetailPage.txtRegion.SendKeys(region);
+            DriverUtils.wait(1);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
 
             Log.Info("Get list of communities basing on selected region");            
             actualCommunitiesList = LogEntryDetailPage.GetItemsFromControlList(Fields.community);
@@ -59,11 +62,15 @@ namespace InfectionLogAutomation.Tests
             communitiesList.Sort();
 
             Log.Info("Verify that list of locations on form and Workday match each other");
+            LogEntryDetailPage.WriteList(actualCommunitiesList);
+            LogEntryDetailPage.WriteList(communitiesList);
             Assert.IsTrue(actualCommunitiesList.SequenceEqual(communitiesList), "List of communities on form and Workday do not match each other");
 
             Log.Info("Select a community");
             community = actualCommunitiesList[rd.Next(0, actualCommunitiesList.Count - 1)];
             LogEntryDetailPage.txtCommunity.SendKeys(community);
+            DriverUtils.wait(1);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
             DriverUtils.wait(4);
             BU = ExcelActions.GetCellValuesInColumn(excelPathCommunities, "Communities", "Code", "[Community Name] = '" + community + "' AND [Inactive] is null AND [Divestiture Date] is null").Distinct().ToList();
 
@@ -76,6 +83,8 @@ namespace InfectionLogAutomation.Tests
             employeesList.Sort();
 
             Log.Info("Verify that list of employees name and ID on form and Workday match each other");
+            LogEntryDetailPage.WriteList(employeesList);
+            LogEntryDetailPage.WriteList(actualEmployeesList);
             Assert.IsTrue(employeesList.SequenceEqual(actualEmployeesList), "list of employees name and ID on form and Workday do not match each other");
             #endregion Team
 
@@ -98,6 +107,8 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Select a region");
             region = actualRegionsList[rd.Next(0, actualRegionsList.Count - 1)];
             LogEntryDetailPage.txtRegion.SendKeys(region);
+            DriverUtils.wait(1);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
 
             Log.Info("Get list of communities basing on selected region");            
             actualCommunitiesList = LogEntryDetailPage.GetItemsFromControlList(Fields.community);
@@ -140,6 +151,8 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Select a region");
             region = actualRegionsList[rd.Next(0, actualRegionsList.Count - 1)];
             LogEntryDetailPage.txtRegion.SendKeys(region);
+            DriverUtils.wait(1);
+            System.Windows.Forms.SendKeys.SendWait("{Enter}");
 
             Log.Info("Get list of communities basing on selected region");            
             actualCommunitiesList = LogEntryDetailPage.GetItemsFromControlList(Fields.community);

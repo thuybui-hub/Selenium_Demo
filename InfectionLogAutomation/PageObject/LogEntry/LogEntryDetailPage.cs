@@ -368,8 +368,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             txtTestingStatusDate.SendKeys(date);
             logEntryData.TestStatusDate = date;
 
-            // Fill Disposition
-            //spnDisposition.ScrollToView();            
+            // Fill Disposition                       
             list = GetItemsFromControlList(Fields.disposition);
             selectedValue = list[rd.Next(0, list.Count - 1)];
             spnDisposition.Click();
@@ -622,14 +621,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 DriverUtils.WaitForPageLoad();
                 tab.Click();
             }
-        }
-
-        public void Test()
-        {            
-            DriverUtils.SwitchToIframe(txtSymptoms.GetElement());
-            IWebElement e = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
-            string t = e.GetAttribute("contenteditable");            
-        }
+        }       
 
         #region Attachments
         /// <summary>
@@ -894,31 +886,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                     throw new Exception(string.Format("Field is incorrect."));
             }
             return result;
-        }
-
-        public bool DoesDataOnEditPageDisplayCorrectly(List<string> entryInfo, string page = "Team")
-        {
-            DriverUtils.WaitForPageLoad();
-            string title = "Infection Log Entry for Team Member " + entryInfo[6] + " (" + entryInfo[5] + ")";
-            string regionAndCommunityInfo = "at " + entryInfo[2] + ", " + entryInfo[4];
-
-            switch (page)
-            {
-                case "Resident":                    
-                    title = "Infection Log Entry for Resident " + entryInfo[6] + " (" + entryInfo[5] + ")";
-                    break;
-                case "Client":                    
-                    title = "Infection Log Entry for Ageility Client " + entryInfo[6] + " (" + entryInfo[5] + ")";
-                    break;
-            }         
-
-            return lblTitle.GetText().Equals(title)
-                && lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo)
-                && spnInfectionTypeValue.GetText().Equals(entryInfo[8].ToString())
-                && spnOnsetDateValue.GetText().Equals(entryInfo[9].ToString())
-                && spnTestingStatus.GetText().Equals(entryInfo[10].ToString())
-                && spnDisposition.GetText().Equals(entryInfo[11].ToString());
-        }
+        }        
 
         public bool DoesDataOnEditPageDisplayCorrectly(LogEntryData logEntryData, string page = "Team")
         {
@@ -940,11 +908,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 case "Client":
                     title = "Infection Log Entry for Ageility Client " + logEntryData.Name + " (" + logEntryData.MRN + ")";
                     break;
-            }
-            //System.Console.WriteLine(title);
-            //System.Console.WriteLine(lblTitle.GetText());
-            //System.Console.WriteLine("Region: " + lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo));
-            //System.Console.WriteLine("Infection Type: " + spnInfectionTypeValue.GetText().Equals(logEntryData.InfectionType));
+            }            
 
             result = lblTitle.GetText().Equals(title)
                 && lblRegionAndCommunity.GetText().Equals(regionAndCommunityInfo)
@@ -959,7 +923,6 @@ namespace InfectionLogAutomation.PageObject.LogEntry
             IWebElement stp = DriverUtils.GetDriver().FindElement(By.XPath("/html[head/title[text()=\"Kendo UI Editor content\"]]/body"));
 
             result = result && stp.Text.Equals(logEntryData.Symptoms);
-
             DriverUtils.SwitchToPreviousParentWindow();
 
             DriverUtils.SwitchToIframe(txtComments.GetElement());
@@ -1156,8 +1119,7 @@ namespace InfectionLogAutomation.PageObject.LogEntry
                 && spnTestingStatus.GetAttribute("aria-disabled").Equals("true")
                 && txtTestingStatusDate.IsDisplayed()
                 && txtTestingStatusDate.GetAttribute("readonly").Equals("true")
-                && spnDisposition.IsDisplayed()
-                //&& spnDisposition.GetAttribute("aria-disabled").Equals("true")
+                && spnDisposition.IsDisplayed()                
                 && txtDispositionDate.IsDisplayed()
                 && txtDispositionDate.GetAttribute("readonly").Equals("true")
                 && txtComments.IsDisplayed();
