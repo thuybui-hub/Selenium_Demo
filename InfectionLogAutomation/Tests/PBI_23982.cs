@@ -5,7 +5,6 @@ using SeleniumCSharp.Core.DriverWrapper;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_23982 : TestBase
     {
         #region Test data

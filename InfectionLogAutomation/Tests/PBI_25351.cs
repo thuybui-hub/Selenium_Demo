@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_25351 : TestBase
     {
         [Test]

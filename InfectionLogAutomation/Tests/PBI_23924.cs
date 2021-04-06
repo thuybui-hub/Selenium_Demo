@@ -6,7 +6,6 @@ using System.Collections.Generic;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_23924 : TestBase
     {
 
@@ -92,19 +91,19 @@ namespace InfectionLogAutomation.Tests
             //Assert.IsFalse(HomePage.DoesEntryTypeFilterExistWithExpectedOptions(), "Entry Type filter exists on Home screen.");
             #endregion ​​Client Admin: sp-test53
 
-            #region ​Team Community Admin / Resident Community Submittor: sp-test54
-            Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //#region ​Team Community Admin / Resident Community Submittor: sp-test54
+            //Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            Log.Info("Verify that Home screen displays");
-            Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page is not shown as default.");
+            //Log.Info("Verify that Home screen displays");
+            //Assert.IsTrue(HomePage.IsHomePageDisplayed(), "Home page is not shown as default.");
 
-            Log.Info("Verify that a filter exists on the home screen which filters the grid by Entry Type: Team Member, Resident, Ageility Client");
-            Assert.IsTrue(HomePage.DoesEntryTypeFilterExistWithExpectedOptions(expectedEntryTypeFilterList), "Entry Type filter does not exist or exist with wrong expected list options.");
-            #endregion ​Team Community Admin / ​Resident Community Submittor: sp-test54
+            //Log.Info("Verify that a filter exists on the home screen which filters the grid by Entry Type: Team Member, Resident, Ageility Client");
+            //Assert.IsTrue(HomePage.DoesEntryTypeFilterExistWithExpectedOptions(expectedEntryTypeFilterList), "Entry Type filter does not exist or exist with wrong expected list options.");
+            //#endregion ​Team Community Admin / ​Resident Community Submittor: sp-test54
 
             #region Resident Community Admin: sp-test55
             Log.Info("6.5. Logout and login with Resident Community Admin account");

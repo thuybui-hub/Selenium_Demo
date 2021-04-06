@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_24089 : TestBase
     {
         [Test]
@@ -94,17 +93,17 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
             #endregion DVP/DDHR: sp-test51
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region RDO/RDHR/Senior RDO: sp-test54
-            Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //#region RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
-            #endregion RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            //Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+            //#endregion RDO/RDHR/Senior RDO: sp-test54
 
             DriverUtils.CloseDrivers();
             DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
@@ -117,6 +116,14 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
             Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
             #endregion ED/HR Partners: sp-test57
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteLogEntries(numberOfCreatedRecords, "top");
+            #endregion Clean up
             #endregion Bulk Processing - Insert Team
 
             DriverUtils.CloseDrivers();
@@ -199,17 +206,17 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
             #endregion RDH: sp-test55
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region RDO/RDHR/Senior RDO: sp-test54
-            Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //#region RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
-            Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
-            #endregion RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
+            //Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+            //#endregion RDO/RDHR/Senior RDO: sp-test54
 
             DriverUtils.CloseDrivers();
             DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
@@ -222,6 +229,14 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that uploaded records appear on home screen as per business rules (follow IOT Security Matrix .xlsx)");
             Assert.IsTrue(HomePage.AreBulkInsertRecordsDisplayedAsPerBusinessRules(outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
             #endregion Read Only: sp-test58
+
+            #region Clean up
+            DriverUtils.CloseDrivers();
+            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            DriverUtils.GoToUrl(Constants.Url);
+            LoginPage.Login(Constants.AdminUserName, Constants.AdminPassword);
+            HomePage.DeleteLogEntries(numberOfCreatedRecords, "top");
+            #endregion Clean up
             #endregion Bulk Processing - Insert Resident
             #endregion Main steps
         }

@@ -10,7 +10,6 @@ using SeleniumCSharp.Core.Utilities;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_25307: TestBase
     {
         [Test]

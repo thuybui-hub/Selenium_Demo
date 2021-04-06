@@ -10,7 +10,6 @@ using System.Linq;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_23862 : TestBase
     {
         #region Test data

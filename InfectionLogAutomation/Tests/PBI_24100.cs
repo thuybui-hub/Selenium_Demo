@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_24100 : TestBase
     {
         [Test]
@@ -63,6 +62,9 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(actualTeamMemberList.All(x => teamMemberList.Contains(x)), "Inactive Employees display on Dashboaed table.");
             actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListTeamBulkInsert);
             Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+
+            Log.Info("Clean up");
+            HomePage.DeleteLogEntries(numberOfCreatedRecords, "top");
             #endregion Admin user
 
             DriverUtils.CloseDrivers();
@@ -97,41 +99,44 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(actualTeamMemberList.All(x => teamMemberList.Contains(x)), "Inactive Employees display on Dashboaed table.");
             actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListTeamBulkInsert);
             Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+            
+            Log.Info("Clean up");
+            HomePage.DeleteLogEntries(numberOfCreatedRecords, "top");
             #endregion Team Admin user
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region Team Community Admin user: sp-test54
-            Log.Info("5.2. Logout and login with ​Team Community Admin / Resident Community Submittor account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //#region Team Community Admin user: sp-test54
+            //Log.Info("5.2. Logout and login with ​Team Community Admin / Resident Community Submittor account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            Log.Info("3. Go to Bulk Insert -> Team");
-            HomePage.SelectMenuItem(Constants.NewTeamBulkInsertPath);
+            //Log.Info("3. Go to Bulk Insert -> Team");
+            //HomePage.SelectMenuItem(Constants.NewTeamBulkInsertPath);
 
-            Log.Info("Verify that 'Community Drop' show all communities");
-            actualCommunitiesList = LogEntryDetailPage.GetItemsFromControlList(Fields.community);
-            actualCommunitiesList.Sort();
-            Assert.IsTrue(actualCommunitiesList.All(x => expectedCommunitiesList.Contains(x)), "'Community Drop' does not show all communities");
+            //Log.Info("Verify that 'Community Drop' show all communities");
+            //actualCommunitiesList = LogEntryDetailPage.GetItemsFromControlList(Fields.community);
+            //actualCommunitiesList.Sort();
+            //Assert.IsTrue(actualCommunitiesList.All(x => expectedCommunitiesList.Contains(x)), "'Community Drop' does not show all communities");
 
-            Log.Info("4. Perform a bulk inserting for a community");
-            BulkInsertPage.FillBulkInsertRandomly(out outListTeamBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
-            BulkInsertPage.SaveBulkInsert();
+            //Log.Info("4. Perform a bulk inserting for a community");
+            //BulkInsertPage.FillBulkInsertRandomly(out outListTeamBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
+            //BulkInsertPage.SaveBulkInsert();
 
-            Log.Info("Go to Home page and notice all uploaded records");
-            actualTeamMemberList = HomePage.GetAllValueInColumnOfBulkInsertRecords("Name", numberOfCreatedRecords);
-            actualTeamMemberList.Sort();
+            //Log.Info("Go to Home page and notice all uploaded records");
+            //actualTeamMemberList = HomePage.GetAllValueInColumnOfBulkInsertRecords("Name", numberOfCreatedRecords);
+            //actualTeamMemberList.Sort();
 
-            Log.Info("Get list of communities from Workday");
-            teamMemberList = ExcelActions.GetCellValuesInColumn(excelPathStaff, "Staffs", "Employee Name", "[Currently Active] = 'Yes' AND [Location - Name] = '" + outListTeamBulkInsert[0][1] + "'").Distinct().ToList();
-            teamMemberList.Sort();
+            //Log.Info("Get list of communities from Workday");
+            //teamMemberList = ExcelActions.GetCellValuesInColumn(excelPathStaff, "Staffs", "Employee Name", "[Currently Active] = 'Yes' AND [Location - Name] = '" + outListTeamBulkInsert[0][1] + "'").Distinct().ToList();
+            //teamMemberList.Sort();
 
-            Log.Info("Verify that the records for bulk processing display correctly.");
-            Assert.IsTrue(actualTeamMemberList.All(x => teamMemberList.Contains(x)), "Inactive Employees display on Dashboaed table.");
-            actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListTeamBulkInsert);
-            Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
-            #endregion Team Community Admin user
+            //Log.Info("Verify that the records for bulk processing display correctly.");
+            //Assert.IsTrue(actualTeamMemberList.All(x => teamMemberList.Contains(x)), "Inactive Employees display on Dashboaed table.");
+            //actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListTeamBulkInsert);
+            //Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListTeamBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+            //#endregion Team Community Admin user
 
             DriverUtils.CloseDrivers();
             DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
@@ -222,6 +227,9 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(actualResidentList.All(x => residentList.Contains(x)), "Inactive Employees display on Dashboaed table.");
             actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListResidentBulkInsert);
             Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+
+            Log.Info("Clean up");
+            HomePage.DeleteLogEntries(numberOfCreatedRecords, "top");
             #endregion Admin user
 
             DriverUtils.CloseDrivers();
@@ -256,6 +264,9 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(actualResidentList.All(x => residentList.Contains(x)), "Inactive Employees display on Dashboaed table.");
             actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListResidentBulkInsert);
             Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+
+            Log.Info("Clean up");
+            HomePage.DeleteLogEntries(numberOfCreatedRecords, "top");
             #endregion DDH: sp-test52
 
             DriverUtils.CloseDrivers();
@@ -290,39 +301,42 @@ namespace InfectionLogAutomation.Tests
             Assert.IsTrue(actualResidentList.All(x => residentList.Contains(x)), "Inactive Employees display on Dashboaed table.");
             actualBulkInsertData = HomePage.GetAllCreatedBulkInsertRecordsData(outListResidentBulkInsert);
             Assert.IsTrue(HomePage.DoesCreatedBulkInsertRecordsShowCorrectInformation(actualBulkInsertData, outListResidentBulkInsert), "Data of Bulk Insert records displays incorrectly.");
+
+            Log.Info("Clean up");
+            HomePage.DeleteLogEntries(numberOfCreatedRecords, "top");
             #endregion RDH: sp-test55
 
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
 
-            #region RDO/RDHR/Senior RDO: sp-test54
-            Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //#region RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("6.4. Logout and login with ​Team Community Admin / Resident Community Submittor account");
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            Log.Info("3. Go to Bulk Insert -> Resident");
-            HomePage.SelectMenuItem(Constants.NewResidentBulkInsertPath);
+            //Log.Info("3. Go to Bulk Insert -> Resident");
+            //HomePage.SelectMenuItem(Constants.NewResidentBulkInsertPath);
 
-            Log.Info("Verify that 'Community Drop' show all communities");
-            actualCommunitiesList = LogEntryDetailPage.GetItemsFromControlList(Fields.community);
-            actualCommunitiesList.Sort();
-            Assert.IsTrue(actualCommunitiesList.All(x => expectedCommunitiesList.Contains(x)), "'Community Drop' does not show all communities");
+            //Log.Info("Verify that 'Community Drop' show all communities");
+            //actualCommunitiesList = LogEntryDetailPage.GetItemsFromControlList(Fields.community);
+            //actualCommunitiesList.Sort();
+            //Assert.IsTrue(actualCommunitiesList.All(x => expectedCommunitiesList.Contains(x)), "'Community Drop' does not show all communities");
 
-            Log.Info("4. Perform a bulk inserting for a community");
-            BulkInsertPage.FillBulkInsertRandomly(out outListResidentBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
-            BulkInsertPage.SaveBulkInsert();
+            //Log.Info("4. Perform a bulk inserting for a community");
+            //BulkInsertPage.FillBulkInsertRandomly(out outListResidentBulkInsert, out numberOfCreatedRecords, expectedNumberOfEmployee);
+            //BulkInsertPage.SaveBulkInsert();
 
-            Log.Info("Go to Home page and notice all uploaded records");
-            actualResidentList = HomePage.GetAllValueInColumnOfBulkInsertRecords("Name", numberOfCreatedRecords);
-            actualResidentList.Sort();
+            //Log.Info("Go to Home page and notice all uploaded records");
+            //actualResidentList = HomePage.GetAllValueInColumnOfBulkInsertRecords("Name", numberOfCreatedRecords);
+            //actualResidentList.Sort();
 
-            Log.Info("Get list of communities from Workday");
-            residentList = ExcelActions.GetCellValuesInColumn(excelPathResident, "Residents", "ResidentName", "[LOB] <> 'IL' AND [DischargeDate] = 'NULL' AND [CommunityName] = '" + outListResidentBulkInsert[0][1] + "'").Distinct().ToList();
-            residentList.Sort();
+            //Log.Info("Get list of communities from Workday");
+            //residentList = ExcelActions.GetCellValuesInColumn(excelPathResident, "Residents", "ResidentName", "[LOB] <> 'IL' AND [DischargeDate] = 'NULL' AND [CommunityName] = '" + outListResidentBulkInsert[0][1] + "'").Distinct().ToList();
+            //residentList.Sort();
 
-            Log.Info("Verify that the records for bulk processing display correctly.");
-            Assert.IsTrue(actualResidentList.All(x => residentList.Contains(x)), "Inactive Employees display on Dashboaed table.");
-            #endregion RDO/RDHR/Senior RDO: sp-test54
+            //Log.Info("Verify that the records for bulk processing display correctly.");
+            //Assert.IsTrue(actualResidentList.All(x => residentList.Contains(x)), "Inactive Employees display on Dashboaed table.");
+            //#endregion RDO/RDHR/Senior RDO: sp-test54
 
             DriverUtils.CloseDrivers();
             DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
@@ -333,7 +347,7 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.ResidentReadOnlyUser, Constants.CommonPassword);
 
             Log.Info("Verify that Read only member is unable to perform 'Initiate Bulk Insert' for all communities");
-            Assert.IsFalse(HomePage.IsUserAbleToAddNewRecords("unable", "Bulk Processing", "Resident"), "Read Only user is able to perform a bulk insert.");
+            Assert.IsTrue(HomePage.IsUserAbleToAddNewRecords("unable", "Bulk Processing", "Resident"), "Read Only user is able to perform a bulk insert.");
             #endregion Read Only: sp-test58
             #endregion Main steps
 

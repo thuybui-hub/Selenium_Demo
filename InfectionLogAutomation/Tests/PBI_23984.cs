@@ -7,7 +7,6 @@ using System.Collections.Generic;
 namespace InfectionLogAutomation.Tests
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
     public class PBI_23984 : TestBase
     {
         [Test]
@@ -44,18 +43,18 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that Current Disposition field can no longer be updated");
             Assert.IsTrue(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is able to be editted.");
 
-            Log.Info("Logout and Login with users who are members of the application role V/E/D all: RDO, RDHR, Senior RDO (sp-test54)");
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //Log.Info("Logout and Login with users who are members of the application role V/E/D all: RDO, RDHR, Senior RDO (sp-test54)");
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.OpenALogEntry(outLstResult[3]);
+            //Log.Info("Open the log entry");
+            //HomePage.ShowBothActiveAndInactiveRecords();
+            //HomePage.OpenALogEntry(outLstResult[3]);
 
-            Log.Info("Verify that Current Disposition field can be updated");
-            Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
+            //Log.Info("Verify that Current Disposition field can be updated");
+            //Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
 
             Log.Info("Logout and Login with users who are members of the application role V/E/D all (DVP, DDHR: sp-test51)");
             DriverUtils.CloseDrivers();
@@ -156,18 +155,18 @@ namespace InfectionLogAutomation.Tests
             Log.Info("Verify that Current Disposition field can no longer be updated");
             Assert.IsTrue(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is able to be editted.");
 
-            Log.Info("Logout and Login with users who are members of the application role V/E/D all: RDO, RDHR, Senior RDO (sp-test54)");
-            DriverUtils.CloseDrivers();
-            DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
-            DriverUtils.GoToUrl(Constants.Url);
-            LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
+            //Log.Info("Logout and Login with users who are members of the application role V/E/D all: RDO, RDHR, Senior RDO (sp-test54)");
+            //DriverUtils.CloseDrivers();
+            //DriverUtils.CreateDriver(new DriverProperties(Constants.ConfigFilePath, Constants.Driver));
+            //DriverUtils.GoToUrl(Constants.Url);
+            //LoginPage.Login(Constants.TeamCommunityAdminUser, Constants.CommonPassword);
 
-            Log.Info("Open the log entry");
-            HomePage.ShowBothActiveAndInactiveRecords();
-            HomePage.OpenALogEntry(outLstResult[3]);
+            //Log.Info("Open the log entry");
+            //HomePage.ShowBothActiveAndInactiveRecords();
+            //HomePage.OpenALogEntry(outLstResult[3]);
 
-            Log.Info("Verify that Current Disposition field can be updated");
-            Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
+            //Log.Info("Verify that Current Disposition field can be updated");
+            //Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
 
             Log.Info("Logout and Login with users who are members of the application role V/E/D all (DVP, DDHR: sp-test51)");
             DriverUtils.CloseDrivers();

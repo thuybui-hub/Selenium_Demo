@@ -300,8 +300,8 @@ namespace InfectionLogAutomation.PageObject.BulkInsert
 
         public void FillInSearchEnployeeForm(string name)
         {
-            string firstName = name.Substring(0, name.IndexOf(","));
-            string lastName = name.Substring(name.IndexOf(",") + 2, name.Length - name.IndexOf(",") - 2);
+            string lastName = name.Substring(0, name.IndexOf(","));
+            string firstName = name.Substring(name.IndexOf(",") + 2, name.Length - name.IndexOf(",") - 2);
 
             FillInSearchEnployeeForm(lastName, firstName);
         }
