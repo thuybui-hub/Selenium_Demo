@@ -8,8 +8,7 @@ using System;
 
 namespace InfectionLogAutomation.Tests
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
+    [TestFixture]    
     public class PBI_23897: TestBase
     {
         [Test]
