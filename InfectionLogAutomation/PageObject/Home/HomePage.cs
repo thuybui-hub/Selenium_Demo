@@ -431,7 +431,7 @@ namespace InfectionLogAutomation.PageObject.Home
                 ShowAllILogRecords();
                 for (int i = 0; i < tblDashboard.RowCount(); i++)
                 {
-                    result = result && tblDashboard.GetTableAllCellValueInRow(i).Contains(searchValue);
+                    result = result && tblDashboard.GetTableAllCellValueInRow(i).All(x => x.Contains(searchValue));
                 }
             }
             else result = true;

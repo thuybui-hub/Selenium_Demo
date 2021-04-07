@@ -18,8 +18,8 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23983_AT_23992()
         {
             #region Test data
-            TeamLogEntryInfo teamLogEntryInfo = new TeamLogEntryInfo();
-            teamLogEntryInfo.CurrentTestStatus = "Tested - Confirmed";
+            LogEntryData logEntryInfo = new LogEntryData();
+            logEntryInfo.CurrentTestStatus = "Tested - Confirmed";
             List<string> outLstResult = new List<string> { };
             #endregion Test data
 
@@ -35,7 +35,7 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("4. Fill all required fields with Current Test Status = 'Tested - Confirmed'");
             LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out outLstResult);
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", teamLogEntryInfo.CurrentTestStatus);
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
 
             Log.Info("5. Submit the log entry");
             LogEntryDetailPage.SaveLogEntry();
@@ -97,8 +97,8 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23983_AT_23993()
         {
             #region Test data
-            TeamLogEntryInfo teamLogEntryInfo = new TeamLogEntryInfo();
-            teamLogEntryInfo.CurrentTestStatus = "Not Tested";
+            LogEntryData logEntryInfo = new LogEntryData();
+            logEntryInfo.CurrentTestStatus = "Not Tested";
             List<string> outLstResult = new List<string> { };
             #endregion Test data
 
@@ -107,7 +107,7 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.TeamCommunitySubmittorUser, Constants.CommonPassword);
             HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
             LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out outLstResult);
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", teamLogEntryInfo.CurrentTestStatus);
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
             LogEntryDetailPage.SaveLogEntry();
             DriverUtils.CloseDrivers();
             #endregion Pre-condition
@@ -124,8 +124,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("4. Try to edit Current Test Status field with all status, except 'Tested - Confirmed'");
-            teamLogEntryInfo.CurrentTestStatus = "Tested - Pending";
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", teamLogEntryInfo.CurrentTestStatus);
+            logEntryInfo.CurrentTestStatus = "Tested - Pending";
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
@@ -137,8 +137,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("7. Update lof entry with Current Test Status 'Tested - Confirmed'");
-            teamLogEntryInfo.CurrentTestStatus = "Tested - Confirmed";
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", teamLogEntryInfo.CurrentTestStatus);
+            logEntryInfo.CurrentTestStatus = "Tested - Confirmed";
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
@@ -203,8 +203,8 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23983_AT_24218()
         {
             #region Test data
-            ResidentLogEntryInfo residentLogEntryInfo = new ResidentLogEntryInfo();
-            residentLogEntryInfo.CurrentTestStatus = "Tested - Confirmed";
+            LogEntryData logEntryInfo = new LogEntryData();
+            logEntryInfo.CurrentTestStatus = "Tested - Confirmed";
             List<string> outLstResult = new List<string> { };
             #endregion Test data
 
@@ -220,7 +220,7 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("4. Fill all required fields with Current Test Status = 'Tested - Confirmed'");
             LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out outLstResult);
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", residentLogEntryInfo.CurrentTestStatus);
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
 
             Log.Info("5. Submit the log entry");
             LogEntryDetailPage.SaveLogEntry();
@@ -270,8 +270,8 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23983_AT_24219()
         {
             #region Test data
-            ResidentLogEntryInfo residentLogEntryInfo = new ResidentLogEntryInfo();
-            residentLogEntryInfo.CurrentTestStatus = "Not Tested";
+            LogEntryData logEntryInfo = new LogEntryData();
+            logEntryInfo.CurrentTestStatus = "Not Tested";
             List<string> outLstResult = new List<string> { };
             #endregion Test data
 
@@ -280,7 +280,7 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.ResidentCommunityAdminUser, Constants.CommonPassword);
             HomePage.SelectMenuItem(Constants.NewResidentLogEntryPath);
             LogEntryDetailPage.FillLogEntryInfoRandomly("Resident", out outLstResult);
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", residentLogEntryInfo.CurrentTestStatus);
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
             LogEntryDetailPage.SaveLogEntry();
             DriverUtils.CloseDrivers();
             #endregion Pre-condition
@@ -297,8 +297,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Try to edit Current Test Status field with all status, except 'Tested - Confirmed'");
-            residentLogEntryInfo.CurrentTestStatus = "Tested - Pending";
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", residentLogEntryInfo.CurrentTestStatus);
+            logEntryInfo.CurrentTestStatus = "Tested - Pending";
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
@@ -310,8 +310,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("Update lof entry with Current Test Status 'Tested - Confirmed'");
-            residentLogEntryInfo.CurrentTestStatus = "Tested - Confirmed";
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", residentLogEntryInfo.CurrentTestStatus);
+            logEntryInfo.CurrentTestStatus = "Tested - Confirmed";
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Test Status", logEntryInfo.CurrentTestStatus);
 
             Log.Info("Verify that Current Test Status field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Test Status"), "Test Status field is unable to be editted.");
