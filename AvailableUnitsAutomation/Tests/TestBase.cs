@@ -9,7 +9,7 @@ using SeleniumCSharp.Core.Utilities;
 using AvailableUnitsAutomation.Utilities;
 using static NUnit.Framework.TestContext;
 using AvailableUnitsAutomation.PageObject;
-
+using InfectionLogAutomation.PageObject;
 
 namespace AvailableUnitsAutomation.Tests
 {
@@ -18,7 +18,10 @@ namespace AvailableUnitsAutomation.Tests
     {
         #region Properties
         private LoginPage loginPage;
-        private CommonPage commonPage;      
+        private CommonPage commonPage;
+        private HomePage homePage;
+        private SearchPage searchPage;
+        private NewChangeRequestPage newChangeRequestPage;
         #endregion
 
         #region Declare pages
@@ -43,7 +46,42 @@ namespace AvailableUnitsAutomation.Tests
                 }
                 return commonPage;
             }
-        }        
+        }
+        public HomePage HomePage
+        {
+            get
+            {
+                if (homePage == null)
+                {
+                    homePage = new HomePage();
+                }
+                return homePage;
+            }
+        }
+
+        public SearchPage SearchPage
+        {
+            get
+            {
+                if (searchPage == null)
+                {
+                    searchPage = new SearchPage();
+                }
+                return searchPage;
+            }
+        }
+
+        public NewChangeRequestPage NewChangeRequestPage
+        {
+            get
+            {
+                if (newChangeRequestPage == null)
+                {
+                    newChangeRequestPage = new NewChangeRequestPage();
+                }
+                return newChangeRequestPage;
+            }
+        }
         #endregion
 
         [SetUp]

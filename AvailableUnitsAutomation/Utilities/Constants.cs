@@ -3,6 +3,7 @@ using NUnit.Framework;
 using SeleniumCSharp.Core.Utilities;
 using System.Configuration;
 using System.Collections.Generic;
+using System.IO;
 
 namespace AvailableUnitsAutomation.Utilities
 {
@@ -20,31 +21,18 @@ namespace AvailableUnitsAutomation.Utilities
         public static readonly string AdminUserName = ConfigurationManager.AppSettings["adminUserName"];
         public static readonly string UserPassword = ConfigurationManager.AppSettings["userPassword"];
         public static readonly string UserName = ConfigurationManager.AppSettings["userName"];
-        public static readonly string DashboardPath = ConfigurationManager.AppSettings["dashboardPath"];
-        public static readonly string DashboardPathActive = ConfigurationManager.AppSettings["dashboardPathActive"];
-        public static readonly string NewTeamLogEntryPath = ConfigurationManager.AppSettings["newTeamLogEntryPath"];
-        public static readonly string NewResidentLogEntryPath = ConfigurationManager.AppSettings["newResidentLogEntryPath"];
-        public static readonly string NewClientLogEntryPath = ConfigurationManager.AppSettings["newClientLogEntryPath"];
-        public static readonly string NewTeamBulkInsertPath = ConfigurationManager.AppSettings["newTeamBulkInsertPath"];
-        public static readonly string NewResidentBulkInsertPath = ConfigurationManager.AppSettings["newResidentBulkInsertPath"];
-        public static readonly string BulkEditTeamPath = ConfigurationManager.AppSettings["bulkEditTeamPath"];
-        public static readonly string BulkEditResidentPath = ConfigurationManager.AppSettings["bulkEditResidentPath"];
-        public static readonly string ResidentCaseLogReporttPath = ConfigurationManager.AppSettings["residentCaseLogReporttPath"];
         public static string CommonPassword = ConfigurationManager.AppSettings["commonPassword"];
-        public static string TeamAdminUser = ConfigurationManager.AppSettings["teamAdminUser"];
-        public static string ResidentAdminUser = ConfigurationManager.AppSettings["residentAdminUser"];
-        public static string AgeilityProfileMembers = ConfigurationManager.AppSettings["ageilityProfileMembers"];
-        public static string TeamCommunitySubmittorUser = ConfigurationManager.AppSettings["teamCommunitySubmittorUser"];
-        public static string TeamCommunityAdminUser = ConfigurationManager.AppSettings["teamCommunityAdminUser"];
-        public static string ResidentCommunityAdminUser = ConfigurationManager.AppSettings["residentCommunityAdminUser"];
-        public static string ResidentCommunitySubmittorUser = ConfigurationManager.AppSettings["residentCommunitySubmittorUser"];
-        public static string ClientSubmittorUser = ConfigurationManager.AppSettings["​clientSubmittorUser"];
-        public static string ResidentReadOnlyUser = ConfigurationManager.AppSettings["residentReadOnlyUser"];
+        public static string EDUser = ConfigurationManager.AppSettings["EDUser"];
+        public static string RDOUser = ConfigurationManager.AppSettings["RDOUser"];
+        public static string RevenueManagementUser = ConfigurationManager.AppSettings["RevenueManagementUser"];
+        public static string DVPUser = ConfigurationManager.AppSettings["DVPUser"];
+        public static string COOUser = ConfigurationManager.AppSettings["COOUser"];
+        public static string BOMUser = ConfigurationManager.AppSettings["BOMUser"];
+        public static string SalesUser = ConfigurationManager.AppSettings["SalesUser"];
         public static readonly string DataPath = ConfigurationManager.AppSettings["dataPath"];
+        public static readonly string JsonDataPath = ConfigurationManager.AppSettings["jsonDataPath"];
 
-        public static List<string> TestStatus = new List<string> { "Not Tested", "Tested - Confirmed", "Tested - Negative", "Tested - Pending", "Inconclusive" };
-        public static List<string> Disposition = new List<string> { "Resolved Negative", "Quarantined", "Hospitalized", "Expired", "Recovered", "Transferred/Discharged", "Not Quarantined" };
-        public static List<string> DashboardColumnsHeader = new List<string> { "Last Updated", "Division", "Region", "BU", "Community", "ID", "Name", "Resident LOB", "Infection Type", "Onset Date", "Test Status", "Disposition", "Entry Type", "Delete" };
+        public static readonly string EDUserInfo = Path.Combine(Constants.JsonDataPath, "EDUserInfo.json");
 
         //Setting variables via test context
         public static void SetUIEnvVariables()
