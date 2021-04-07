@@ -959,7 +959,8 @@ namespace InfectionLogAutomation.PageObject.LogEntry
         }
 
 
-        #region Attachments/// <summary>
+        #region Attachments
+        /// <summary>
         /// Check if readonly user is able to add attachments or not
         /// </summary>
         /// <param> status = 'able'/'unable'</param>

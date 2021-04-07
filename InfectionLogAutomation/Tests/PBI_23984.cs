@@ -14,8 +14,8 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23984_AT_23994()
         {
             #region Test data
-            TeamLogEntryInfo teamLogEntryData = new TeamLogEntryInfo();
-            teamLogEntryData.CurrentDisposition = "Expired";
+            LogEntryData logEntryData = new LogEntryData();
+            logEntryData.CurrentDisposition = "Expired";
             List<string> outLstResult = new List<string> { };
             #endregion Test data
 
@@ -31,7 +31,7 @@ namespace InfectionLogAutomation.Tests
 
             Log.Info("4. Fill all required fields with Current Disposition= 'Expired'");
             LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out outLstResult);
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", teamLogEntryData.CurrentDisposition);
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", logEntryData.CurrentDisposition);
 
             Log.Info("5. Submit the log entry");
             LogEntryDetailPage.SaveLogEntry();
@@ -97,8 +97,8 @@ namespace InfectionLogAutomation.Tests
         public void PBI_23984_AT_23995()
         {
             #region Test data
-            TeamLogEntryInfo teamLogEntryData = new TeamLogEntryInfo();
-            teamLogEntryData.CurrentDisposition = "Quarantined";
+            LogEntryData logEntryData = new LogEntryData();
+            logEntryData.CurrentDisposition = "Quarantined";
             List<string> outLstResult = new List<string> { };
             #endregion Test data
 
@@ -107,7 +107,7 @@ namespace InfectionLogAutomation.Tests
             LoginPage.Login(Constants.TeamCommunitySubmittorUser, Constants.CommonPassword);
             HomePage.SelectMenuItem(Constants.NewTeamLogEntryPath);
             LogEntryDetailPage.FillLogEntryInfoRandomly("Team", out outLstResult);
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", teamLogEntryData.CurrentDisposition);
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", logEntryData.CurrentDisposition);
             LogEntryDetailPage.SaveLogEntry();
             DriverUtils.CloseDrivers();
             #endregion Pre-condition
@@ -125,8 +125,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("4. Try to edit Current Disposition field with all status, except 'Expired'");
-            teamLogEntryData.CurrentDisposition = "Hospitalized";
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", teamLogEntryData.CurrentDisposition);
+            logEntryData.CurrentDisposition = "Hospitalized";
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", logEntryData.CurrentDisposition);
 
             Log.Info("Verify that Current Disposition field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
@@ -139,8 +139,8 @@ namespace InfectionLogAutomation.Tests
             HomePage.OpenALogEntry(outLstResult[3]);
 
             Log.Info("7. Update lof entry with Current Disposition 'Expired'");
-            teamLogEntryData.CurrentDisposition = "Expired";
-            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", teamLogEntryData.CurrentDisposition);
+            logEntryData.CurrentDisposition = "Expired";
+            LogEntryDetailPage.SelectATestStatusOrDisposition("Disposition", logEntryData.CurrentDisposition);
 
             Log.Info("Verify that Current Disposition field can be updated");
             Assert.IsFalse(LogEntryDetailPage.IsTestStatusOrDispositionUnableToBeEditted("Disposition"), "Disposition field is unable to be editted.");
