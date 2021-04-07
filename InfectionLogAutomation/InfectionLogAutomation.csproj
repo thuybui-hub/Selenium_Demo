@@ -132,12 +132,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DataObject\BulkProcessingData.cs" />
     <Compile Include="DataObject\LogEntryData.cs" />
-    <Compile Include="DataObject\ClientLogEntryInfo.cs" />
     <Compile Include="DataObject\LoginData.cs" />
-    <Compile Include="DataObject\ResidentLogEntryInfo.cs" />
-    <Compile Include="DataObject\TeamLogEntryInfo.cs" />
     <Compile Include="DataObject\TeamUsersAccess.cs" />
     <Compile Include="PageObject\BulkInsert\BulkInsertPage.cs" />
     <Compile Include="PageObject\Common\CommonPage.cs" />
@@ -194,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Resources\PBIs to run.playlist" />
     <None Include="Resources\TestData\TeamUsersAccess.csv" />
     <None Include="packages.config" />
     <None Include="Resources\DriverConfig.json">
@@ -204,6 +199,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\TestData\LogEntryData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\TestData\LoginData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="test.runsettings">

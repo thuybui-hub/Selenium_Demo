@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C7C0B256-22EE-4E91-8839-CAB169E35A09}</ProjectGuid>
+    <ProjectGuid>{BE4D7B7B-32BA-4CE3-AD61-B6CD9F314190}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InfectionLogAutomation</RootNamespace>
@@ -135,6 +135,11 @@
     <Compile Include="DataObject\LoginData.cs" />
     <Compile Include="PageObject\CommonPage.cs" />
     <Compile Include="PageObject\LoginPage.cs" />
+    <Compile Include="test.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>test.runsettings</DependentUpon>
+    </Compile>
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -147,15 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Resources\TestData\TeamUsersAccess.csv" />
     <None Include="packages.config" />
     <None Include="Resources\DriverConfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\TestData\BulkProcessingData.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\TestData\LogEntryData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\TestData\LoginData.json">
