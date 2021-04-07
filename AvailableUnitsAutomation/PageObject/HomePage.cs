@@ -15,16 +15,7 @@ namespace InfectionLogAutomation.PageObject
         #endregion Properties
 
         #region Actions
-        /// <summary>
-        ///     Go to Create New Request or Search page
-        /// </summary>
-        /// <param name="linkText"> option = Create New Change Request / Advanced Search </param>
-        public void GoToPage(string linkText)
-        {
-            DriverUtils.WaitForPageLoad();
-            Link link = new Link(By.LinkText(linkText));
-            link.Click();
-        }
+        
         #endregion Actions
 
         #region Check points

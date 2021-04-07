@@ -62,6 +62,17 @@ namespace AvailableUnitsAutomation.PageObject
 
         #region Main Action
         /// <summary>
+        ///     Go to Create New Request or Search page
+        /// </summary>
+        /// <param name="linkText"> option = Create New Change Request / Advanced Search </param>
+        public void GoToPage(string linkText)
+        {
+            DriverUtils.WaitForPageLoad();
+            Link link = new Link(By.LinkText(linkText));
+            link.Click();
+        }
+
+        /// <summary>
         ///     Open a request by Request ID
         /// </summary>
         /// <param name="requestID"></param>
