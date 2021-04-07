@@ -28,8 +28,8 @@ namespace AvailableUnitsAutomation.PageObject
         public readonly Ul lstBoxLob;
 
         // Dashboard and Search page
-        public readonly Span spnSortAsc;
-        public readonly Span spnSortDesc;
+        public Span spnSortAsc;
+        public Span spnSortDesc;
 
         // Dashboard page
         public readonly Div divActiveListGrid;
@@ -107,7 +107,7 @@ namespace AvailableUnitsAutomation.PageObject
             }
             spnPaging.ScrollToView();
             spnPaging.Click();
-            spnPaging.SendKeys(pagingValue);
+            System.Windows.Forms.SendKeys.SendWait(pagingValue);
             System.Windows.Forms.SendKeys.SendWait("{enter}");
             DriverUtils.WaitForPageLoad();
         }
@@ -119,6 +119,39 @@ namespace AvailableUnitsAutomation.PageObject
         public void ShowAllRecords(string tableName)
         {
             SelectPagingValue("All", tableName);
+        }
+
+        /// <summary>
+        /// Sort a table column, default is asc
+        /// </summary>
+        /// <param name="tableName"> tableName = activeRequestsHeaderTbl, myPendingListHeaderTbl, searchResultHeaderTbl</param>
+        /// <param name="columnName"></param>
+        /// <param name="option"> option = asc/desc, default = asc </param>
+        public void SortTableColumn(Table table, string columnName, string sortBy = "asc")
+        {
+            DriverUtils.WaitForPageLoad();
+
+            int columnIndex = table.GetTableColumnIndex(columnName);
+            //HtmlControl columnHeader = table.GetCell(0, columnIndex);
+
+            spnSortAsc = new Span(By.XPath("//span[@class=\"k-icon k-i-sort-asc-sm\"]"));
+            spnSortDesc = new Span(By.XPath("//span[@class=\"k-icon k-i-sort-desc-sm\"]"));
+
+            //switch (sortBy)
+            //{
+            //    case "asc":
+            //        if (spnSortAsc.IsDisplayed()) { break; }
+            //        else if (spnSortDesc.IsDisplayed()) { columnHeader.DoubleClick(); }
+            //        else { columnHeader.Click(); }
+            //        break;
+            //    case "desc":
+            //        if (spnSortAsc.IsDisplayed()) { columnHeader.Click(); }
+            //        else if (spnSortDesc.IsDisplayed()) { break; }
+            //        else { columnHeader.DoubleClick(); }
+            //        break;
+            //    default:
+            //        throw new Exception(string.Format("Option is invalid."));
+            //}
         }
 
 
@@ -142,44 +175,6 @@ namespace AvailableUnitsAutomation.PageObject
                 System.Windows.Forms.SendKeys.SendWait("{enter}");
             }
         }
-        public void SelectMenuItem(string path)
-        {
-            DriverUtils.WaitForPageLoad();
-            Link menuItem, subMenuItem;
-            string[] items = path.Split('|');
-            switch (items.Length)
-            {
-                case 1:
-                    menuItem = new Link(By.LinkText(items[0]));
-                    menuItem.Click();
-                    break;
-                case 2:
-                    menuItem = new Link(By.LinkText(items[0]));
-                    menuItem.Click();
-                    subMenuItem = new Link(By.LinkText(items[1]));
-                    subMenuItem.Click();
-                    break;
-            }
-        }
-
-        public List<string> GetSubMenuItems(string menuItemName)
-        {
-            DriverUtils.WaitForPageLoad();
-            List<string> listSubMenuItems = new List<string> { };
-            Ul menuItem = new Ul(By.XPath("//a[contains(text(), \"" + menuItemName + "\")]//following-sibling::ul"));
-            listSubMenuItems = menuItem.GetOptions();
-            return listSubMenuItems;
-        }
-
-        public void ShowAllILogRecords()
-        {
-            DriverUtils.WaitForPageLoad();
-            spnPaging.ScrollToView();
-            spnPaging.Click();
-            System.Windows.Forms.SendKeys.SendWait("All");
-            System.Windows.Forms.SendKeys.SendWait("{Enter}");
-        }
-
 
         public string GetAlertWinText()
         {
