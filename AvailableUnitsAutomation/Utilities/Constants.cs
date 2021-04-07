@@ -4,7 +4,7 @@ using SeleniumCSharp.Core.Utilities;
 using System.Configuration;
 using System.Collections.Generic;
 
-namespace InfectionLogAutomation.Utilities
+namespace AvailableUnitsAutomation.Utilities
 {
     public class Constants
     {

@@ -1,4 +1,4 @@
-﻿namespace InfectionLogAutomation.Utilities
+﻿namespace AvailableUnitsAutomation.Utilities
 {
 
     public enum Tables

@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Resources\PBIs to run.playlist" />
     <None Include="Resources\TestData\TeamUsersAccess.csv" />
     <None Include="packages.config" />
     <None Include="Resources\DriverConfig.json">
@@ -203,9 +204,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\TestData\LogEntryData.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\TestData\LoginData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="test.runsettings">

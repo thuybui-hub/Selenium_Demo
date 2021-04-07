@@ -1,9 +1,9 @@
-﻿using InfectionLogAutomation.Utilities;
+﻿using AvailableUnitsAutomation.Utilities;
 using OpenQA.Selenium;
 using SeleniumCSharp.Core.DriverWrapper;
 using SeleniumCSharp.Core.ElementWrapper;
 
-namespace InfectionLogAutomation.PageObject.Login
+namespace AvailableUnitsAutomation.PageObject
 {
     public class LoginPage
     {

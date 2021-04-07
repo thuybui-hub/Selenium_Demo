@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04237BFA-FDA1-437C-9559-716588F55C52}</ProjectGuid>
+    <ProjectGuid>{C7C0B256-22EE-4E91-8839-CAB169E35A09}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InfectionLogAutomation</RootNamespace>
@@ -132,56 +132,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DataObject\BulkProcessingData.cs" />
-    <Compile Include="DataObject\LogEntryData.cs" />
-    <Compile Include="DataObject\ClientLogEntryInfo.cs" />
     <Compile Include="DataObject\LoginData.cs" />
-    <Compile Include="DataObject\ResidentLogEntryInfo.cs" />
-    <Compile Include="DataObject\TeamLogEntryInfo.cs" />
-    <Compile Include="DataObject\TeamUsersAccess.cs" />
-    <Compile Include="PageObject\BulkInsert\BulkInsertPage.cs" />
-    <Compile Include="PageObject\Common\CommonPage.cs" />
-    <Compile Include="PageObject\Home\HomePage.cs" />
-    <Compile Include="PageObject\LogEntry\LogEntryDetailPage.cs" />
-    <Compile Include="PageObject\Login\LoginPage.cs" />
-    <Compile Include="test.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>test.runsettings</DependentUpon>
-    </Compile>
-    <Compile Include="Tests\PBI_23862.cs" />
-    <Compile Include="Tests\PBI_23863.cs" />
-    <Compile Include="Tests\PBI_23866.cs" />
-    <Compile Include="Tests\PBI_23868.cs" />
-    <Compile Include="Tests\PBI_23870.cs" />
-    <Compile Include="Tests\PBI_23872.cs" />
-    <Compile Include="Tests\PBI_23873.cs" />
-    <Compile Include="Tests\PBI_23874.cs" />
-    <Compile Include="Tests\PBI_23875.cs" />
-    <Compile Include="Tests\PBI_23877.cs" />
-    <Compile Include="Tests\PBI_23897.cs" />
-    <Compile Include="Tests\PBI_23911.cs" />
-    <Compile Include="Tests\PBI_23915.cs" />
-    <Compile Include="Tests\PBI_23922.cs" />
-    <Compile Include="Tests\PBI_23924.cs" />
-    <Compile Include="Tests\PBI_23864.cs" />
-    <Compile Include="Tests\PBI_23931.cs" />
-    <Compile Include="Tests\PBI_23935.cs" />
-    <Compile Include="Tests\PBI_23953.cs" />
-    <Compile Include="Tests\PBI_23956.cs" />
-    <Compile Include="Tests\PBI_23982.cs" />
-    <Compile Include="Tests\PBI_23983.cs" />
-    <Compile Include="Tests\PBI_23984.cs" />
-    <Compile Include="Tests\PBI_24019.cs" />
-    <Compile Include="Tests\PBI_24066.cs" />
-    <Compile Include="Tests\PBI_24089.cs" />
-    <Compile Include="Tests\PBI_24090.cs" />
-    <Compile Include="Tests\PBI_24100.cs" />
-    <Compile Include="Tests\PBI_24147.cs" />
-    <Compile Include="Tests\PBI_25305.cs" />
-    <Compile Include="Tests\PBI_25306.cs" />
-    <Compile Include="Tests\PBI_25307.cs" />
-    <Compile Include="Tests\PBI_25351.cs" />
+    <Compile Include="PageObject\CommonPage.cs" />
+    <Compile Include="PageObject\LoginPage.cs" />
     <Compile Include="Tests\SetUp.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,25 +6,19 @@ using NUnit.Framework.Interfaces;
 using SeleniumCSharp.Core.DriverWrapper;
 using SeleniumCSharp.Core.Helpers;
 using SeleniumCSharp.Core.Utilities;
-using InfectionLogAutomation.Utilities;
+using AvailableUnitsAutomation.Utilities;
 using static NUnit.Framework.TestContext;
-using InfectionLogAutomation.PageObject.Login;
-using InfectionLogAutomation.PageObject.Common;
-using InfectionLogAutomation.PageObject.Home;
-using InfectionLogAutomation.PageObject.LogEntry;
-using InfectionLogAutomation.PageObject.BulkInsert;
+using AvailableUnitsAutomation.PageObject;
 
-namespace InfectionLogAutomation.Tests
+
+namespace AvailableUnitsAutomation.Tests
 {
     [TestFixture]
     public class TestBase
     {
         #region Properties
         private LoginPage loginPage;
-        private CommonPage commonPage;
-        private HomePage homePage;
-        private LogEntryDetailPage logEntryDetailPage;
-        private BulkInsertPage bulkInsertPage;
+        private CommonPage commonPage;      
         #endregion
 
         #region Declare pages
@@ -49,43 +43,7 @@ namespace InfectionLogAutomation.Tests
                 }
                 return commonPage;
             }
-        }
-
-        public HomePage HomePage
-        {
-            get
-            {
-                if (homePage == null)
-                {
-                    homePage = new HomePage();
-                }
-                return homePage;
-            }
-        }
-
-        public LogEntryDetailPage LogEntryDetailPage
-        {
-            get
-            {
-                if (logEntryDetailPage == null)
-                {
-                    logEntryDetailPage = new LogEntryDetailPage();
-                }
-                return logEntryDetailPage;
-            }
-        }
-
-        public BulkInsertPage BulkInsertPage
-        {
-            get
-            {
-                if (bulkInsertPage == null)
-                {
-                    bulkInsertPage = new BulkInsertPage();
-                }
-                return bulkInsertPage;
-            }
-        }
+        }        
         #endregion
 
         [SetUp]

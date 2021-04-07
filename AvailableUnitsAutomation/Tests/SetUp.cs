@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using InfectionLogAutomation.Utilities;
+using AvailableUnitsAutomation.Utilities;
 
-namespace InfectionLogAutomation.Tests
+namespace AvailableUnitsAutomation.Tests
 {
     [SetUpFixture]
     public class SetUp

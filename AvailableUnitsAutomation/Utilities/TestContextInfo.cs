@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using static NUnit.Framework.TestContext;
 
-namespace InfectionLogAutomation.Utilities
+namespace AvailableUnitsAutomation.Utilities
 {
     /// <summary>
     ///     TestContextInfo

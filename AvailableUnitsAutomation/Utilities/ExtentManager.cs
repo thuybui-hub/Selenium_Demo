@@ -2,7 +2,7 @@
 using AventStack.ExtentReports.Reporter;
 using SeleniumCSharp.Core.Utilities;
 
-namespace InfectionLogAutomation.Utilities
+namespace AvailableUnitsAutomation.Utilities
 {
     public class ExtentManager
     {
