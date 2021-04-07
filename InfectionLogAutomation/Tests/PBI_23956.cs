@@ -6,8 +6,7 @@ using System.Collections.Generic;
 
 namespace InfectionLogAutomation.Tests
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.Fixtures)]
+    [TestFixture]    
     public class PBI_23956: TestBase
     {
         [Test]
