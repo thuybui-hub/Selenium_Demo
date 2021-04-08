@@ -14,12 +14,19 @@
 
     public enum Fields
     {
-        region = 0,
-        community = 1,
-        employee = 2,
-        testStatus = 3,
-        disposition = 4,
-        entryTypeFilter = 5,
-        person = 6
+        effectiveDate = 0,
+        communityName = 1,
+        businessUnit = 2,
+        region = 3,
+        division = 4,
+        executiveDirector = 5,
+        RDO = 6,
+        DVP = 7,
+        RDSM = 8,
+        serviceLine = 9,
+        submittedBy = 10,
+        status = 11,
+        changeType = 12,
+        requestState = 13
     }
 }

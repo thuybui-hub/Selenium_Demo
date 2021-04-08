@@ -134,7 +134,10 @@
   <ItemGroup>
     <Compile Include="DataObject\LoginData.cs" />
     <Compile Include="PageObject\CommonPage.cs" />
+    <Compile Include="PageObject\HomePage.cs" />
     <Compile Include="PageObject\LoginPage.cs" />
+    <Compile Include="PageObject\NewChangeRequestPage.cs" />
+    <Compile Include="PageObject\SearchPage.cs" />
     <Compile Include="test.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
