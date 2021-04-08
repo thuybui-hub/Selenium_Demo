@@ -1,5 +1,5 @@
 <Playlist Version="1.0">
-  <Add Test="InfectionLogAutomation.Tests.PBI_23863.PBI_23863_AT_23884" />
+  <!--<Add Test="InfectionLogAutomation.Tests.PBI_23863.PBI_23863_AT_23884" />
   <Add Test="InfectionLogAutomation.Tests.PBI_23864.PBI_23864_AT_23886" />
   <Add Test="InfectionLogAutomation.Tests.PBI_23870.PBI_23870_AT_23885" />
   <Add Test="InfectionLogAutomation.Tests.PBI_23873.PBI_23873_AT_23883" />
@@ -13,5 +13,15 @@
   <Add Test="InfectionLogAutomation.Tests.PBI_23935.PBI_23935_AT_24020" />
   <Add Test="InfectionLogAutomation.Tests.PBI_23911.PBI_23911_AT_23958" />
   <Add Test="InfectionLogAutomation.Tests.PBI_23953.PBI_23953_AT_23966" />
-  <Add Test="InfectionLogAutomation.Tests.PBI_23956.PBI_23956_AT_23969_23970" />
+  <Add Test="InfectionLogAutomation.Tests.PBI_23956.PBI_23956_AT_23969_23970" />-->
+
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23888_DVP_DDHR" />
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23888_RDO_RDHR" />  
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23888_ED_HR" />  
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23888_DHR_RDH" />  
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23889_DDH_Admin" />  
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23889" />  
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23889_RDH" />  
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23890_Admin" />  
+  <Add Test="InfectionLogAutomation.Tests.PBI_23872.PBI_23872_AT_23890" />  
 </Playlist>
